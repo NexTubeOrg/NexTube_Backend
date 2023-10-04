@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C17E14AD-4E42-4FE6-9A4B-FE24DC4E234A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{851F7011-5A3C-40A9-A2C5-18796F6A1A02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D8B6D8C2-C241-41E0-9A6F-6BBDE75816F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{89508D05-E26F-45B9-BFBB-2C48CF191374}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Domain", "NexTube.Domain\NexTube.Domain.csproj", "{4EFD362B-DC61-4BE9-8C7F-D19B0D833735}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Application", "NexTube.Application\NexTube.Application.csproj", "{1C531BC2-5908-430A-AF16-E1CC6C5FAC25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Persistence", "NexTube.Persistence\NexTube.Persistence.csproj", "{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexTube.WebApi", "NexTube.WebApi\NexTube.WebApi.csproj", "{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EFD362B-DC61-4BE9-8C7F-D19B0D833735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EFD362B-DC61-4BE9-8C7F-D19B0D833735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EFD362B-DC61-4BE9-8C7F-D19B0D833735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EFD362B-DC61-4BE9-8C7F-D19B0D833735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C531BC2-5908-430A-AF16-E1CC6C5FAC25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C531BC2-5908-430A-AF16-E1CC6C5FAC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C531BC2-5908-430A-AF16-E1CC6C5FAC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C531BC2-5908-430A-AF16-E1CC6C5FAC25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4EFD362B-DC61-4BE9-8C7F-D19B0D833735} = {C17E14AD-4E42-4FE6-9A4B-FE24DC4E234A}
+		{1C531BC2-5908-430A-AF16-E1CC6C5FAC25} = {C17E14AD-4E42-4FE6-9A4B-FE24DC4E234A}
+		{8CFB955A-A5CB-494D-93BD-E8F8972E96AC} = {851F7011-5A3C-40A9-A2C5-18796F6A1A02}
+		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B} = {D8B6D8C2-C241-41E0-9A6F-6BBDE75816F6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA579A51-4A5E-403E-B484-2D9558C151E6}
+	EndGlobalSection
+EndGlobal
