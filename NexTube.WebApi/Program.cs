@@ -1,5 +1,6 @@
 using NexTube.Application.Common.Mappings;
 using NexTube.Persistence.Data.Contexts;
+using NexTube.Persistence.Data.Seeders;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,5 +36,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.SeedData();
 
 app.Run();
