@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NexTube.Persistance.Identity
+namespace NexTube.Persistence.Identity
 {
     public static class IdentityResultExtension
     {

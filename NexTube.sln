@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Application", "NexT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Persistence", "NexTube.Persistence\NexTube.Persistence.csproj", "{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexTube.WebApi", "NexTube.WebApi\NexTube.WebApi.csproj", "{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.WebApi", "NexTube.WebApi\NexTube.WebApi.csproj", "{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexTube.Tests", "NexTube.Tests\NexTube.Tests.csproj", "{1F19B59A-7D7E-4411-9523-9A3156466556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F19B59A-7D7E-4411-9523-9A3156466556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F19B59A-7D7E-4411-9523-9A3156466556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F19B59A-7D7E-4411-9523-9A3156466556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F19B59A-7D7E-4411-9523-9A3156466556}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{1C531BC2-5908-430A-AF16-E1CC6C5FAC25} = {C17E14AD-4E42-4FE6-9A4B-FE24DC4E234A}
 		{8CFB955A-A5CB-494D-93BD-E8F8972E96AC} = {851F7011-5A3C-40A9-A2C5-18796F6A1A02}
 		{80E84C99-B699-4E7D-BA0C-83A3EE313A9B} = {D8B6D8C2-C241-41E0-9A6F-6BBDE75816F6}
+		{1F19B59A-7D7E-4411-9523-9A3156466556} = {89508D05-E26F-45B9-BFBB-2C48CF191374}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DA579A51-4A5E-403E-B484-2D9558C151E6}
