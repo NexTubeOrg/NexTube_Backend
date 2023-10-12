@@ -1,4 +1,5 @@
 using NexTube.Application.Common.Mappings;
+using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Data.Seeders;
 using System.Reflection;
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // get configuration
 var configuration = builder.Configuration;
+
+// ensure all required settings exist
+configuration.EnsureExistence("appsettings.Development.json");
 
 // Add Clean-Architecture layers
 builder.Services.AddApplicationServices();
