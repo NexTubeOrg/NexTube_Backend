@@ -1,19 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
-using NexTube.Persistence.Identity;
 using WebShop.Application.Common.Exceptions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace NexTube.Persistance.Identity
+namespace NexTube.Persistence.Identity
 {
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IJwtService jwtService;
 
         public IdentityService(
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IJwtService jwtService)
         {
             _userManager = userManager;
+            this.jwtService = jwtService;
         }
 
         
@@ -35,6 +39,31 @@ namespace NexTube.Persistance.Identity
 
             var result = await _userManager.CreateAsync(user, password);
             return (result.ToApplicationResult(), user.Id);
+        }
+
+        public async Task<(Result Result, string? Token, string? FirstName)> SignInAsync(string email, string password) {
+            (Result Result, string? Token, string? FirstName) failture = (Result.Failure(new[] {
+                        "Wrong login or password"
+                    }), null, null);
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) {
+                return failture;
+            }
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, password);
+
+            if (!isPasswordValid) {
+                var res = await _userManager.AccessFailedAsync(user);
+                return failture;
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            return (
+                    Result.Success(),
+                    jwtService.GenerateToken(user.Id, email, userRoles.ToArray()),
+                    user.FirstName);
         }
     }
 }

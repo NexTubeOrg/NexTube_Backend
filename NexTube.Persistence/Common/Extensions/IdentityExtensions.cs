@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NexTube.Application.Common.Interfaces;
-using NexTube.Persistance.Identity;
+using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Identity;
 
 namespace NexTube.Persistence.Common.Extensions
@@ -43,6 +43,8 @@ namespace NexTube.Persistence.Common.Extensions
 
             // register custom services
             services.TryAddScoped<IIdentityService, IdentityService>();
+            services.TryAddScoped<IJwtService, JwtService>();
+            services.TryAddScoped<IDateTimeService, DateTimeService>();
 
             return new IdentityBuilder(typeof(ApplicationUser), typeof(ApplicationRole), services);
         }
