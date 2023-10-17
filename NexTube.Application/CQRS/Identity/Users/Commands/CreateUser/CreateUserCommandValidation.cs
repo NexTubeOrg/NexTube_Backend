@@ -24,6 +24,19 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
             RuleFor(c => c.Email)
                 .NotEmpty()
                 .Matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?");
+        
+            RuleFor(x => x.Nickname).NotEmpty()
+                 .NotEmpty().WithMessage("Нікнейм є обов'язковим.")
+                 .Matches(@"^[a-zA-Z0-9]+$").WithMessage("Некоректний формат нікнейму. Дозволені лише літери та цифри.");
+
+            RuleFor(x => x.Description)
+            .NotEmpty()
+          .MaximumLength(500)
+          .WithMessage("Максимальна довжина опису каналу - 500 символів.")
+          
+
+
+
         }
     }
 }

@@ -18,7 +18,7 @@ namespace NexTube.Persistance.Identity
 
         
         public async Task<(Result Result, int UserId)> CreateUserAsync(
-            string password, string email, string firstName, string lastName)
+            string password, string email, string firstName, string lastName,string nickname,string description)
         {
             if (await _userManager.FindByEmailAsync(email) != null)
             {
@@ -31,6 +31,8 @@ namespace NexTube.Persistance.Identity
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
+                Nickname = nickname,
+                Description = description
             };
 
             var result = await _userManager.CreateAsync(user, password);

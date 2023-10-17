@@ -5,6 +5,6 @@ namespace NexTube.Application.Common.Interfaces
     public interface IIdentityService
     {
         Task<(Result Result, int UserId)> CreateUserAsync(
-            string password, string email, string firstName, string lastName);
+            string password, string email, string firstName, string lastName,string nickname ,string description);
     }
 }
