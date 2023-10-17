@@ -18,7 +18,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInUser
             SignInUserCommandResult dto = new SignInUserCommandResult() {
                 Result = result.Result,
                 Token = result.Token,
-                FirstName = result.FirstName
+                User = result.User
             };
 
             return dto;
