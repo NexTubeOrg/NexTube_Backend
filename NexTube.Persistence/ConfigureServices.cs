@@ -48,6 +48,8 @@ public static class ConfigureServices {
             .Build();
         });
         services.TryAddScoped<IFileService, MinioFileService>();
+        services.TryAddScoped<IPhotoService, PhotoService>();
+
 
         return services;
     }
