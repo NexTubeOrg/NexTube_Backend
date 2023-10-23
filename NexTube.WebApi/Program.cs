@@ -11,9 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 // get configuration
 var configuration = builder.Configuration;
 
-// ensure all required settings exist
-configuration.EnsureExistence("appsettings.Development.json");
-
 // Add Clean-Architecture layers
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(configuration);
@@ -27,13 +24,25 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+// enable CORS to all sources
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAll", policy => {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyOrigin();
+    });
+});
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-//}
+var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors("AllowAll");
+// ensure all required settings exist
+configuration.EnsureExistence("appsettings.Development.json");
+
+if (app.Environment.IsProduction()) {
+    configuration.EnsureExistence("appsettings.json");
+}
 
 app.UseHttpsRedirection();
 

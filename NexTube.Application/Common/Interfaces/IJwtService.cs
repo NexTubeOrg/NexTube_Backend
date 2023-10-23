@@ -1,7 +1,9 @@
-﻿namespace NexTube.Application.Common.Interfaces
+﻿using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+
+namespace NexTube.Application.Common.Interfaces
 {
     public interface IJwtService
     {
-        string GenerateToken(int userId, string email, string[] roles);
+        string GenerateToken(int userId, UserLookup user);
     }
 }
