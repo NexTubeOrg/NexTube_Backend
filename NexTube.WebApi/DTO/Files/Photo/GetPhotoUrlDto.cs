@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using NexTube.Application.Common.Mappings;
-using NexTube.Application.CQRS.Files.Photos.Queries.GetPhoto;
 using NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl;
 
 namespace NexTube.WebApi.DTO.Files.Photo

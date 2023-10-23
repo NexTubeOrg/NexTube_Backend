@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Files.Photos.Commands.UploadPhoto;
-using NexTube.Application.CQRS.Files.Photos.Queries.GetPhoto;
 using NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl;
 using NexTube.WebApi.DTO.Files.Photo;
 
