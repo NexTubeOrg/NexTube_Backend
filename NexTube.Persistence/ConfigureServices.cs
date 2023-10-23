@@ -3,6 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Ardalis.GuardClauses;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Common.Extensions;
+using Minio;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using NexTube.Application.Common.Interfaces;
+using NexTube.Persistence.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +24,32 @@ public static class ConfigureServices {
         // setup Identity services
         services.AddIdentityExtensions()
             .AddEntityFrameworkStores<UserDbContext>();
+
+        // setup MinIO
+        var minioHost = configuration.GetValue<string>("MinIO:Host");
+        var minioAccessKey = configuration.GetValue<string>("MinIO:AccessKey");
+        var minioSecretKey = configuration.GetValue<string>("MinIO:SecretKey");
+
+        Guard.Against.Null(minioHost, message: "minioHost not found.");
+        Guard.Against.Null(minioAccessKey, message: "minioAccessKey not found.");
+        Guard.Against.Null(minioSecretKey, message: "minioAccessKey not found.");
+
+        services.AddMinio(c => {
+            c
+            .WithEndpoint(minioHost)
+            .WithCredentials(minioAccessKey, minioSecretKey)
+            .WithSSL(true)
+            .WithHttpClient(new HttpClient(new HttpClientHandler() {
+                ServerCertificateCustomValidationCallback = (sender, certificate, chain, sslPolicyErrors) => {
+                    // disable certificate verification (ONLY FOR DEV PURPOSE)
+                    return true;
+                }
+            }))
+            .Build();
+        });
+        services.TryAddScoped<IFileService, MinioFileService>();
+        services.TryAddScoped<IPhotoService, PhotoService>();
+
 
         return services;
     }

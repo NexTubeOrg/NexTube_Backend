@@ -8,6 +8,7 @@ namespace NexTube.Persistence.Common.Extensions {
                 .EnsureSettingsExist(
                 configuration,
                 new() {
+                    //ensure JWT
                     new ConfigurationSetting() {
                         Path = "Jwt:Key",
                         DefaultValueGenerator = () => $"{Guid.NewGuid()}"
@@ -23,6 +24,19 @@ namespace NexTube.Persistence.Common.Extensions {
                     new ConfigurationSetting() {
                         Path = "Jwt:ExpiresAfterHours",
                         DefaultValueGenerator = () => "100"
+                    },
+                    //ensure MinIO
+                    new ConfigurationSetting() {
+                        Path = "MinIO:AccessKey",
+                        DefaultValueGenerator = () => "replace-with-your-access-key"
+                    },
+                    new ConfigurationSetting() {
+                        Path = "MinIO:SecretKey",
+                        DefaultValueGenerator = () => "replace-with-your-secret-key"
+                    },
+                    new ConfigurationSetting() {
+                        Path = "MinIO:Host",
+                        DefaultValueGenerator = () => "replace-with-your-host-url"
                     },
                 },
                 configurationFileName
