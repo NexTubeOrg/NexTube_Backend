@@ -34,15 +34,11 @@ builder.Services.AddCors(options => {
 });
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseCors("AllowAll");
-    // ensure all required settings exist
-    configuration.EnsureExistence("appsettings.Development.json");
-
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors("AllowAll");
+// ensure all required settings exist
+configuration.EnsureExistence("appsettings.Development.json");
 
 if (app.Environment.IsProduction()) {
     configuration.EnsureExistence("appsettings.json");
