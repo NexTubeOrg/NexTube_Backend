@@ -10,6 +10,6 @@ namespace NexTube.Application.Common.Interfaces
     public interface IPhotoService
     {
         Task<(Result Result, string? PhotoId)> UploadPhoto(Stream source);
-        Task<(Result Result, Stream Stream, string ContentType)> GetPhoto(string photoId); 
+        Task<(Result Result, string Url)> GetPhotoUrl(string photoId);
     }
 }

@@ -35,6 +35,17 @@ namespace NexTube.Persistence.Services {
             return (Result.Success(), stream, res.ContentType);
         }
 
+        public async Task<(Result Result, string Url)> GetFileUrlAsync(string bucket, string fileId)
+        {
+            var argsGetUrl = new PresignedGetObjectArgs()
+                .WithBucket(bucket)
+                .WithObject(fileId)
+                .WithExpiry(60 * 60);
+
+            var url = await minioClient.PresignedGetObjectAsync(argsGetUrl);
+            return (Result.Success(), url);
+        }
+
         public async Task<(Result Result, string? FileId)> UploadFileAsync(string bucket, Stream source) {
             var putObjArgs = new PutObjectArgs()
                 .WithBucket(bucket)

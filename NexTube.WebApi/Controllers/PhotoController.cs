@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Files.Photos.Commands.UploadPhoto;
 using NexTube.Application.CQRS.Files.Photos.Queries.GetPhoto;
+using NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl;
 using NexTube.WebApi.DTO.Files.Photo;
 
 namespace NexTube.WebApi.Controllers
@@ -15,18 +16,19 @@ namespace NexTube.WebApi.Controllers
             this.mapper = mapper;
         }
 
+
         [HttpGet("{photoId}")]
-        public async Task<ActionResult> GetPhoto(string photoId)
+        public async Task<ActionResult> GetPhotoUrl(string photoId)
         {
-            var getPhotoDto = new GetPhotoDto()
+            var getPhotoUrlDto = new GetPhotoUrlDto()
             {
-                PhotoId = photoId
+                PhotoId = photoId,
             };
 
-            var query = mapper.Map<GetPhotoQuery>(getPhotoDto);
-            var getPhotoVm = await Mediator.Send(query);
+            var query = mapper.Map<GetPhotoUrlQuery>(getPhotoUrlDto);
+            var getPhotoUrlVm = await Mediator.Send(query);
 
-            return File(getPhotoVm.PhotoStream, "image/png");
+            return Redirect(getPhotoUrlVm.PhotoUrl);
         }
 
         [HttpPost]

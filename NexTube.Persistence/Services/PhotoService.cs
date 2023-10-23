@@ -18,10 +18,10 @@ namespace NexTube.Persistence.Services
             _fileService = fileService;
         }
 
-        public async Task<(Result Result, Stream Stream, string ContentType)> GetPhoto(string photoId)
+        public async Task<(Result Result, string Url)> GetPhotoUrl(string photoId)
         {
-            var getPhoto = await _fileService.GetFileStreamAsync("photos", photoId);
-            return getPhoto;
+            var getPhotoUrl = await _fileService.GetFileUrlAsync("photos", photoId);
+            return getPhotoUrl;
         }
 
         public async Task<(Result Result, string? PhotoId)> UploadPhoto(Stream source)

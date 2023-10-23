@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTube.Application.CQRS.Files.Photos.Queries.GetPhoto
+namespace NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl
 {
-    public class GetPhotoQueryValidation
+    public class GetPhotoUrlQueryValidation
     {
     }
 }
