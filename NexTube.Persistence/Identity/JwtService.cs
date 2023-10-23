@@ -25,7 +25,6 @@ namespace NexTube.Persistence.Identity {
                 claims.Add(new Claim(ClaimTypes.Role, role));
                 claims.Add(new Claim("roles", role));
             }
-            claims.Add(new Claim("roles", "dummy"));
             claims.Add(new Claim("user_id", userId.ToString()));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim("email", user.Email));
