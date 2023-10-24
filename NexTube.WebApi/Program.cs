@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using NexTube.Application.Common.Mappings;
 using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
@@ -22,7 +23,23 @@ builder.Services.AddAutoMapper(config => {
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o => {
+    o.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme {
+            In = ParameterLocation.Header,
+            Description = @"Bearer (paste here your token (remove all brackets) )",
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+    });
+
+    o.OperationFilter<AuthorizeCheckOperationFilter>();
+
+    o.SwaggerDoc("v1", new OpenApiInfo() {
+        Title = "NexTube API - v1",
+        Version = "v1"
+    });
+});
 
 // enable CORS to all sources
 builder.Services.AddCors(options => {

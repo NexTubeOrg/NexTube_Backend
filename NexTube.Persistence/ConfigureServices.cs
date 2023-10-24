@@ -22,7 +22,7 @@ public static class ConfigureServices {
         });
 
         // setup Identity services
-        services.AddIdentityExtensions()
+        services.AddIdentityExtensions(configuration)
             .AddEntityFrameworkStores<UserDbContext>();
 
         // setup MinIO

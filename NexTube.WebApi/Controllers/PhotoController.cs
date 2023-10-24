@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Files.Photos.Commands.UploadPhoto;
 using NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl;
 using NexTube.WebApi.DTO.Files.Photo;
+using WebShop.Domain.Constants;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -15,7 +17,7 @@ namespace NexTube.WebApi.Controllers
             this.mapper = mapper;
         }
 
-
+        
         [HttpGet("{photoId}")]
         public async Task<ActionResult> GetPhotoUrl(string photoId)
         {
@@ -30,6 +32,7 @@ namespace NexTube.WebApi.Controllers
             return Redirect(getPhotoUrlVm.PhotoUrl);
         }
 
+        [Authorize(Roles = Roles.User)]
         [HttpPost]
         public async Task<ActionResult> UploadPhoto([FromForm] UploadPhotoDto dto)
         {
