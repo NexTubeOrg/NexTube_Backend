@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NexTube.Persistence.Identity;
 
-namespace NexTube.Persistence.Data.Configurations
+namespace NexTube.Persistence.Data.Configurations.Identity
 {
     public class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
     {

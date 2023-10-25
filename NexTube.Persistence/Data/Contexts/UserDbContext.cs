@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using NexTube.Persistence.Data.Configurations;
+using NexTube.Persistence.Data.Configurations.Identity;
 using NexTube.Persistence.Identity;
 
 namespace NexTube.Persistence.Data.Contexts

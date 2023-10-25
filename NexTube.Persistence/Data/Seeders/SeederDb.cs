@@ -12,8 +12,12 @@ namespace NexTube.Persistence.Data.Seeders {
         public static void SeedData(this IApplicationBuilder app) {
             using (var scope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>().CreateScope()) {
+
                 var context = scope.ServiceProvider.GetRequiredService<UserDbContext>();
                 context.Database.Migrate();
+
+                scope.ServiceProvider.GetRequiredService<VideoDbContext>().Database.Migrate();
+
 
                 // add roles
                 var identityService = scope.ServiceProvider.GetRequiredService<IIdentityService>();

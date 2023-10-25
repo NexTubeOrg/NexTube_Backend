@@ -21,6 +21,10 @@ public static class ConfigureServices {
             options.UseNpgsql(connectionString);
         });
 
+        services.AddDbContext<VideoDbContext>((sp, options) => {
+            options.UseNpgsql(connectionString);
+        });
+
         // setup Identity services
         services.AddIdentityExtensions()
             .AddEntityFrameworkStores<UserDbContext>();
@@ -49,6 +53,7 @@ public static class ConfigureServices {
         });
         services.TryAddScoped<IFileService, MinioFileService>();
         services.TryAddScoped<IPhotoService, PhotoService>();
+        services.TryAddScoped<IVideoService, VideoService>();
 
 
         return services;
