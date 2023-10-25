@@ -17,17 +17,23 @@ namespace NexTube.Persistence.Identity {
         }
 
         public string GenerateToken(int userId, UserLookup user) {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key")));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key")??throw new Exception("Jwt:Key not found")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            List<Claim> claims = new List<Claim>();
-            foreach (var role in user.Roles) {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-                claims.Add(new Claim("roles", role));
+            List<Claim> claims = new();
+
+            if(user.Roles is not null) {
+                foreach (var role in user.Roles) {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                    claims.Add(new Claim("roles", role));
+                }
             }
+            
             claims.Add(new Claim("user_id", userId.ToString()));
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
-            claims.Add(new Claim("email", user.Email));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email??""));
+            claims.Add(new Claim("email", user.Email ?? ""));
+            claims.Add(new Claim("firstName", user.FirstName??""));
+            claims.Add(new Claim("lastName", user.LastName?? ""));
 
             var token = new JwtSecurityToken(
                 _configuration.GetValue<string>("Jwt:Issuer"),

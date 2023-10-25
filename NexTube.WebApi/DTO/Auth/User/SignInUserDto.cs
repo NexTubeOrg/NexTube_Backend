@@ -2,8 +2,7 @@
 using NexTube.Application.Common.Mappings;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 
-namespace NexTube.WebApi.DTO.Auth.User
-{
+namespace NexTube.WebApi.DTO.Auth.User {
     public class SignInUserDto : IMapWith<SignInUserCommand> { 
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;

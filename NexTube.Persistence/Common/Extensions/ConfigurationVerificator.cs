@@ -29,15 +29,17 @@ namespace NexTube.Persistence.Services {
 
         private static void SetValueByPath(JsonObject jsonObject, string path, string newValue) {
             string[] segments = path.Split(':');
-            JsonObject currentObject = jsonObject;
+            JsonObject? currentObject = jsonObject;
 
             for (int i = 0; i < segments.Length; i++) {
                 string segment = segments[i];
+                if (currentObject is null)
+                    continue;
 
                 if (currentObject.TryGetPropertyValue(segment, out var node)) {
                     if (i == segments.Length - 1) {
                         // If it's the last segment, update the value
-                        if (node is JsonValue value) {
+                        if (node is JsonValue) {
                             // replace with value update
                             //value.Value = newValue;
                         }
@@ -62,7 +64,7 @@ namespace NexTube.Persistence.Services {
                             if (jsonArray.Count == 0) {
                                 jsonArray.Add(new JsonObject());
                             }
-                            currentObject = (JsonObject)jsonArray[jsonArray.Count - 1];
+                            currentObject = jsonArray[jsonArray.Count - 1] as JsonObject;
                         }
                     }
                 }
