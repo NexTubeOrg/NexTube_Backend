@@ -31,11 +31,11 @@ namespace NexTube.Persistence.Identity
         }
 
         private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
-            ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email);
+            ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email??"");
             if (user != null)
                 return (Result.Success(), user.Id);
 
-            var result = await CreateUserAsync(userInfo.Email, userInfo.FirstName, userInfo.LastName);
+            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "");
 
             return (result.Result, result.User.Id);
         }
@@ -119,7 +119,7 @@ namespace NexTube.Persistence.Identity
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, password);
 
             if (!isPasswordValid) {
-                var res = await _userManager.AccessFailedAsync(user);
+                await _userManager.AccessFailedAsync(user);
                 return failture;
             }
 

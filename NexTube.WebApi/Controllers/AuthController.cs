@@ -12,7 +12,7 @@ namespace NexTube.WebApi.Controllers {
 
         private readonly IMapper mapper;
 
-        public AuthController(IMapper mapper, IConfiguration configuration) {
+        public AuthController(IMapper mapper) {
             this.mapper = mapper;
         }
 
