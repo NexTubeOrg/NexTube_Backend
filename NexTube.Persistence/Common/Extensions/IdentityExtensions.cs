@@ -51,20 +51,18 @@ namespace NexTube.Persistence.Common.Extensions
                     ValidAudience = audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(symmetricKey))
                 };
+            })
+            .AddGoogle(options => {
+                // setup Google OAuth2
+                var googleClientId = configuration.GetValue<string>("GoogleOAuth:ClientId");
+                var googleClientSecret = configuration.GetValue<string>("GoogleOAuth:ClientSecret");
+
+                Guard.Against.Null(googleClientId, message: "googleClientId not found.");
+                Guard.Against.Null(googleClientSecret, message: "googleClientSecret not found.");
+
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientId;
             });
-
-
-            //.AddGoogle(options => {
-            //     // setup Google OAuth2
-            //     var googleClientId = configuration.GetValue<string>("GoogleOAuth:ClientId");
-            //     var googleClientSecret = configuration.GetValue<string>("GoogleOAuth:ClientSecret");
-
-            //     Guard.Against.Null(googleClientId, message: "googleClientId not found.");
-            //     Guard.Against.Null(googleClientSecret, message: "googleClientSecret not found.");
-
-            //     options.ClientId = googleClientId;
-            //     options.ClientSecret = googleClientId;
-            // })
 
             // Hosting doesn't add IHttpContextAccessor by default
             services.AddHttpContextAccessor();
@@ -82,10 +80,15 @@ namespace NexTube.Persistence.Common.Extensions
             services.TryAddScoped<UserManager<ApplicationUser>>();
             services.TryAddScoped<RoleManager<ApplicationRole>>();
 
+            // register custom factories
+            services.TryAddScoped<TokenVerificatorsFactory>();
+
             // register custom services
-            services.TryAddScoped<IIdentityService, IdentityService>();
-            services.TryAddScoped<IJwtService, JwtService>();
             services.TryAddScoped<IDateTimeService, DateTimeService>();
+            services.TryAddScoped<IJwtService, JwtService>();
+            services.TryAddScoped<ITokenVerificator, GoogleTokenVerificator>();
+            services.TryAddScoped<IProviderAuthManager, OAuth2Manager>();
+            services.TryAddScoped<IIdentityService, IdentityService>();
 
             return new IdentityBuilder(typeof(ApplicationUser), typeof(ApplicationRole), services);
         }

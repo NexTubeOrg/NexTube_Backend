@@ -1,3 +1,4 @@
+using Ardalis.GuardClauses;
 using Microsoft.OpenApi.Models;
 using NexTube.Application.Common.Mappings;
 using NexTube.Persistence.Common.Extensions;
@@ -33,6 +34,23 @@ builder.Services.AddSwaggerGen(o => {
             Scheme = "Bearer",
     });
 
+    // Configure Google OAuth2 for Swagger
+    //o.AddSecurityDefinition("GoogleOAuth", new OpenApiSecurityScheme {
+    //    Type = SecuritySchemeType.OAuth2,
+    //    Flows = new OpenApiOAuthFlows {
+    //        AuthorizationCode = new OpenApiOAuthFlow {
+    //            AuthorizationUrl = new Uri("https://accounts.google.com/o/oauth2/auth"),
+    //            TokenUrl = new Uri("https://oauth2.googleapis.com/token"),
+    //            Scopes = new Dictionary<string, string>
+    //            {
+    //                { "openid", "OpenID" },
+    //                { "profile", "Profile" },
+    //                { "email", "Email" }
+    //            }
+    //        }
+    //    }
+    //});
+
     o.OperationFilter<AuthorizeCheckOperationFilter>();
 
     o.SwaggerDoc("v1", new OpenApiInfo() {
@@ -52,7 +70,23 @@ builder.Services.AddCors(options => {
 
 var app = builder.Build();
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c => {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "NexTube API - v1");
+
+    // setup Google OAuth2
+    var googleClientId = configuration.GetValue<string>("GoogleOAuth:ClientId");
+    var googleClientSecret = configuration.GetValue<string>("GoogleOAuth:ClientSecret");
+    var googleAppId = configuration.GetValue<string>("GoogleOAuth:AppId");
+
+    Guard.Against.Null(googleClientId, message: "googleClientId not found.");
+    Guard.Against.Null(googleClientSecret, message: "googleClientSecret not found.");
+    Guard.Against.Null(googleAppId, message: "googleAppId not found.");
+
+    // Specify the OAuth2 settings for Google Authentication
+    c.OAuthClientId(googleClientId);
+    c.OAuthClientSecret(googleClientSecret);
+    c.OAuthAppName(googleAppId);
+});
 app.UseCors("AllowAll");
 // ensure all required settings exist
 configuration.EnsureExistence("appsettings.Development.json");
