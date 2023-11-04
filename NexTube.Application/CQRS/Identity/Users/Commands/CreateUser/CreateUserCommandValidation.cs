@@ -9,7 +9,8 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
             RuleFor(c => c.Password)
                 .NotEmpty()
                 .MinimumLength(8)
-                .MaximumLength(64);
+                .MaximumLength(64)
+                .Equal(u=>u.PasswordConfirm).WithMessage("Passwords does not matches");
                
             RuleFor(c => c.FirstName)
                 .NotEmpty()

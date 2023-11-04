@@ -68,13 +68,19 @@ namespace NexTube.Persistence.Identity
             return result.ToApplicationResult();
         }
 
-        public async Task<(Result Result, int UserId)> CreateUserAsync(
+        public async Task<(Result Result, UserLookup User)> CreateUserAsync(
             string password, string email, string firstName, string lastName) {
 
             var result = await CreateUserAsync(email, firstName, lastName);
             await _userManager.AddPasswordAsync(result.User, password);
 
-            return (result.Result, result.User.Id);
+            return (result.Result, new UserLookup() {
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                UserId = result.User.Id,
+                Roles = (await GetUserRolesAsync(result.User.Id)).Roles
+            });
         }
         private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
             string email, string firstName, string lastName) {
