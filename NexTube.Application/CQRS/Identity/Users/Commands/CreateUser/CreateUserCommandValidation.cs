@@ -32,7 +32,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
             RuleFor(x => x.Description)
             .NotEmpty()
           .MaximumLength(500)
-          .WithMessage("Максимальна довжина опису каналу - 500 символів.")
+          .WithMessage("Максимальна довжина опису каналу - 500 символів.");
           
 
 
