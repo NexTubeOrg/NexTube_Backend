@@ -16,18 +16,21 @@ namespace NexTube.Persistence.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IJwtService jwtService;
+        private readonly IMailService mailService;
         private readonly IProviderAuthManager providerAuthManager;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager,
             IJwtService jwtService,
-            IProviderAuthManager providerAuthManager)
+            IProviderAuthManager providerAuthManager,
+            IMailService mailService)
         {
             _userManager = userManager;
             this.roleManager = roleManager;
             this.jwtService = jwtService;
             this.providerAuthManager = providerAuthManager;
+            this.mailService = mailService;
         }
 
         private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
@@ -157,12 +160,47 @@ namespace NexTube.Persistence.Identity
             return (Result.Success(), token, tokenVerificationResult.User);
         }
 
+
+
         public async Task<(Result Result, int? UserId)> GetUserIdByEmailAsync(string email) {
             ApplicationUser? user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException(email, nameof(ApplicationUser));
             
             return (Result.Success(), user.Id);
+        }
+
+        public async Task<Result> RecoverAsync(
+           string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return Result.Success();
+            }
+            var newPassword = mailService.GeneratePassword(10);
+            //await _userManager.ResetPasswordAsync(user,await _userManager.GeneratePasswordResetTokenAsync(user),newPassword);
+           await _userManager.RemovePasswordAsync(user);
+           await _userManager.AddPasswordAsync(user,newPassword);
+           await mailService.SendMail("<h1>Hello, we have recently reseted your password to " + newPassword + " <br>Please change it in your profile settings if required.</h1>", email);
+
+            return Result.Success() ;
+        }
+
+        public async Task<Result> ChangePasswordAsync(
+         int userId,string password, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null )
+            {
+                return Result.Failure(new[] {
+                        "User not found!"
+                    });
+            }
+            var res = await _userManager.ChangePasswordAsync(user,password, newPassword);
+           
+
+            return res.ToApplicationResult();
         }
     }
 }

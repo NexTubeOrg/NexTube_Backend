@@ -49,7 +49,7 @@ public static class ConfigureServices {
         });
         services.TryAddScoped<IFileService, MinioFileService>();
         services.TryAddScoped<IPhotoService, PhotoService>();
-
+        services.TryAddScoped<IMailService, MailService>();
 
         return services;
     }
