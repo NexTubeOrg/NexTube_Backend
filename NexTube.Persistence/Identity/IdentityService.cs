@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
 using NexTube.Persistence.Identity;
@@ -9,12 +10,14 @@ namespace NexTube.Persistance.Identity
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+      
 
-        public IdentityService(
-            UserManager<ApplicationUser> userManager)
+
+        public IdentityService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
+
 
         
         public async Task<(Result Result, int UserId)> CreateUserAsync(
@@ -38,5 +41,23 @@ namespace NexTube.Persistance.Identity
             var result = await _userManager.CreateAsync(user, password);
             return (result.ToApplicationResult(), user.Id);
         }
+        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                throw new NotFoundException("User", userId.ToString());
+            }
+            user.Id = userId;
+            user.Nickname = nickname;
+            user.Description = description;
+
+
+            var result = await _userManager.UpdateAsync(user);
+            return (result.ToApplicationResult(), user.Id);
+
+        }
+
     }
 }
