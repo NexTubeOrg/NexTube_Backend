@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Application", "NexT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.Persistence", "NexTube.Persistence\NexTube.Persistence.csproj", "{8CFB955A-A5CB-494D-93BD-E8F8972E96AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexTube.WebApi", "NexTube.WebApi\NexTube.WebApi.csproj", "{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTube.WebApi", "NexTube.WebApi\NexTube.WebApi.csproj", "{80E84C99-B699-4E7D-BA0C-83A3EE313A9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
