@@ -15,9 +15,6 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.ChangePassword
                .NotEmpty()
                .MinimumLength(8)
                .MaximumLength(64);
-
-
-
            }
     }
 }

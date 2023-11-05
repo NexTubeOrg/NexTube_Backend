@@ -4,37 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NexTube.Application.Common.Interfaces;
-using System.Net.Mail;
-using System.Net;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using MailKit.Security;
+using MailKit.Net.Smtp;
+using MimeKit.Text;
+using MimeKit;
+using System.Net.Mail;
 
 namespace NexTube.Persistence.Services
 {
     public class MailService : IMailService
     {
-        SmtpClient smtpClient;
-        private readonly IConfiguration _configuration;
-        public MailService (IConfiguration configuration)
-        {  
+      
+        private readonly IConfiguration? _configuration;
+
+        public MailService(IConfiguration configuration)
+        {
             _configuration = configuration;
-            this.smtpClient = new SmtpClient(_configuration.GetValue<string>("SMTP:Server"))
-            {
-                Port = _configuration.GetValue<int>("SMTP:Port"),
-                Credentials = new NetworkCredential(_configuration.GetValue<string>("SMTP:Username"), _configuration.GetValue<string>("SMTP:Pwd")),
-                EnableSsl = true
-            }; 
         }
-       async public Task SendMail(string message,string recipient) { 
-         var mailMessage = new MailMessage
-            {
-                From = new MailAddress(_configuration.GetValue<string>("SMTP:Username")),
-                Subject = "Nextube Support",
-                Body = message,
-                IsBodyHtml = true,
-            };
-            mailMessage.To.Add(recipient);
-            smtpClient.Send(mailMessage);
+
+            async public Task SendMail(string message,string recipient) { 
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(_configuration.GetValue<string>("SMTP:Username")));
+            email.To.Add(MailboxAddress.Parse(recipient));
+            email.Subject = "Nextube Support";
+            email.Body = new TextPart(TextFormat.Html) { Text = message };
+
+            using var smtp = new MailKit.Net.Smtp.SmtpClient();
+            smtp.Connect(_configuration.GetValue<string>("SMTP:Server"), _configuration.GetValue<int>("SMTP:Port"), true);
+            smtp.Authenticate(_configuration.GetValue<string>("SMTP:Username"), _configuration.GetValue<string>("SMTP:Pwd"));
+           await smtp.SendAsync(email);
+            smtp.Disconnect(true);
         }
 
         public string GeneratePassword(int length)
