@@ -30,6 +30,11 @@ namespace NexTube.WebApi.Controllers {
             // map received from request dto to cqrs command
             var command = mapper.Map<SignInUserCommand>(dto);
             var result = await Mediator.Send(command);
+
+            // if operation has fault
+            if (result.Result.Succeeded == false)
+                return UnprocessableEntity(result);
+
             return Ok(result);
         }
 
