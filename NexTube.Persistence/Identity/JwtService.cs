@@ -20,9 +20,12 @@ namespace NexTube.Persistence.Identity {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key")??throw new Exception("Jwt:Key not found")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            List<Claim> claims = new();
+            List<Claim> claims = new() {
+                // idk how to avoid it
+                new Claim("roles", "")
+            };
 
-            if(user.Roles is not null) {
+            if (user.Roles is not null) {
                 foreach (var role in user.Roles) {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                     claims.Add(new Claim("roles", role));
