@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using NexTube.Application.Common.Interfaces;
 
-
 namespace NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo
 {
     public class UploadVideoCommandHandler : IRequestHandler<UploadVideoCommand, string>
