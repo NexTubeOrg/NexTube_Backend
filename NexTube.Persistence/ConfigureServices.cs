@@ -26,7 +26,7 @@ public static class ConfigureServices {
         });
 
         // setup Identity services
-        services.AddIdentityExtensions()
+        services.AddIdentityExtensions(configuration)
             .AddEntityFrameworkStores<UserDbContext>();
 
         // setup MinIO
@@ -54,7 +54,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IFileService, MinioFileService>();
         services.TryAddScoped<IPhotoService, PhotoService>();
         services.TryAddScoped<IVideoService, VideoService>();
-
+        services.TryAddScoped<IMailService, MailService>();
 
         return services;
     }

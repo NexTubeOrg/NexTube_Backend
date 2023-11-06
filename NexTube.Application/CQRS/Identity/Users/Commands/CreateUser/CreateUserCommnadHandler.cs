@@ -3,20 +3,27 @@ using NexTube.Application.Common.Interfaces;
 
 namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
 {
-    public class CreateUserCommnadHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommnadHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
     {
         private readonly IIdentityService _identityService;
-        public CreateUserCommnadHandler(IIdentityService identityService)
+        private readonly IJwtService _jwtService;
+
+        public CreateUserCommnadHandler(IIdentityService identityService, IJwtService jwtService)
         {
             _identityService = identityService;
+            _jwtService = jwtService;
         }
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
              var result = await _identityService.CreateUserAsync(
                  request.Password, request.Email, request.LastName, request.FirstName);
 
 
-            return result.UserId;
+            return new CreateUserCommandResult() {
+                Result = result.Result,
+                UserId = result.User.UserId,
+                Token = _jwtService.GenerateToken(result.User.UserId ?? -1, result.User)
+            };
         }
     }
 }
