@@ -34,7 +34,7 @@ builder.Services.AddSwaggerGen(o => {
             Scheme = "Bearer",
         });
 
-    o.OperationFilter<AuthorizeCheckOperationFilter>();
+  o.OperationFilter<AuthorizeCheckOperationFilter>();
 
     o.SwaggerDoc("v1", new OpenApiInfo() {
         Title = "NexTube API - v1",
