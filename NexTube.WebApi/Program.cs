@@ -32,9 +32,9 @@ builder.Services.AddSwaggerGen(o => {
             Name = "Authorization",
             Type = SecuritySchemeType.ApiKey,
             Scheme = "Bearer",
-    });
+        });
 
-    o.OperationFilter<AuthorizeCheckOperationFilter>();
+  o.OperationFilter<AuthorizeCheckOperationFilter>();
 
     o.SwaggerDoc("v1", new OpenApiInfo() {
         Title = "NexTube API - v1",
