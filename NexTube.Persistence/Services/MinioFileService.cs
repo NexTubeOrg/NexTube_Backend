@@ -1,14 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using NexTube.Application.Common.Interfaces;
+﻿using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Minio;
 using Minio.DataModel.Args;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace NexTube.Persistence.Services {
     public class MinioFileService : IFileService {
