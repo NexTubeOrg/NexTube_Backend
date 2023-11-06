@@ -15,7 +15,7 @@ namespace NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo
 
         public async Task<string> Handle(UploadVideoCommand request, CancellationToken cancellationToken)
         {
-            var result = await _videoService.UploadVideo(request.Name, request.Description, request.Source);
+            var result = await _videoService.UploadVideo(request.Name, request.Description, request.PreviewPhotoSource, request.Source);
             return result.VideoId;
         }
     }
