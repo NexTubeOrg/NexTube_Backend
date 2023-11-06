@@ -32,24 +32,7 @@ builder.Services.AddSwaggerGen(o => {
             Name = "Authorization",
             Type = SecuritySchemeType.ApiKey,
             Scheme = "Bearer",
-    });
-
-    // Configure Google OAuth2 for Swagger
-    //o.AddSecurityDefinition("GoogleOAuth", new OpenApiSecurityScheme {
-    //    Type = SecuritySchemeType.OAuth2,
-    //    Flows = new OpenApiOAuthFlows {
-    //        AuthorizationCode = new OpenApiOAuthFlow {
-    //            AuthorizationUrl = new Uri("https://accounts.google.com/o/oauth2/auth"),
-    //            TokenUrl = new Uri("https://oauth2.googleapis.com/token"),
-    //            Scopes = new Dictionary<string, string>
-    //            {
-    //                { "openid", "OpenID" },
-    //                { "profile", "Profile" },
-    //                { "email", "Email" }
-    //            }
-    //        }
-    //    }
-    //});
+        });
 
     o.OperationFilter<AuthorizeCheckOperationFilter>();
 

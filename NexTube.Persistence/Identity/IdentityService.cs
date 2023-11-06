@@ -1,18 +1,13 @@
 ﻿using Ardalis.GuardClauses;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json.Linq;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
-using System.Data;
 using WebShop.Application.Common.Exceptions;
 using WebShop.Domain.Constants;
 
-namespace NexTube.Persistence.Identity
-{
-    public class IdentityService : IIdentityService
-    {
+namespace NexTube.Persistence.Identity {
+    public class IdentityService : IIdentityService {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IJwtService jwtService;
@@ -24,8 +19,8 @@ namespace NexTube.Persistence.Identity
             RoleManager<ApplicationRole> roleManager,
             IJwtService jwtService,
             IProviderAuthManager providerAuthManager,
-            IMailService mailService)
-        {
+            IMailService mailService) {
+
             _userManager = userManager;
             this.roleManager = roleManager;
             this.jwtService = jwtService;
@@ -34,7 +29,7 @@ namespace NexTube.Persistence.Identity
         }
 
         private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
-            ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email??"");
+            ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email ?? "");
             if (user != null)
                 return (Result.Success(), user.Id);
 
@@ -110,7 +105,8 @@ namespace NexTube.Persistence.Identity
         }
 
         public async Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(string email, string password) {
-            (Result Result, string? Token, UserLookup? User) failture = (Result.Failure(new[] {
+            (Result Result, string? Token, UserLookup? User) failture = 
+                (Result.Failure(new[] {
                         "Wrong login or password"
                     }), null, null);
 
@@ -135,17 +131,15 @@ namespace NexTube.Persistence.Identity
                 Roles = userRoles
             };
 
-            return (
-                    Result.Success(),
+            return (Result.Success(),
                     jwtService.GenerateToken(user.Id, userLookup),
-                    userLookup
-                    );
+                    userLookup);
         }
 
         public async Task<(Result Result, string? Token, UserLookup? User)> SignInOAuthAsync(string provider, string providerToken) {
             // get user info from token, issued by provider
             var tokenVerificationResult = await providerAuthManager.AuthenticateAsync(provider, providerToken);
-            
+
             // verify that user exist in database
             var existenceVerificationResult = await VerifyUserExist(tokenVerificationResult.User);
 
@@ -160,45 +154,38 @@ namespace NexTube.Persistence.Identity
             return (Result.Success(), token, tokenVerificationResult.User);
         }
 
-
-
         public async Task<(Result Result, int? UserId)> GetUserIdByEmailAsync(string email) {
             ApplicationUser? user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException(email, nameof(ApplicationUser));
-            
+
             return (Result.Success(), user.Id);
         }
 
         public async Task<Result> RecoverAsync(
-           string email)
-        {
+           string email) {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
+            if (user == null) {
                 return Result.Success();
             }
             var newPassword = mailService.GeneratePassword(10);
             //await _userManager.ResetPasswordAsync(user,await _userManager.GeneratePasswordResetTokenAsync(user),newPassword);
-           await _userManager.RemovePasswordAsync(user);
-           await _userManager.AddPasswordAsync(user,newPassword);
-           await mailService.SendMail("<h1>Hello, we have recently reseted your password to " + newPassword + " <br>Please change it in your profile settings if required.</h1>", email);
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, newPassword);
+            await mailService.SendMailAsync("<h1>Hello, we have recently reseted your password to " + newPassword + " <br>Please change it in your profile settings if required.</h1>", email);
 
-            return Result.Success() ;
+            return Result.Success();
         }
 
         public async Task<Result> ChangePasswordAsync(
-         int userId,string password, string newPassword)
-        {
+         int userId, string password, string newPassword) {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null )
-            {
+            if (user == null) {
                 return Result.Failure(new[] {
                         "User not found!"
                     });
             }
-            var res = await _userManager.ChangePasswordAsync(user,password, newPassword);
-           
+            var res = await _userManager.ChangePasswordAsync(user, password, newPassword);
 
             return res.ToApplicationResult();
         }
