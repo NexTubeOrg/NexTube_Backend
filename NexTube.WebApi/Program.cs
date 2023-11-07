@@ -4,6 +4,7 @@ using NexTube.Application.Common.Mappings;
 using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Data.Seeders;
+using NexTube.WebApi.Swagger;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

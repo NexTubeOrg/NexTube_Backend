@@ -14,7 +14,7 @@ namespace NexTube.Persistence.Services
 
         public async Task<(Result Result, string Url)> GetPhotoUrl(string photoId)
         {
-            var getPhotoUrl = await _fileService.GetFileUrlAsync("photos", photoId);
+            var getPhotoUrl = await _fileService.GetFileUrlAsync("photos", photoId, "image/png");
             return getPhotoUrl;
         }
 

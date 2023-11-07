@@ -39,7 +39,7 @@ namespace NexTube.Persistence.Services
 
         public async Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId)
         {
-            var getVideo = await _fileService.GetFileUrlAsync("videos", videoId);
+            var getVideo = await _fileService.GetFileUrlAsync("videos", videoId, "video/mp4");
 
             return (getVideo.Result, getVideo.Url);
         }
