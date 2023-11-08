@@ -7,5 +7,6 @@
         public string Description { get; set; } = null!;
         public Guid? VideoId { get; set; } = null!;
         public Guid? PreviewPhotoId { get; set; } = null!;
+        public DateTime? DateOfUpload { get; set; } = null!;
     }
 }

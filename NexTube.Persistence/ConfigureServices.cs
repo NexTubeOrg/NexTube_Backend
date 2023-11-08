@@ -7,6 +7,7 @@ using Minio;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Persistence.Services;
+using NexTube.Infrastructure.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -55,6 +56,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IPhotoService, PhotoService>();
         services.TryAddScoped<IVideoService, VideoService>();
         services.TryAddScoped<IMailService, MailService>();
+        services.TryAddScoped<IDateTimeService, DateTimeService>();
 
         return services;
     }
