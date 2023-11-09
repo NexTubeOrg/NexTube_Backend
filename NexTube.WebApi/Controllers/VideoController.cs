@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
+using NexTube.Application.CQRS.Videos.Commands.AddComment;
 using NexTube.WebApi.DTO.Files.Video;
+using NexTube.WebApi.DTO.Videos;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -36,6 +38,13 @@ namespace NexTube.WebApi.Controllers
             var videoId = await Mediator.Send(command);
 
             return Ok(videoId);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddComment([FromForm] AddCommentDto dto) {
+            var command = mapper.Map<AddCommentCommand>(dto);
+            await Mediator.Send(command);
+            return Ok();
         }
     }
 }

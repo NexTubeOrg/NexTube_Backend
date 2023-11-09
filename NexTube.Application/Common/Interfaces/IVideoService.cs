@@ -6,5 +6,6 @@ namespace NexTube.Application.Common.Interfaces
     {
         Task<(Result Result, string VideoId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source);
         Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId);
+        Task<Result> AddCommentAsync(int? videoId, int? authorUserId, string content);
     }
 }

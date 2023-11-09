@@ -1,4 +1,5 @@
-﻿using NexTube.Application.Common.Interfaces;
+﻿using Ardalis.GuardClauses;
+using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Contexts;
@@ -42,6 +43,23 @@ namespace NexTube.Persistence.Services
             var getVideo = await _fileService.GetFileUrlAsync("videos", videoId);
 
             return (getVideo.Result, getVideo.Url);
+        }
+
+        public async Task<Result> AddCommentAsync(int? videoId, int? authorUserId, string content) {
+            var video = await _videoDbContext.Videos.FindAsync(videoId);
+
+            if (video is null)
+                throw new NotFoundException(videoId.ToString(), nameof(VideoEntity));
+
+            var comment = new VideoCommentEntity() {
+                Content = content,
+                VideoEntity = video,
+            };
+
+            _videoDbContext.Comments.Add(comment);
+            await _videoDbContext.SaveChangesAsync();
+
+            return Result.Success();
         }
     }
 }
