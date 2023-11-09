@@ -8,7 +8,7 @@ namespace NexTube.Domain.Entities {
     public class VideoCommentEntity {
         public int Id { get; set; }
         public string Content { get; set; } = string.Empty;
-        
-        public VideoEntity? VideoEntity { get; set; }
+
+        public VideoEntity VideoEntity { get; set; } = null!;
     }
 }

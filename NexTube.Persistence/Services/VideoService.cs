@@ -1,6 +1,8 @@
 ﻿using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
+using NexTube.Application.CQRS.Videos.Queries.GetCommentsList;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Contexts;
 
@@ -60,6 +62,18 @@ namespace NexTube.Persistence.Services
             await _videoDbContext.SaveChangesAsync();
 
             return Result.Success();
+        }
+
+        public async Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId) {
+            var query = _videoDbContext.Comments
+                .Where(c => c.VideoEntity.Id == videoId)
+                .Select(c=> new CommentLookup() {
+                    Content = c.Content,
+                });
+
+            var comments = await query.ToListAsync();
+
+            return (Result.Success(), comments);
         }
     }
 }
