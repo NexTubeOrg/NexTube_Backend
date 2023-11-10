@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
+using NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
 using NexTube.WebApi.DTO.Files.Video;
@@ -39,6 +40,15 @@ namespace NexTube.WebApi.Controllers
             };
 
             var query = mapper.Map<GetVideoEntityQuery>(getVideoEntityDto);
+            var getVideoEntityVm = await Mediator.Send(query);
+
+            return Ok(getVideoEntityVm);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllVideoEntites()
+        {
+            var query = new GetAllVideoEntitiesQuery();
             var getVideoEntityVm = await Mediator.Send(query);
 
             return Ok(getVideoEntityVm);

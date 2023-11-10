@@ -51,7 +51,15 @@ namespace NexTube.Persistence.Services
         public async Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId)
         {
             var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstAsync();
+
             return (Result.Success(), videoEntity);
+        }
+
+        public async Task<(Result Result, IEnumerable<VideoEntity> VideoEntities)> GetAllVideoEntities()
+        {
+            var videoEntities = await _videoDbContext.Videos.ToListAsync();
+
+            return (Result.Success(), videoEntities);
         }
     }
 }
