@@ -36,7 +36,7 @@ namespace NexTube.Persistence.Services
             };
 
             _videoDbContext.Videos.Add(videoEntity);
-            _videoDbContext.SaveChanges();
+            await _videoDbContext.SaveChangesAsync();
 
             return (uploadVideo.Result, videoEntity.Id);
         }
