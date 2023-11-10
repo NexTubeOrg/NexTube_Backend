@@ -9,5 +9,6 @@ namespace NexTube.Application.Common.Interfaces
         Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId);
         Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId);
         Task<(Result Result, IEnumerable<VideoEntity> VideoEntities)> GetAllVideoEntities();
+        Task<Result> RemoveVideoByEntityId(int videoEntityId);
     }
 }

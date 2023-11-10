@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
 using NexTube.Domain.Entities;
@@ -60,6 +62,20 @@ namespace NexTube.Persistence.Services
             var videoEntities = await _videoDbContext.Videos.ToListAsync();
 
             return (Result.Success(), videoEntities);
+        }
+
+        public async Task<Result> RemoveVideoByEntityId(int videoEntityId)
+        {
+            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstAsync();
+
+            if (videoEntity == null)
+            {
+                throw new NotFoundException(videoEntityId.ToString(), nameof(VideoEntity));
+            }
+
+            _videoDbContext.Videos.Remove(videoEntity);
+            await _videoDbContext.SaveChangesAsync();
+            return Result.Success();
         }
     }
 }
