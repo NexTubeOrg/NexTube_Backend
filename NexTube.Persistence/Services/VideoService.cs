@@ -52,7 +52,12 @@ namespace NexTube.Persistence.Services
 
         public async Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId)
         {
-            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstAsync();
+            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
+
+            if (videoEntity == null)
+            {
+                throw new NotFoundException(videoEntityId.ToString(), nameof(VideoEntity));
+            }
 
             return (Result.Success(), videoEntity);
         }
@@ -66,7 +71,7 @@ namespace NexTube.Persistence.Services
 
         public async Task<Result> RemoveVideoByEntityId(int videoEntityId)
         {
-            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstAsync();
+            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
 
             if (videoEntity == null)
             {
