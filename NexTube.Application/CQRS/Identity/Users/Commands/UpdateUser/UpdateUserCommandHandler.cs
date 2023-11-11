@@ -16,9 +16,6 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser
              
           var result   = await _ichenalServise.UdateUserAsync(request.UserId, request.Nickname, request.Description);
 
-
-          
-
             return result.UserId;
         }
     }

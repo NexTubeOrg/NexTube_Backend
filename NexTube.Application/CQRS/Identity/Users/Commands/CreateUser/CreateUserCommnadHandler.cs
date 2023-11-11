@@ -16,7 +16,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
                  request.Password, request.Email, request.LastName, request.FirstName, request.Nickname, request.Description);
 
 
-            return result.UserId;
+            return (int)result.User.UserId;
         }
     }
 }

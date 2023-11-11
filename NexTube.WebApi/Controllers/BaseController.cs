@@ -18,9 +18,12 @@ namespace NexTube.WebApi.Controllers {
         // get user id from claims (token).
         // if User or Identity is null - set UserId to empty
         internal int? UserId =>
-            !User?.Identity?.IsAuthenticated ?? false
-            ? null
-            : int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "");
+          !User?.Identity?.IsAuthenticated ?? false
+          ? null
+          : int.TryParse(User.FindFirst("user_id")?.Value, out var userId)
+              ? userId
+              : (int?)null;
+
 
     }
 }
