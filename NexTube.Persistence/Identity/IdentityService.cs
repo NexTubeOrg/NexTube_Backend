@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
@@ -34,9 +35,45 @@ namespace NexTube.Persistence.Identity {
             if (user != null)
                 return (Result.Success(), user.Id);
 
-            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "");
+            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", "", "");
 
             return (result.Result, result.User.Id);
+        }
+
+        public async Task<(Result Result, UserLookup User)> CreateUserAsync(
+            string password, string email, string firstName, string lastName, string nickname, string description) {
+
+            var result = await CreateUserAsync(email, firstName, lastName, nickname, description);
+            await _userManager.AddPasswordAsync(result.User, password);
+
+            return (result.Result, new UserLookup() {
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                UserId = result.User.Id,
+                Roles = (await GetUserRolesAsync(result.User.Id)).Roles
+            });
+        }
+        private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
+            string email, string firstName, string lastName, string nickname, string description) {
+            if (await _userManager.FindByEmailAsync(email) != null) {
+                throw new AlreadyExistsException(email, "User is already exist");
+            }
+
+            var user = new ApplicationUser {
+                UserName = email,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                Nickname = nickname,
+                Description = description
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            await AddToRoleAsync(user, Roles.User);
+
+            return (result.ToApplicationResult(), user);
         }
 
 
@@ -112,7 +149,7 @@ namespace NexTube.Persistence.Identity {
         }
 
         public async Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(string email, string password) {
-            (Result Result, string? Token, UserLookup? User) failture = 
+            (Result Result, string? Token, UserLookup? User) failture =
                 (Result.Failure(new[] {
                         "Wrong login or password"
                     }), null, null);
@@ -168,9 +205,23 @@ namespace NexTube.Persistence.Identity {
 
             return (Result.Success(), user.Id);
         }
+        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description) {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
 
-        public async Task<Result> RecoverAsync(
-           string email) {
+            if (user == null) {
+                throw new NotFoundException("User", userId.ToString());
+            }
+            user.Id = userId;
+            user.Nickname = nickname;
+            user.Description = description;
+
+
+            var result = await _userManager.UpdateAsync(user);
+            return (result.ToApplicationResult(), user.Id);
+
+        }
+
+        public async Task<Result> RecoverAsync(string email) {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) {
                 return Result.Success();
@@ -184,8 +235,7 @@ namespace NexTube.Persistence.Identity {
             return Result.Success();
         }
 
-        public async Task<Result> ChangePasswordAsync(
-         int userId, string password, string newPassword) {
+        public async Task<Result> ChangePasswordAsync(int userId, string password, string newPassword) {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null) {
                 return Result.Failure(new[] {
@@ -206,3 +256,6 @@ namespace NexTube.Persistence.Identity {
         }
     }
 }
+
+
+

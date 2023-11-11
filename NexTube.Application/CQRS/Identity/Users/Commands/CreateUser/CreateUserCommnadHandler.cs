@@ -16,7 +16,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
         public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
              var result = await _identityService.CreateUserAsync(
-                 request.Password, request.Email, request.LastName, request.FirstName);
+                 request.Password, request.Email, request.LastName, request.FirstName, request.Nickname, request.Description);
 
 
             return new CreateUserCommandResult() {

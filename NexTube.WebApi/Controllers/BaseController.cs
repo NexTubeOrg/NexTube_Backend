@@ -17,7 +17,7 @@ namespace NexTube.WebApi.Controllers {
         protected IMediator Mediator => mediator ??=
             HttpContext.RequestServices.GetService<IMediator>() ??
                 throw new ServiceNotRegisteredException(nameof(IMediator));
-
+        
         // get user id from claims (token).
         // if User or Identity is null - set UserId to empty
         internal int UserId =>
