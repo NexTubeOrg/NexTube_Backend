@@ -26,4 +26,8 @@
     <ProjectReference Include="..\NexTube.Persistence\NexTube.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Swagger\" />
+  </ItemGroup>
+
 </Project>
