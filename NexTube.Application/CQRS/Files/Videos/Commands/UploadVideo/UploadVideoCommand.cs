@@ -2,7 +2,7 @@
 
 namespace NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo
 {
-    public class UploadVideoCommand : IRequest<string>
+    public class UploadVideoCommand : IRequest<int>
     {
         public Stream Source { get; set; } = null!;
         public Stream PreviewPhotoSource { get; set; } = null!;
