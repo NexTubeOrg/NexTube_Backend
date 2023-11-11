@@ -8,6 +8,7 @@ using NexTube.Application.Common.Interfaces;
 using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Identity;
 using System.Text;
+using NexTube.Domain.Entities;
 
 namespace NexTube.Persistence.Common.Extensions
 {

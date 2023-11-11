@@ -23,7 +23,7 @@ namespace NexTube.Persistence.Services
             _dbContext = dbContext;
         }
 
-        public async Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source)
+        public async Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source, ApplicationUser creator)
         {
             var uploadVideo = await _fileService.UploadFileAsync("videos", source);
             var uploadPhoto = await _photoService.UploadPhoto(previewPhotoSource);
@@ -34,7 +34,8 @@ namespace NexTube.Persistence.Services
                 Description = description,
                 VideoId = Guid.Parse(uploadVideo.FileId),
                 PreviewPhotoId = Guid.Parse(uploadPhoto.PhotoId),
-                DateOfUpload = _dateTimeService.Now
+                DateCreated = _dateTimeService.Now,
+                Creator = creator,
             };
 
             _dbContext.Videos.Add(videoEntity);
