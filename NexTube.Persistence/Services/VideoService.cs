@@ -13,14 +13,14 @@ namespace NexTube.Persistence.Services
         private readonly IFileService _fileService;
         private readonly IPhotoService _photoService;
         private readonly IDateTimeService _dateTimeService;
-        private readonly VideoDbContext _videoDbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public VideoService(IFileService fileService, IPhotoService photoService, IDateTimeService dateTimeService, VideoDbContext videoDbContext)
+        public VideoService(IFileService fileService, IPhotoService photoService, IDateTimeService dateTimeService, ApplicationDbContext dbContext)
         {
             _fileService = fileService;
             _photoService = photoService;
             _dateTimeService = dateTimeService;
-            _videoDbContext = videoDbContext;
+            _dbContext = dbContext;
         }
 
         public async Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source)
@@ -37,8 +37,8 @@ namespace NexTube.Persistence.Services
                 DateOfUpload = _dateTimeService.Now
             };
 
-            _videoDbContext.Videos.Add(videoEntity);
-            await _videoDbContext.SaveChangesAsync();
+            _dbContext.Videos.Add(videoEntity);
+            await _dbContext.SaveChangesAsync();
 
             return (uploadVideo.Result, videoEntity.Id);
         }
@@ -52,7 +52,7 @@ namespace NexTube.Persistence.Services
 
         public async Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId)
         {
-            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
+            var videoEntity = await _dbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
 
             if (videoEntity == null)
             {
@@ -64,22 +64,22 @@ namespace NexTube.Persistence.Services
 
         public async Task<(Result Result, IEnumerable<VideoEntity> VideoEntities)> GetAllVideoEntities()
         {
-            var videoEntities = await _videoDbContext.Videos.ToListAsync();
+            var videoEntities = await _dbContext.Videos.ToListAsync();
 
             return (Result.Success(), videoEntities);
         }
 
         public async Task<Result> RemoveVideoByEntityId(int videoEntityId)
         {
-            var videoEntity = await _videoDbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
+            var videoEntity = await _dbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
 
             if (videoEntity == null)
             {
                 throw new NotFoundException(videoEntityId.ToString(), nameof(VideoEntity));
             }
 
-            _videoDbContext.Videos.Remove(videoEntity);
-            await _videoDbContext.SaveChangesAsync();
+            _dbContext.Videos.Remove(videoEntity);
+            await _dbContext.SaveChangesAsync();
             return Result.Success();
         }
     }

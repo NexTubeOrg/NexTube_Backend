@@ -20,7 +20,7 @@ builder.Services.AddInfrastructureServices(configuration);
 
 builder.Services.AddAutoMapper(config => {
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
-    config.AddProfile(new AssemblyMappingProfile(typeof(UserDbContext).Assembly));
+    config.AddProfile(new AssemblyMappingProfile(typeof(ApplicationDbContext).Assembly));
 });
 
 builder.Services.AddControllers();
