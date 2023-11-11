@@ -11,13 +11,15 @@ namespace NexTube.Persistence.Services {
             this.minioClient = minioClient;
         }
 
-        public async Task<(Result Result, string Url)> GetFileUrlAsync(string bucket, string fileId)
+        public async Task<(Result Result, string Url)> GetFileUrlAsync(string bucket, string fileId, string contentType)
         {
             var argsGetUrl = new PresignedGetObjectArgs()
                 .WithBucket(bucket)
                 .WithObject(fileId)
+                .WithHeaders(new Dictionary<string, string> {
+                    { "response-content-type", contentType },
+                } )
                 .WithExpiry(60 * 60);
-
             var url = await minioClient.PresignedGetObjectAsync(argsGetUrl);
             return (Result.Success(), url);
         }
