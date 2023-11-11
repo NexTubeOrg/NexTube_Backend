@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
+namespace NexTube.WebApi.Swagger;
 public class AuthorizeCheckOperationFilter : IOperationFilter {
     public void Apply(OpenApiOperation operation, OperationFilterContext context) {
         var hasAuthorizeAttribute = context.MethodInfo.DeclaringType?.GetCustomAttributes(true)
