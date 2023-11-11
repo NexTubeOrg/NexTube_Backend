@@ -196,5 +196,13 @@ namespace NexTube.Persistence.Identity {
 
             return res.ToApplicationResult();
         }
+
+        public async Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId) {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+                throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
+
+            return (Result.Success(), user);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Files.Videos.Commands.RemoveVideoByEntityId;
 using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
@@ -6,6 +7,7 @@ using NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
 using NexTube.WebApi.DTO.Files.Video;
+using WebShop.Domain.Constants;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -56,9 +58,13 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> UploadVideo([FromForm] UploadVideoDto dto)
         {
+            await EnsureCurrentUserAssignedAsync();
+
             var command = mapper.Map<UploadVideoCommand>(dto);
+            command.Creator = CurrentUser;
             var videoId = await Mediator.Send(command);
 
             return Ok(videoId);
