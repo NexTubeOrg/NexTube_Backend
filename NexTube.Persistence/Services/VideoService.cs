@@ -34,7 +34,7 @@ namespace NexTube.Persistence.Services
                 Description = description,
                 VideoId = Guid.Parse(uploadVideo.FileId),
                 PreviewPhotoId = Guid.Parse(uploadPhoto.PhotoId),
-                DateOfUpload = _dateTimeService.Now
+                DateCreated = _dateTimeService.Now
             };
 
             _dbContext.Videos.Add(videoEntity);
