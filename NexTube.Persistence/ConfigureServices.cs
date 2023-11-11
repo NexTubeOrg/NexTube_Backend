@@ -18,17 +18,13 @@ public static class ConfigureServices {
         // ensure that connection string exists, else throw startup exception
         Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
-        services.AddDbContext<UserDbContext>((sp, options) => {
-            options.UseNpgsql(connectionString);
-        });
-
-        services.AddDbContext<VideoDbContext>((sp, options) => {
+        services.AddDbContext<ApplicationDbContext>((sp, options) => {
             options.UseNpgsql(connectionString);
         });
 
         // setup Identity services
         services.AddIdentityExtensions(configuration)
-            .AddEntityFrameworkStores<UserDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
         // setup MinIO
         var minioHost = configuration.GetValue<string>("MinIO:Host");
