@@ -10,5 +10,6 @@ namespace NexTube.Domain.Entities {
         public string Content { get; set; } = string.Empty;
 
         public VideoEntity VideoEntity { get; set; } = null!;
+        public ApplicationUser Owner { get; set; } = null!;
     }
 }

@@ -85,7 +85,7 @@ namespace NexTube.Persistence.Services
             return Result.Success();
         }
 
-        public async Task<Result> AddCommentAsync(int? videoId, int? authorUserId, string content) {
+        public async Task<Result> AddCommentAsync(int? videoId, string content, ApplicationUser creator) {
             var video = await _dbContext.Videos.FindAsync(videoId);
 
             if (video is null)
@@ -94,6 +94,7 @@ namespace NexTube.Persistence.Services
             var comment = new VideoCommentEntity() {
                 Content = content,
                 VideoEntity = video,
+                Owner = creator
             };
 
             _dbContext.VideoComments.Add(comment);

@@ -11,6 +11,10 @@ namespace NexTube.Persistence.Data.Configurations.Videos {
             builder.HasOne(p => p.VideoEntity)
                 .WithMany()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Owner)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

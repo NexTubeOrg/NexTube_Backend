@@ -9,7 +9,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.AddComment {
         }
 
         public async Task<Unit> Handle(AddCommentCommand request, CancellationToken cancellationToken) {
-            await videoService.AddCommentAsync(request.VideoId, request.AuthorUserId, request.Content);
+            await videoService.AddCommentAsync(request.VideoId, request.Content, request.Creator);
             return Unit.Value;
         }
     }
