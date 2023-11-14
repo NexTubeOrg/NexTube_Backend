@@ -6,6 +6,7 @@ using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using WebShop.Application.Common.Exceptions;
 using WebShop.Domain.Constants;
 using NexTube.Domain.Entities;
+using NexTube.Domain.Entities.Abstract;
 
 namespace NexTube.Persistence.Identity {
     public class IdentityService : IIdentityService {

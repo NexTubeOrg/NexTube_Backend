@@ -11,6 +11,7 @@ using NexTube.Application.CQRS.Videos.Queries.GetCommentsList;
 using NexTube.WebApi.DTO.Files.Video;
 using WebShop.Domain.Constants;
 using NexTube.WebApi.DTO.Videos;
+using NexTube.Application.CQRS.Videos.Commands.DeleteComment;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -104,6 +105,15 @@ namespace NexTube.WebApi.Controllers
             var query = mapper.Map<GetCommentsListQuery>(dto);
             var result = await Mediator.Send(query);
             return Ok(result);
+        }
+
+        [Authorize(Roles = Roles.User, Policy = Policies.CanDeleteOwnComment)]
+        [HttpDelete]
+        public async Task<ActionResult> DeleteComment([FromQuery] DeleteCommentDto dto) {
+            var command = mapper.Map<DeleteCommentCommand>(dto);
+            await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

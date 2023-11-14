@@ -13,5 +13,6 @@ namespace NexTube.Application.Common.Interfaces
         Task<Result> RemoveVideoByEntityId(int videoEntityId);
         Task<Result> AddCommentAsync(int? videoId, string content, ApplicationUser creator);
         Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId);
+        Task<Result> DeleteCommentAsync(int? commentId);
     }
 }

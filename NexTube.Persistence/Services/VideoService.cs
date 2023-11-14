@@ -122,5 +122,18 @@ namespace NexTube.Persistence.Services
 
             return (Result.Success(), comments);
         }
+
+        public async Task<Result> DeleteCommentAsync(int? commentId) {
+            var comment = await _dbContext.VideoComments.FindAsync(commentId);
+
+            if (comment is null)
+                throw new NotFoundException(commentId.ToString(), nameof(VideoCommentEntity));
+
+            _dbContext.VideoComments.Remove(comment);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Success();
+        }
     }
 }
