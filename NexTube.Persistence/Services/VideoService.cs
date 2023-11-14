@@ -114,7 +114,7 @@ namespace NexTube.Persistence.Services
                     Creator = new UserLookup() {
                         UserId = c.Creator.Id,
                         FirstName = c.Creator.FirstName,
-                        LastName = c.Creator.FirstName
+                        LastName = c.Creator.LastName
                     }
                 });
 
