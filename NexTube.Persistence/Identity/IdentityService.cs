@@ -5,6 +5,7 @@ using NexTube.Application.Common.Models;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using WebShop.Application.Common.Exceptions;
 using WebShop.Domain.Constants;
+using NexTube.Domain.Entities;
 
 namespace NexTube.Persistence.Identity {
     public class IdentityService : IIdentityService {
@@ -194,6 +195,14 @@ namespace NexTube.Persistence.Identity {
             var res = await _userManager.ChangePasswordAsync(user, password, newPassword);
 
             return res.ToApplicationResult();
+        }
+
+        public async Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId) {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+                throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
+
+            return (Result.Success(), user);
         }
     }
 }

@@ -7,6 +7,7 @@ using Minio;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Persistence.Services;
+using NexTube.Infrastructure.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -17,17 +18,13 @@ public static class ConfigureServices {
         // ensure that connection string exists, else throw startup exception
         Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
-        services.AddDbContext<UserDbContext>((sp, options) => {
-            options.UseNpgsql(connectionString);
-        });
-
-        services.AddDbContext<VideoDbContext>((sp, options) => {
+        services.AddDbContext<ApplicationDbContext>((sp, options) => {
             options.UseNpgsql(connectionString);
         });
 
         // setup Identity services
         services.AddIdentityExtensions(configuration)
-            .AddEntityFrameworkStores<UserDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
         // setup MinIO
         var minioHost = configuration.GetValue<string>("MinIO:Host");
@@ -55,6 +52,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IPhotoService, PhotoService>();
         services.TryAddScoped<IVideoService, VideoService>();
         services.TryAddScoped<IMailService, MailService>();
+        services.TryAddScoped<IDateTimeService, DateTimeService>();
 
         return services;
     }

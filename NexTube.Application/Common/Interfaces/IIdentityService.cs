@@ -1,5 +1,6 @@
 ﻿using NexTube.Application.Common.Models;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Common.Interfaces
 {
@@ -37,5 +38,6 @@ namespace NexTube.Application.Common.Interfaces
 
         Task<Result> ChangePasswordAsync(int userId,string password, string newPassword);
 
+        Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId);
     }
 }

@@ -4,6 +4,7 @@ using NexTube.Application.Common.Mappings;
 using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Data.Seeders;
+using NexTube.WebApi.Swagger;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,7 @@ builder.Services.AddInfrastructureServices(configuration);
 
 builder.Services.AddAutoMapper(config => {
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
-    config.AddProfile(new AssemblyMappingProfile(typeof(UserDbContext).Assembly));
+    config.AddProfile(new AssemblyMappingProfile(typeof(ApplicationDbContext).Assembly));
 });
 
 builder.Services.AddControllers();

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NexTube.Persistence.Identity;
+using NexTube.Domain.Entities;
 
 namespace NexTube.Persistence.Data.Configurations.Identity
 {

@@ -3,29 +3,28 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace NexTube.Persistence.Migrations.VideoDb
+namespace NexTube.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddComments : Migration
+    public partial class AddVideoComments : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "VideoComments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    VideoId = table.Column<int>(type: "integer", nullable: true),
-                    VideoEntityId = table.Column<int>(type: "integer", nullable: true)
+                    VideoEntityId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_VideoComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Videos_VideoEntityId",
+                        name: "FK_VideoComments_Videos_VideoEntityId",
                         column: x => x.VideoEntityId,
                         principalTable: "Videos",
                         principalColumn: "Id",
@@ -33,14 +32,14 @@ namespace NexTube.Persistence.Migrations.VideoDb
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_Id",
-                table: "Comments",
+                name: "IX_VideoComments_Id",
+                table: "VideoComments",
                 column: "Id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_VideoEntityId",
-                table: "Comments",
+                name: "IX_VideoComments_VideoEntityId",
+                table: "VideoComments",
                 column: "VideoEntityId");
         }
 
@@ -48,7 +47,7 @@ namespace NexTube.Persistence.Migrations.VideoDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "VideoComments");
         }
     }
 }
