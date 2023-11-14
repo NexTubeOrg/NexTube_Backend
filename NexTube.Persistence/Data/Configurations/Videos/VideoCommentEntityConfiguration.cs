@@ -12,7 +12,7 @@ namespace NexTube.Persistence.Data.Configurations.Videos {
                 .WithMany()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(p => p.Owner)
+            builder.HasOne(p => p.Creator)
                 .WithMany()
                 .OnDelete(DeleteBehavior.SetNull);
         }

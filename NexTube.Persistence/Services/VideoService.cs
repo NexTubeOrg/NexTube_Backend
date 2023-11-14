@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
+using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using NexTube.Application.CQRS.Videos.Queries.GetCommentsList;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Contexts;
@@ -94,7 +95,8 @@ namespace NexTube.Persistence.Services
             var comment = new VideoCommentEntity() {
                 Content = content,
                 VideoEntity = video,
-                Owner = creator
+                Creator = creator,
+                DateCreated = _dateTimeService.Now,
             };
 
             _dbContext.VideoComments.Add(comment);
@@ -108,6 +110,12 @@ namespace NexTube.Persistence.Services
                 .Where(c => c.VideoEntity.Id == videoId)
                 .Select(c=> new CommentLookup() {
                     Content = c.Content,
+                    DateCreated = c.DateCreated,
+                    Creator = new UserLookup() {
+                        UserId = c.Creator.Id,
+                        FirstName = c.Creator.FirstName,
+                        LastName = c.Creator.FirstName
+                    }
                 });
 
             var comments = await query.ToListAsync();

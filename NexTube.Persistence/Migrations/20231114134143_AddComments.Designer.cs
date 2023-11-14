@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231114133012_AddCommentOwner")]
-    partial class AddCommentOwner
+    [Migration("20231114134143_AddComments")]
+    partial class AddComments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -246,18 +246,24 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int?>("CreatorId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("VideoEntityId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatorId");
+
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("VideoEntityId");
 
@@ -355,11 +361,10 @@ namespace NexTube.Persistence.Migrations
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
                 {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Owner")
+                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("NexTube.Domain.Entities.VideoEntity", "VideoEntity")
                         .WithMany()
@@ -367,7 +372,7 @@ namespace NexTube.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("Creator");
 
                     b.Navigation("VideoEntity");
                 });
