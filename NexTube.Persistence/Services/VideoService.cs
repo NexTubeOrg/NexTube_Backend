@@ -109,6 +109,7 @@ namespace NexTube.Persistence.Services
             var query = _dbContext.VideoComments
                 .Where(c => c.VideoEntity.Id == videoId)
                 .Select(c=> new CommentLookup() {
+                    CommentId = c.Id,
                     Content = c.Content,
                     DateCreated = c.DateCreated,
                     Creator = new UserLookup() {
@@ -116,7 +117,8 @@ namespace NexTube.Persistence.Services
                         FirstName = c.Creator.FirstName,
                         LastName = c.Creator.LastName
                     }
-                });
+                })
+                .OrderByDescending(c=>c.DateCreated);
 
             var comments = await query.ToListAsync();
 
