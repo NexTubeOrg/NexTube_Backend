@@ -25,14 +25,18 @@ namespace NexTube.Persistence.Services {
         }
 
         public async Task<(Result Result, string? FileId)> UploadFileAsync(string bucket, Stream source) {
+            return await UploadFileAsync(bucket, source, Guid.NewGuid().ToString());
+        }
+
+        public async Task<(Result Result, string? FileId)> UploadFileAsync(string bucket, Stream source, string filename) {
             var putObjArgs = new PutObjectArgs()
                 .WithBucket(bucket)
-                .WithObject(Guid.NewGuid().ToString())
+                .WithObject(filename)
                 .WithObjectSize(source.Length)
                 .WithStreamData(source);
 
             var obj = await minioClient.PutObjectAsync(putObjArgs);
-            
+
             return (Result.Success(), obj.ObjectName);
         }
     }

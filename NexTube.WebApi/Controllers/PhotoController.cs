@@ -18,15 +18,10 @@ namespace NexTube.WebApi.Controllers
         }
 
         
-        [HttpGet("{photoId}")]
-        public async Task<ActionResult> GetPhotoUrl(string photoId)
+        [HttpGet("{PhotoId}/{Size}")]
+        public async Task<ActionResult> GetPhotoUrl([FromRoute]GetPhotoUrlDto dto)
         {
-            var getPhotoUrlDto = new GetPhotoUrlDto()
-            {
-                PhotoId = photoId,
-            };
-
-            var query = mapper.Map<GetPhotoUrlQuery>(getPhotoUrlDto);
+            var query = mapper.Map<GetPhotoUrlQuery>(dto);
             var getPhotoUrlVm = await Mediator.Send(query);
 
             return Redirect(getPhotoUrlVm.PhotoUrl);

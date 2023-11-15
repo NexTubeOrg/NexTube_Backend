@@ -14,11 +14,16 @@ namespace NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl
 
         public async Task<GetPhotoUrlQueryVm> Handle(GetPhotoUrlQuery request, CancellationToken cancellationToken)
         {
-            var result = await _photoService.GetPhotoUrl(request.PhotoId);
+            string url = string.Empty;
+
+            if(request.Size is null)
+                url = (await _photoService.GetPhotoUrl(request.PhotoId)).Url;
+            else
+                url = (await _photoService.GetPhotoUrl(request.PhotoId, request.Size.Value)).Url;
 
             var GetPhotoUrlQueryVm = new GetPhotoUrlQueryVm()
             {
-                PhotoUrl = result.Url,
+                PhotoUrl = url,
             };
 
             return GetPhotoUrlQueryVm;

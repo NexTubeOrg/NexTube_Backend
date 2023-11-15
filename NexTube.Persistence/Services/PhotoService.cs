@@ -1,27 +1,60 @@
-﻿using NexTube.Application.Common.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
+using NexTube.Persistence.Settings.Configurations;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Webp;
+using System.Drawing;
 
 namespace NexTube.Persistence.Services
 {
     public class PhotoService : IPhotoService
     {
         private readonly IFileService _fileService;
+        private readonly PhotoSettings _options;
 
-        public PhotoService(IFileService fileService)
+        public PhotoService(IFileService fileService, IOptions<PhotoSettings> options)
         {
             _fileService = fileService;
+            _options = options.Value;
+        }
+        private string GetPhotoName(string photoId, int photoSize) {
+            return $"{photoId}_{photoSize}";
         }
 
         public async Task<(Result Result, string Url)> GetPhotoUrl(string photoId)
         {
-            var getPhotoUrl = await _fileService.GetFileUrlAsync("photos", photoId, "image/png");
+            var getPhotoUrl = await _fileService.GetFileUrlAsync("photos", photoId, "image/webp");
             return getPhotoUrl;
+        }
+
+        public async Task<(Result Result, string Url)> GetPhotoUrl(string photoId, int size) {
+            var photoUrl = await _fileService.GetFileUrlAsync("photos", GetPhotoName(photoId, size), "image/webp");
+            return photoUrl;
         }
 
         public async Task<(Result Result, string? PhotoId)> UploadPhoto(Stream source)
         {
-            var uploadPhoto = await _fileService.UploadFileAsync("photos", source);
-            return uploadPhoto;
+            using var image = await Image.LoadAsync(source);
+            var encoder = new WebpEncoder { Quality = _options.PhotoQuallity };
+            var imageName = Guid.NewGuid().ToString();
+            foreach (var size in _options.ChannelPhotoWidths) {
+                // resize image
+                var resizedImage = image.Clone(x => x.Resize(size, 0));
+
+                // process image to virtual stream
+                using var ms = new MemoryStream();
+                await resizedImage.SaveAsWebpAsync(ms);
+                ms.Position = 0; // reset stream pointer
+
+                var filename = GetPhotoName(imageName, size);
+
+                // save image to storage using file service
+                var uploadPhoto = await _fileService.UploadFileAsync("photos", ms, filename);
+            }
+            
+            return (Result.Success(), imageName);
         }
     }
 }

@@ -8,11 +8,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Persistence.Services;
 using NexTube.Infrastructure.Services;
+using NexTube.Persistence.Settings.Configurations;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration) {
+        // add options
+        services.AddOptions<PhotoSettings>()
+            .Bind(configuration.GetSection(nameof(PhotoSettings)))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         // ensure that connection string exists, else throw startup exception

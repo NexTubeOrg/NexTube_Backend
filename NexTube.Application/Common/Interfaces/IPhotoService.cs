@@ -11,5 +11,6 @@ namespace NexTube.Application.Common.Interfaces
     {
         Task<(Result Result, string? PhotoId)> UploadPhoto(Stream source);
         Task<(Result Result, string Url)> GetPhotoUrl(string photoId);
+        Task<(Result Result, string Url)> GetPhotoUrl(string photoId, int size);
     }
 }
