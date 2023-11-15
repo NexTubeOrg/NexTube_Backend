@@ -1,4 +1,5 @@
 ﻿using NexTube.Application.Common.Models;
+using NexTube.Application.CQRS.Files.Videos.Queries.Common;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Common.Interfaces
@@ -7,8 +8,8 @@ namespace NexTube.Application.Common.Interfaces
     {
         Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source, ApplicationUser creator);
         Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId);
-        Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId);
-        Task<(Result Result, IEnumerable<VideoEntity> VideoEntities)> GetAllVideoEntities();
+        Task<(Result Result, VideoLookup VideoEntity)> GetVideoEntity(int videoEntityId);
+        Task<(Result Result, IEnumerable<VideoLookup> VideoEntities)> GetAllVideoEntities();
         Task<Result> RemoveVideoByEntityId(int videoEntityId);
     }
 }

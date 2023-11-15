@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
+using NexTube.Application.CQRS.Files.Videos.Queries.Common;
+using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Contexts;
 
@@ -51,23 +53,53 @@ namespace NexTube.Persistence.Services
             return (getVideo.Result, getVideo.Url);
         }
 
-        public async Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId)
+        public async Task<(Result Result, VideoLookup VideoEntity)> GetVideoEntity(int videoEntityId)
         {
-            var videoEntity = await _dbContext.Videos.Where(e => e.Id == videoEntityId).FirstOrDefaultAsync();
+            var videoLookup = await _dbContext.Videos
+                .Where(e => e.Id == videoEntityId)
+                .Select(v => new VideoLookup() {
+                    Id = v.Id,
+                    Name = v.Name,
+                    Description = v.Description,
+                    VideoFile = v.VideoId,
+                    PreviewPhotoFile = v.PreviewPhotoId,
+                    DateCreated = v.DateCreated,
+                    Creator = new UserLookup() { 
+                        UserId = v.Creator.Id,
+                        FirstName = v.Creator.FirstName,
+                        LastName = v.Creator.LastName,
+                    }
+            }).FirstOrDefaultAsync();
 
-            if (videoEntity == null)
+            if (videoLookup == null)
             {
                 throw new NotFoundException(videoEntityId.ToString(), nameof(VideoEntity));
             }
 
-            return (Result.Success(), videoEntity);
+            return (Result.Success(), videoLookup);
         }
 
-        public async Task<(Result Result, IEnumerable<VideoEntity> VideoEntities)> GetAllVideoEntities()
+        public async Task<(Result Result, IEnumerable<VideoLookup> VideoEntities)> GetAllVideoEntities()
         {
-            var videoEntities = await _dbContext.Videos.ToListAsync();
+            var videoLookup = await _dbContext.Videos
+                .Select(v => new VideoLookup()
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    Description = v.Description,
+                    VideoFile = v.VideoId,
+                    PreviewPhotoFile = v.PreviewPhotoId,
+                    DateCreated = v.DateCreated,
+                    Creator = new UserLookup()
+                    {
+                        UserId = v.Creator.Id,
+                        FirstName = v.Creator.FirstName,
+                        LastName = v.Creator.LastName,
+                    }
+                })
+                .ToListAsync();
 
-            return (Result.Success(), videoEntities);
+            return (Result.Success(), videoLookup);
         }
 
         public async Task<Result> RemoveVideoByEntityId(int videoEntityId)

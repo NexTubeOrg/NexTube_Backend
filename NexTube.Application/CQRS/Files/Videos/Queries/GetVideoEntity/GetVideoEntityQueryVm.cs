@@ -1,9 +1,9 @@
-﻿using NexTube.Domain.Entities;
+﻿using NexTube.Application.CQRS.Files.Videos.Queries.Common;
 
 namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity
 {
     public class GetVideoEntityQueryVm
     {
-        public VideoEntity VideoEntity { get; set; } = null!;
+        public VideoLookup VideoEntity { get; set; } = null!;
     }
 }

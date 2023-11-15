@@ -16,6 +16,7 @@ namespace NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities
         {
             var result = await _videoService.GetAllVideoEntities();
 
+
             var GetAllVideoEntitiesQueryVm = new GetAllVideoEntitiesQueryVm()
             {
                 VideoEntities = result.VideoEntities,
