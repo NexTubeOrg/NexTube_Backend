@@ -13,6 +13,7 @@ using WebShop.Domain.Constants;
 using NexTube.Persistence.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using NexTube.Persistence.Authorization.Handlers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace NexTube.Persistence.Common.Extensions
 {
@@ -56,6 +57,14 @@ namespace NexTube.Persistence.Common.Extensions
                 o.DefaultChallengeScheme = "Bearer";
             })
             .AddJwtBearer(options => {
+                options.Events = new JwtBearerEvents {
+                    OnMessageReceived = context => {
+                        // ignore "Bearer" preffix
+                        context.Token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                        return Task.CompletedTask;
+                    }
+                };
+
                 options.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuer = true,
                     ValidateAudience = true,
