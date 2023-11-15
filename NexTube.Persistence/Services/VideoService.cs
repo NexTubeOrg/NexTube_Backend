@@ -105,9 +105,11 @@ namespace NexTube.Persistence.Services
             return Result.Success();
         }
 
-        public async Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId) {
+        public async Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId, int page, int pageSize) {
             var query = _dbContext.VideoComments
                 .Where(c => c.VideoEntity.Id == videoId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .Select(c=> new CommentLookup() {
                     CommentId = c.Id,
                     Content = c.Content,

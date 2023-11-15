@@ -9,7 +9,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetCommentsList {
         }
 
         public async Task<GetCommentsListQueryVm> Handle(GetCommentsListQuery request, CancellationToken cancellationToken) {
-            var responce = await videoService.GetCommentsListAsync(request.VideoId);
+            var responce = await videoService.GetCommentsListAsync(request.VideoId, request.Page, request.PageSize);
            
             return new GetCommentsListQueryVm() {
                 Comments = responce.Comments,
