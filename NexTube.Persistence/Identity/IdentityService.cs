@@ -7,6 +7,7 @@ using WebShop.Application.Common.Exceptions;
 using WebShop.Domain.Constants;
 using NexTube.Domain.Entities;
 using NexTube.Domain.Entities.Abstract;
+using NexTube.Persistence.Services;
 
 namespace NexTube.Persistence.Identity {
     public class IdentityService : IIdentityService {
@@ -14,6 +15,8 @@ namespace NexTube.Persistence.Identity {
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IJwtService jwtService;
         private readonly IMailService mailService;
+        private readonly IPhotoService photoService;
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly IProviderAuthManager providerAuthManager;
 
         public IdentityService(
@@ -21,21 +24,37 @@ namespace NexTube.Persistence.Identity {
             RoleManager<ApplicationRole> roleManager,
             IJwtService jwtService,
             IProviderAuthManager providerAuthManager,
-            IMailService mailService) {
+            IMailService mailService,
+            IPhotoService photoService,
+            IHttpClientFactory httpClientFactory) {
 
             _userManager = userManager;
             this.roleManager = roleManager;
             this.jwtService = jwtService;
             this.providerAuthManager = providerAuthManager;
             this.mailService = mailService;
+            this.photoService = photoService;
+            this.httpClientFactory = httpClientFactory;
         }
 
         private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
             ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email ?? "");
-            if (user != null)
+            if (user != null) {
+                userInfo.ChannelPhoto = user.ChannelPhotoFileId.ToString();
                 return (Result.Success(), user.Id);
+            }
 
-            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "");
+            Guid photoFileId = default; 
+
+            // if provider provided user photo
+            if(userInfo.ChannelPhoto is not null) {
+                var http = httpClientFactory.CreateClient();
+                var photoStream = await http.GetStreamAsync(userInfo.ChannelPhoto);
+                Guid.TryParse((await photoService.UploadPhoto(photoStream)).PhotoId, out photoFileId);
+            }
+
+            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", photoFileId);
+            userInfo.ChannelPhoto = photoFileId.ToString();
 
             return (result.Result, result.User.Id);
         }
@@ -69,9 +88,9 @@ namespace NexTube.Persistence.Identity {
         }
 
         public async Task<(Result Result, UserLookup User)> CreateUserAsync(
-            string password, string email, string firstName, string lastName) {
+            string password, string email, string firstName, string lastName, Guid channelPhotoFileId) {
 
-            var result = await CreateUserAsync(email, firstName, lastName);
+            var result = await CreateUserAsync(email, firstName, lastName, channelPhotoFileId);
             await _userManager.AddPasswordAsync(result.User, password);
 
             return (result.Result, new UserLookup() {
@@ -79,11 +98,12 @@ namespace NexTube.Persistence.Identity {
                 FirstName = firstName,
                 LastName = lastName,
                 UserId = result.User.Id,
-                Roles = (await GetUserRolesAsync(result.User.Id)).Roles
+                Roles = (await GetUserRolesAsync(result.User.Id)).Roles,
+                ChannelPhoto = result.User.ChannelPhotoFileId.ToString()
             });
         }
         private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
-            string email, string firstName, string lastName) {
+            string email, string firstName, string lastName, Guid photoFileId) {
             if (await _userManager.FindByEmailAsync(email) != null) {
                 throw new AlreadyExistsException(email, "User is already exist");
             }
@@ -93,6 +113,7 @@ namespace NexTube.Persistence.Identity {
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
+                ChannelPhotoFileId = photoFileId
             };
 
             var result = await _userManager.CreateAsync(user);
@@ -136,6 +157,7 @@ namespace NexTube.Persistence.Identity {
                 Email = email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                ChannelPhoto = user.ChannelPhotoFileId.ToString(),
                 Roles = userRoles
             };
 

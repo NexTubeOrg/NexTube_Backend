@@ -33,6 +33,9 @@ public static class ConfigureServices {
         services.AddIdentityExtensions(configuration)
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+        // add http client
+        services.AddHttpClient();
+
         // setup MinIO
         var minioHost = configuration.GetValue<string>("MinIO:Host");
         var minioAccessKey = configuration.GetValue<string>("MinIO:AccessKey");

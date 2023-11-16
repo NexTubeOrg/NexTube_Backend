@@ -26,6 +26,7 @@ namespace NexTube.Persistence.Identity {
                 Email = payload.Email,
                 FirstName = payload.GivenName,
                 LastName = payload.FamilyName,
+                ChannelPhoto = payload.Picture
             };
 
             return (Result.Success(), user);

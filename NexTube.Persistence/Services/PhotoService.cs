@@ -59,7 +59,19 @@ namespace NexTube.Persistence.Services
 
         public async Task<(Result Result, System.Drawing.Size Dimensions)> GetPhotoDimensionsAsync(Stream source) {
             var info = await Image.IdentifyAsync(source);
+            source.Position = 0; // reset stream pointer position
             return (Result.Success(), new System.Drawing.Size(width: info.Width, height: info.Height));
+        }
+
+        public async Task<bool> IsFileImageAsync(Stream source) {
+            try {
+                var info = await Image.IdentifyAsync(source);
+                source.Position = 0; // reset stream pointer position
+                return true;
+            }
+            catch (UnknownImageFormatException) {
+                return false;
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace NexTube.Application.Common.Interfaces
     public interface IIdentityService
     {
         Task<(Result Result, UserLookup User)> CreateUserAsync(
-            string password, string email, string firstName, string lastName);
+            string password, string email, string firstName, string lastName, Guid channelPhotoFileId);
 
         Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(
             string email, string password);

@@ -37,6 +37,7 @@ namespace NexTube.Persistence.Identity {
             claims.Add(new Claim("email", user.Email ?? ""));
             claims.Add(new Claim("firstName", user.FirstName??""));
             claims.Add(new Claim("lastName", user.LastName?? ""));
+            claims.Add(new Claim("channelPhoto", user.ChannelPhoto?? ""));
 
             var token = new JwtSecurityToken(
                 _configuration.GetValue<string>("Jwt:Issuer"),

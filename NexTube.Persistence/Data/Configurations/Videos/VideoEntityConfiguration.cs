@@ -9,6 +9,11 @@ namespace NexTube.Persistence.Data.Configurations.Videos
         public void Configure(EntityTypeBuilder<VideoEntity> builder)
         {
             builder.HasKey(x => x.Id);
+
+            // set null when user was deleted
+            builder.HasOne(p => p.Creator)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
