@@ -63,6 +63,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IVideoService, VideoService>();
         services.TryAddScoped<IMailService, MailService>();
         services.TryAddScoped<IDateTimeService, DateTimeService>();
+        services.TryAddScoped<IVideoCommentService, CommentService>();
 
         return services;
     }

@@ -1,7 +1,6 @@
 ﻿using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
-using NexTube.Domain.Entities.Abstract;
 
 namespace NexTube.Application.Common.Interfaces
 {

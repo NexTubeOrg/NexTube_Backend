@@ -6,12 +6,12 @@ using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
-using NexTube.Application.CQRS.Videos.Commands.AddComment;
-using NexTube.Application.CQRS.Videos.Queries.GetCommentsList;
 using NexTube.WebApi.DTO.Files.Video;
 using WebShop.Domain.Constants;
-using NexTube.WebApi.DTO.Videos;
-using NexTube.Application.CQRS.Videos.Commands.DeleteComment;
+using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
+using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
+using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
+using NexTube.WebApi.DTO.Comments.VideoComments;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -33,9 +33,9 @@ namespace NexTube.WebApi.Controllers
             };
 
             var query = mapper.Map<GetVideoUrlQuery>(getVideoDto);
-            var getVideoUrlVm = await Mediator.Send(query);
+            var getVideoUrlResult = await Mediator.Send(query);
 
-            return Redirect(getVideoUrlVm.VideoUrl);
+            return Redirect(getVideoUrlResult.VideoUrl);
         }
 
         [HttpGet("{videoEntityId}")]
@@ -47,18 +47,18 @@ namespace NexTube.WebApi.Controllers
             };
 
             var query = mapper.Map<GetVideoEntityQuery>(getVideoEntityDto);
-            var getVideoEntityVm = await Mediator.Send(query);
+            var getVideoEntityResult = await Mediator.Send(query);
 
-            return Ok(getVideoEntityVm);
+            return Ok(getVideoEntityResult);
         }
 
         [HttpGet]
         public async Task<ActionResult> GetAllVideoEntites()
         {
             var query = new GetAllVideoEntitiesQuery();
-            var getVideoEntityVm = await Mediator.Send(query);
+            var getVideoEntityResult = await Mediator.Send(query);
 
-            return Ok(getVideoEntityVm);
+            return Ok(getVideoEntityResult);
         }
 
         [HttpPost]
@@ -85,34 +85,6 @@ namespace NexTube.WebApi.Controllers
             var command = mapper.Map<RemoveVideoByEntityIdCommand>(removeVideoByEntityIdDto);
             await Mediator.Send(command);
             
-            return Ok();
-        }
-
-        [HttpPost]
-        [Authorize(Roles = Roles.User)]
-        public async Task<ActionResult> AddComment([FromForm] AddCommentDto dto) {
-            await EnsureCurrentUserAssignedAsync();
-            
-            var command = mapper.Map<AddCommentCommand>(dto);
-            command.Creator = CurrentUser;
-            await Mediator.Send(command);
-
-            return Ok();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> GetCommentsList([FromQuery] GetCommentsListDto dto) {
-            var query = mapper.Map<GetCommentsListQuery>(dto);
-            var result = await Mediator.Send(query);
-            return Ok(result);
-        }
-
-        [Authorize(Roles = Roles.User, Policy = Policies.CanDeleteOwnComment)]
-        [HttpDelete]
-        public async Task<ActionResult> DeleteComment([FromQuery] DeleteCommentDto dto) {
-            var command = mapper.Map<DeleteCommentCommand>(dto);
-            await Mediator.Send(command);
-
             return Ok();
         }
     }

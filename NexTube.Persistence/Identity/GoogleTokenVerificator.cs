@@ -2,9 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+using NexTube.Application.Models.Lookups;
 
-namespace NexTube.Persistence.Identity {
+namespace NexTube.Persistence.Identity
+{
 
     [AuthProviderVerificator(ProviderName = "google")]
     public class GoogleTokenVerificator : ITokenVerificator {

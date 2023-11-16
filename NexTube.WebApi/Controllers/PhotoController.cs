@@ -22,9 +22,9 @@ namespace NexTube.WebApi.Controllers
         public async Task<ActionResult> GetPhotoUrl([FromRoute]GetPhotoUrlDto dto)
         {
             var query = mapper.Map<GetPhotoUrlQuery>(dto);
-            var getPhotoUrlVm = await Mediator.Send(query);
+            var getPhotoUrlResult = await Mediator.Send(query);
 
-            return Redirect(getPhotoUrlVm.PhotoUrl);
+            return Redirect(getPhotoUrlResult.PhotoUrl);
         }
 
         [Authorize(Roles = Roles.User)]

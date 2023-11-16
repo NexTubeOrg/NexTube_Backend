@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl
 {
-    public class GetVideoUrlQueryHandler : IRequestHandler<GetVideoUrlQuery, GetVideoUrlQueryVm>
+    public class GetVideoUrlQueryHandler : IRequestHandler<GetVideoUrlQuery, GetVideoUrlQueryResult>
     {
         private readonly IVideoService _videoService;
 
@@ -17,16 +17,16 @@ namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl
             _videoService = videoService;
         }
 
-        public async Task<GetVideoUrlQueryVm> Handle(GetVideoUrlQuery request, CancellationToken cancellationToken)
+        public async Task<GetVideoUrlQueryResult> Handle(GetVideoUrlQuery request, CancellationToken cancellationToken)
         {
             var result = await _videoService.GetUrlVideo(request.VideoId);
 
-            var getVideoUrlVm = new GetVideoUrlQueryVm()
+            var getVideoUrlResult = new GetVideoUrlQueryResult()
             {
                 VideoUrl = result.VideoUrl,
             };
 
-            return getVideoUrlVm;
+            return getVideoUrlResult;
         }
     }
 }

@@ -2,14 +2,15 @@
 using NexTube.Application.Common.Exceptions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+using NexTube.Application.Models.Lookups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTube.Persistence.Identity {
+namespace NexTube.Persistence.Identity
+{
     public class OAuth2Manager : IProviderAuthManager {
         private IDictionary<string, ITokenVerificator> _verificators;
 

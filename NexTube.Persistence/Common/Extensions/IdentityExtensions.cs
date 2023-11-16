@@ -14,6 +14,7 @@ using NexTube.Persistence.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using NexTube.Persistence.Authorization.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NexTube.Persistence.Services;
 
 namespace NexTube.Persistence.Common.Extensions
 {

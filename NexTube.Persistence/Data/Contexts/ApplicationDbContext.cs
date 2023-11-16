@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Domain.Entities;
+using NexTube.Persistence.Data.Configurations.Comments.VideoComments;
 using NexTube.Persistence.Data.Configurations.Identity;
 using NexTube.Persistence.Data.Configurations.Videos;
-using NexTube.Persistence.Identity;
-using System.Reflection.Emit;
 
 namespace NexTube.Persistence.Data.Contexts
 {

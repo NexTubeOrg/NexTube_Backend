@@ -2,10 +2,7 @@
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
 using NexTube.Persistence.Settings.Configurations;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Webp;
-using System.Drawing;
 
 namespace NexTube.Persistence.Services
 {

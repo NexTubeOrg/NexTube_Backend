@@ -1,5 +1,5 @@
 ﻿using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Videos.Queries.GetCommentsList;
+using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Common.Interfaces
@@ -11,8 +11,5 @@ namespace NexTube.Application.Common.Interfaces
         Task<(Result Result, VideoEntity VideoEntity)> GetVideoEntity(int videoEntityId);
         Task<(Result Result, IEnumerable<VideoEntity> VideoEntities)> GetAllVideoEntities();
         Task<Result> RemoveVideoByEntityId(int videoEntityId);
-        Task<Result> AddCommentAsync(int? videoId, string content, ApplicationUser creator);
-        Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId, int page, int pageSize);
-        Task<Result> DeleteCommentAsync(int? commentId);
     }
 }
