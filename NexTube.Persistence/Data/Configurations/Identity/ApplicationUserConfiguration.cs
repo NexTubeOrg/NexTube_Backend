@@ -13,6 +13,7 @@ namespace NexTube.Persistence.Data.Configurations.Identity
             builder.Property(a => a.FirstName).HasMaxLength(500).IsRequired();
             builder.Property(a => a.LastName).HasMaxLength(500).IsRequired();
 
+
             #endregion
         }
     }

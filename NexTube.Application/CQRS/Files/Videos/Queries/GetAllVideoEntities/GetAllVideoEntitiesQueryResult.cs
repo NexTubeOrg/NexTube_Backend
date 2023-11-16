@@ -2,7 +2,7 @@
 
 namespace NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities
 {
-    public class GetAllVideoEntitiesQueryVm
+    public class GetAllVideoEntitiesQueryResult
     {
         public IEnumerable<VideoEntity> VideoEntities { get; set; } = null!;
     }

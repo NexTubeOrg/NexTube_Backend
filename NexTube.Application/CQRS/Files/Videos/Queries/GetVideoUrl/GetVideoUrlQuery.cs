@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl
 {
-    public class GetVideoUrlQuery : IRequest<GetVideoUrlQueryVm>
+    public class GetVideoUrlQuery : IRequest<GetVideoUrlQueryResult>
     {
         public string VideoId { get; set; } = string.Empty;
     }

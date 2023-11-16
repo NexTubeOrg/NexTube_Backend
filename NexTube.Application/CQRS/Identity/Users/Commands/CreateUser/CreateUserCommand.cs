@@ -9,5 +9,6 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
         public string Email { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
+        public Stream ChannelPhotoStream { get; set; } = null!;
     }
 }
