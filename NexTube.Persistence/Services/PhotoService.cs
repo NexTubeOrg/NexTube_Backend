@@ -56,5 +56,10 @@ namespace NexTube.Persistence.Services
             
             return (Result.Success(), imageName);
         }
+
+        public async Task<(Result Result, System.Drawing.Size Dimensions)> GetPhotoDimensionsAsync(Stream source) {
+            var info = await Image.IdentifyAsync(source);
+            return (Result.Success(), new System.Drawing.Size(width: info.Width, height: info.Height));
+        }
     }
 }
