@@ -52,6 +52,7 @@ namespace NexTube.Persistence.Services
         {
             var videoLookup = await _dbContext.Videos
                 .Where(e => e.Id == videoEntityId)
+                .Include(e => e.Creator)
                 .Select(v => new VideoLookup() {
                     Id = v.Id,
                     Name = v.Name,
@@ -63,6 +64,7 @@ namespace NexTube.Persistence.Services
                         UserId = v.Creator.Id,
                         FirstName = v.Creator.FirstName,
                         LastName = v.Creator.LastName,
+                        ChannelPhoto = v.Creator.ChannelPhotoFileId.ToString(),
                     }
             }).FirstOrDefaultAsync();
 
@@ -77,6 +79,7 @@ namespace NexTube.Persistence.Services
         public async Task<(Result Result, IEnumerable<VideoLookup> VideoEntities)> GetAllVideoEntities()
         {
             var videoLookup = await _dbContext.Videos
+                .Include(e => e.Creator)
                 .Select(v => new VideoLookup()
                 {
                     Id = v.Id,
@@ -90,6 +93,7 @@ namespace NexTube.Persistence.Services
                         UserId = v.Creator.Id,
                         FirstName = v.Creator.FirstName,
                         LastName = v.Creator.LastName,
+                        ChannelPhoto = v.Creator.ChannelPhotoFileId.ToString(),
                     }
                 })
                 .ToListAsync();
