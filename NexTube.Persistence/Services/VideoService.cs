@@ -3,35 +3,31 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Files.Videos.Queries.Common;
-using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
+using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Data.Contexts;
 
 namespace NexTube.Persistence.Services
 {
-    public class VideoService : IVideoService
-    {
+    public class VideoService : IVideoService {
         private readonly IFileService _fileService;
         private readonly IPhotoService _photoService;
         private readonly IDateTimeService _dateTimeService;
         private readonly ApplicationDbContext _dbContext;
 
-        public VideoService(IFileService fileService, IPhotoService photoService, IDateTimeService dateTimeService, ApplicationDbContext dbContext)
-        {
+        public VideoService(IFileService fileService, IPhotoService photoService, IDateTimeService dateTimeService, ApplicationDbContext dbContext) {
             _fileService = fileService;
             _photoService = photoService;
             _dateTimeService = dateTimeService;
             _dbContext = dbContext;
         }
 
-        public async Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source, ApplicationUser creator)
-        {
+        public async Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source, ApplicationUser creator) {
             var uploadVideo = await _fileService.UploadFileAsync("videos", source);
             var uploadPhoto = await _photoService.UploadPhoto(previewPhotoSource);
 
-            var videoEntity = new VideoEntity()
-            {
+            var videoEntity = new VideoEntity() {
                 Name = name,
                 Description = description,
                 VideoId = Guid.Parse(uploadVideo.FileId),
@@ -46,8 +42,7 @@ namespace NexTube.Persistence.Services
             return (uploadVideo.Result, videoEntity.Id);
         }
 
-        public async Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId)
-        {
+        public async Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId) {
             var getVideo = await _fileService.GetFileUrlAsync("videos", videoId, "video/mp4");
 
             return (getVideo.Result, getVideo.Url);

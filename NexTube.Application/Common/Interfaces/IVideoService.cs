@@ -1,5 +1,5 @@
 ﻿using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Files.Videos.Queries.Common;
+using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Common.Interfaces

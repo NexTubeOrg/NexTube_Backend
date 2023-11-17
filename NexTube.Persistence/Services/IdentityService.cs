@@ -2,17 +2,23 @@
 using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
-using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using WebShop.Application.Common.Exceptions;
 using WebShop.Domain.Constants;
 using NexTube.Domain.Entities;
+using NexTube.Domain.Entities.Abstract;
+using NexTube.Persistence.Identity;
+using NexTube.Application.Models.Lookups;
 
-namespace NexTube.Persistence.Identity {
-    public class IdentityService : IIdentityService {
+namespace NexTube.Persistence.Services
+{
+    public class IdentityService : IIdentityService
+    {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IJwtService jwtService;
         private readonly IMailService mailService;
+        private readonly IPhotoService photoService;
+        private readonly IHttpClientFactory httpClientFactory;
         private readonly IProviderAuthManager providerAuthManager;
 
         public IdentityService(
@@ -20,46 +26,71 @@ namespace NexTube.Persistence.Identity {
             RoleManager<ApplicationRole> roleManager,
             IJwtService jwtService,
             IProviderAuthManager providerAuthManager,
-            IMailService mailService) {
+            IMailService mailService,
+            IPhotoService photoService,
+            IHttpClientFactory httpClientFactory)
+        {
 
             _userManager = userManager;
             this.roleManager = roleManager;
             this.jwtService = jwtService;
             this.providerAuthManager = providerAuthManager;
             this.mailService = mailService;
+            this.photoService = photoService;
+            this.httpClientFactory = httpClientFactory;
         }
 
-        private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
+        private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo)
+        {
             ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email ?? "");
             if (user != null)
+            {
+                userInfo.ChannelPhoto = user.ChannelPhotoFileId.ToString();
                 return (Result.Success(), user.Id);
+            }
 
-            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "");
+            Guid photoFileId = default;
+
+            // if provider provided user photo
+            if (userInfo.ChannelPhoto is not null)
+            {
+                var http = httpClientFactory.CreateClient();
+                var photoStream = await http.GetStreamAsync(userInfo.ChannelPhoto);
+                Guid.TryParse((await photoService.UploadPhoto(photoStream)).PhotoId, out photoFileId);
+            }
+
+            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", photoFileId);
+            userInfo.ChannelPhoto = photoFileId.ToString();
 
             return (result.Result, result.User.Id);
         }
 
 
-        public async Task<Result> AddToRoleAsync(int userId, string roleName) {
+        public async Task<Result> AddToRoleAsync(int userId, string roleName)
+        {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
 
             return await AddToRoleAsync(user, roleName);
         }
-        private async Task<Result> AddToRoleAsync(ApplicationUser user, string roleName) {
+        private async Task<Result> AddToRoleAsync(ApplicationUser user, string roleName)
+        {
             var result = await _userManager.AddToRoleAsync(user, roleName);
             return result.ToApplicationResult();
 
         }
-        public async Task<Result> CreateRoleAsync(string roleName) {
-            if (await roleManager.FindByNameAsync(roleName) != null) {
+        public async Task<Result> CreateRoleAsync(string roleName)
+        {
+            if (await roleManager.FindByNameAsync(roleName) != null)
+            {
                 throw new AlreadyExistsException(roleName, nameof(ApplicationRole));
             }
 
             var result = await roleManager.CreateAsync
                 (
-                    new ApplicationRole() {
+                    new ApplicationRole()
+                    {
                         Name = roleName,
                         NormalizedName = roleName.ToUpper()
                     }
@@ -68,30 +99,37 @@ namespace NexTube.Persistence.Identity {
         }
 
         public async Task<(Result Result, UserLookup User)> CreateUserAsync(
-            string password, string email, string firstName, string lastName) {
+            string password, string email, string firstName, string lastName, Guid channelPhotoFileId)
+        {
 
-            var result = await CreateUserAsync(email, firstName, lastName);
+            var result = await CreateUserAsync(email, firstName, lastName, channelPhotoFileId);
             await _userManager.AddPasswordAsync(result.User, password);
 
-            return (result.Result, new UserLookup() {
+            return (result.Result, new UserLookup()
+            {
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
                 UserId = result.User.Id,
-                Roles = (await GetUserRolesAsync(result.User.Id)).Roles
+                Roles = (await GetUserRolesAsync(result.User.Id)).Roles,
+                ChannelPhoto = result.User.ChannelPhotoFileId.ToString()
             });
         }
         private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
-            string email, string firstName, string lastName) {
-            if (await _userManager.FindByEmailAsync(email) != null) {
+            string email, string firstName, string lastName, Guid photoFileId)
+        {
+            if (await _userManager.FindByEmailAsync(email) != null)
+            {
                 throw new AlreadyExistsException(email, "User is already exist");
             }
 
-            var user = new ApplicationUser {
+            var user = new ApplicationUser
+            {
                 UserName = email,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
+                ChannelPhotoFileId = photoFileId
             };
 
             var result = await _userManager.CreateAsync(user);
@@ -101,7 +139,8 @@ namespace NexTube.Persistence.Identity {
             return (result.ToApplicationResult(), user);
         }
 
-        public async Task<(Result Result, IList<string> Roles)> GetUserRolesAsync(int userId) {
+        public async Task<(Result Result, IList<string> Roles)> GetUserRolesAsync(int userId)
+        {
             ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
@@ -111,30 +150,35 @@ namespace NexTube.Persistence.Identity {
             return (Result.Success(), roles);
         }
 
-        public async Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(string email, string password) {
-            (Result Result, string? Token, UserLookup? User) failture = 
+        public async Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(string email, string password)
+        {
+            (Result Result, string? Token, UserLookup? User) failture =
                 (Result.Failure(new[] {
                         "Wrong login or password"
                     }), null, null);
 
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) {
+            if (user == null)
+            {
                 return failture;
             }
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, password);
 
-            if (!isPasswordValid) {
+            if (!isPasswordValid)
+            {
                 await _userManager.AccessFailedAsync(user);
                 return failture;
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            var userLookup = new UserLookup() {
+            var userLookup = new UserLookup()
+            {
                 Email = email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                ChannelPhoto = user.ChannelPhotoFileId.ToString(),
                 Roles = userRoles
             };
 
@@ -143,7 +187,8 @@ namespace NexTube.Persistence.Identity {
                     userLookup);
         }
 
-        public async Task<(Result Result, string? Token, UserLookup? User)> SignInOAuthAsync(string provider, string providerToken) {
+        public async Task<(Result Result, string? Token, UserLookup? User)> SignInOAuthAsync(string provider, string providerToken)
+        {
             // get user info from token, issued by provider
             var tokenVerificationResult = await providerAuthManager.AuthenticateAsync(provider, providerToken);
 
@@ -161,7 +206,8 @@ namespace NexTube.Persistence.Identity {
             return (Result.Success(), token, tokenVerificationResult.User);
         }
 
-        public async Task<(Result Result, int? UserId)> GetUserIdByEmailAsync(string email) {
+        public async Task<(Result Result, int? UserId)> GetUserIdByEmailAsync(string email)
+        {
             ApplicationUser? user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new NotFoundException(email, nameof(ApplicationUser));
@@ -170,9 +216,11 @@ namespace NexTube.Persistence.Identity {
         }
 
         public async Task<Result> RecoverAsync(
-           string email) {
+           string email)
+        {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) {
+            if (user == null)
+            {
                 return Result.Success();
             }
             var newPassword = mailService.GeneratePassword(10);
@@ -185,9 +233,11 @@ namespace NexTube.Persistence.Identity {
         }
 
         public async Task<Result> ChangePasswordAsync(
-         int userId, string password, string newPassword) {
+         int userId, string password, string newPassword)
+        {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null) {
+            if (user == null)
+            {
                 return Result.Failure(new[] {
                         "User not found!"
                     });
@@ -197,7 +247,8 @@ namespace NexTube.Persistence.Identity {
             return res.ToApplicationResult();
         }
 
-        public async Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId) {
+        public async Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId)
+        {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user is null)
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));

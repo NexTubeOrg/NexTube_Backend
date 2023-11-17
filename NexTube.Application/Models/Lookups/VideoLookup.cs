@@ -1,6 +1,4 @@
-﻿using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
-
-namespace NexTube.Application.CQRS.Files.Videos.Queries.Common
+﻿namespace NexTube.Application.Models.Lookups
 {
     public record VideoLookup
     {

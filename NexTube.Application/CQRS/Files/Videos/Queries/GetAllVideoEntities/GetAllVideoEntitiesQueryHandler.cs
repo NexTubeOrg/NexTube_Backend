@@ -3,7 +3,7 @@ using NexTube.Application.Common.Interfaces;
 
 namespace NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities
 {
-    public class GetAllVideoEntitiesQueryHandler : IRequestHandler<GetAllVideoEntitiesQuery, GetAllVideoEntitiesQueryVm>
+    public class GetAllVideoEntitiesQueryHandler : IRequestHandler<GetAllVideoEntitiesQuery, GetAllVideoEntitiesQueryResult>
     {
         private readonly IVideoService _videoService;
 
@@ -12,17 +12,16 @@ namespace NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities
             _videoService = videoService;
         }
 
-        public async Task<GetAllVideoEntitiesQueryVm> Handle(GetAllVideoEntitiesQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllVideoEntitiesQueryResult> Handle(GetAllVideoEntitiesQuery request, CancellationToken cancellationToken)
         {
             var result = await _videoService.GetAllVideoEntities();
 
-
-            var GetAllVideoEntitiesQueryVm = new GetAllVideoEntitiesQueryVm()
+            var GetAllVideoEntitiesQueryResult = new GetAllVideoEntitiesQueryResult()
             {
                 VideoEntities = result.VideoEntities,
             };
 
-            return GetAllVideoEntitiesQueryVm;
+            return GetAllVideoEntitiesQueryResult;
         }
     }
 }

@@ -8,11 +8,18 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Persistence.Services;
 using NexTube.Infrastructure.Services;
+using NexTube.Persistence.Settings.Configurations;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration) {
+        // add options
+        services.AddOptions<PhotoSettings>()
+            .Bind(configuration.GetSection(nameof(PhotoSettings)))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         // ensure that connection string exists, else throw startup exception
@@ -25,6 +32,9 @@ public static class ConfigureServices {
         // setup Identity services
         services.AddIdentityExtensions(configuration)
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        // add http client
+        services.AddHttpClient();
 
         // setup MinIO
         var minioHost = configuration.GetValue<string>("MinIO:Host");
@@ -53,6 +63,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IVideoService, VideoService>();
         services.TryAddScoped<IMailService, MailService>();
         services.TryAddScoped<IDateTimeService, DateTimeService>();
+        services.TryAddScoped<IVideoCommentService, CommentService>();
 
         return services;
     }

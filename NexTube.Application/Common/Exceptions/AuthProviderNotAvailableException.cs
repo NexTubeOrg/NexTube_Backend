@@ -1,9 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NexTube.Application.Common.Exceptions {
     public class AuthProviderNotAvailableException : NotFoundException {
