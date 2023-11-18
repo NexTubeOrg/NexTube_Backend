@@ -10,8 +10,7 @@ namespace NexTube.WebApi.DTO.Auth.User
         public string Email { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
-        public string  Nickname { get; set; }=null!;
-       public string Description { get; set; } = null!;
+      
 
         public void Mapping(Profile profile) {
             profile.CreateMap<SignUpDto, CreateUserCommand>()
@@ -19,9 +18,8 @@ namespace NexTube.WebApi.DTO.Auth.User
                 .ForMember(command => command.PasswordConfirm, opt => opt.MapFrom(dto => dto.PasswordConfirm))
                 .ForMember(command => command.Email, opt => opt.MapFrom(dto => dto.Email))
                 .ForMember(command => command.FirstName, opt => opt.MapFrom(dto => dto.FirstName))
-                .ForMember(command => command.LastName, opt => opt.MapFrom(dto => dto.LastName))
-                .ForMember(command => command.Nickname, opt => opt.MapFrom(dto => dto.Nickname))
-                .ForMember(command => command.Description, opt => opt.MapFrom(dto => dto.Description));
+                .ForMember(command => command.LastName, opt => opt.MapFrom(dto => dto.LastName));
+             
 
         }
     }
