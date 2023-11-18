@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using NexTube.Application.Common.Interfaces;
-using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 
 namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
     public class SignInWithProviderCommandHandler : IRequestHandler<SignInWithProviderCommand, SignInWithProviderCommandResult>

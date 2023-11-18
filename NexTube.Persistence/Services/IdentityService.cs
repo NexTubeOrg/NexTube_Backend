@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
@@ -50,7 +49,6 @@ namespace NexTube.Persistence.Services
                 return (Result.Success(), user.Id);
             }
 
-            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? ""  );
             Guid photoFileId = default;
 
             // if provider provided user photo
@@ -67,44 +65,7 @@ namespace NexTube.Persistence.Services
             return (result.Result, result.User.Id);
         }
 
-        //public async Task<(Result Result, UserLookup User)> CreateUserAsync(
-        //    string password, string email, string firstName, string lastName) {
 
-        //    var result = await CreateUserAsync(email, firstName, lastName);
-        //    await _userManager.AddPasswordAsync(result.User, password);
-
-        //    return (result.Result, new UserLookup() {
-        //        Email = email,
-        //        FirstName = firstName,
-        //        LastName = lastName,
-        //        UserId = result.User.Id,
-        //        Roles = (await GetUserRolesAsync(result.User.Id)).Roles
-        //    });
-        //}
-        //private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
-        //    string email, string firstName, string lastName, string nickname, string description) {
-        //    if (await _userManager.FindByEmailAsync(email) != null) {
-        //        throw new AlreadyExistsException(email, "User is already exist");
-        //    }
-
-        //    var user = new ApplicationUser {
-        //        UserName = email,
-        //        Email = email,
-        //        FirstName = firstName,
-        //        LastName = lastName,
-        //        Nickname = nickname,
-        //        Description = description
-        //    };
-
-        //    var result = await _userManager.CreateAsync(user);
-
-        //    await AddToRoleAsync(user, Roles.User);
-
-        //    return (result.ToApplicationResult(), user);
-        //}
-
-
-        public async Task<Result> AddToRoleAsync(int userId, string roleName) {
         public async Task<Result> AddToRoleAsync(int userId, string roleName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -189,8 +150,6 @@ namespace NexTube.Persistence.Services
             return (Result.Success(), roles);
         }
 
-        public async Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(string email, string password) {
-            (Result Result, string? Token, UserLookup? User) failture =
         public async Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(string email, string password)
         {
             (Result Result, string? Token, UserLookup? User) failture =
@@ -255,23 +214,7 @@ namespace NexTube.Persistence.Services
 
             return (Result.Success(), user.Id);
         }
-        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description) {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
 
-            if (user == null) {
-                throw new NotFoundException("User", userId.ToString());
-            }
-            user.Id = userId;
-            user.Nickname = nickname;
-            user.Description = description;
-
-
-            var result = await _userManager.UpdateAsync(user);
-            return (result.ToApplicationResult(), user.Id);
-
-        }
-
-        public async Task<Result> RecoverAsync(string email) {
         public async Task<Result> RecoverAsync(
            string email)
         {
@@ -289,7 +232,6 @@ namespace NexTube.Persistence.Services
             return Result.Success();
         }
 
-        public async Task<Result> ChangePasswordAsync(int userId, string password, string newPassword) {
         public async Task<Result> ChangePasswordAsync(
          int userId, string password, string newPassword)
         {
@@ -313,8 +255,23 @@ namespace NexTube.Persistence.Services
 
             return (Result.Success(), user);
         }
+
+        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                throw new NotFoundException("User", userId.ToString());
+            }
+            user.Id = userId;
+            user.Nickname = nickname;
+            user.Description = description;
+
+
+            var result = await _userManager.UpdateAsync(user);
+            return (result.ToApplicationResult(), user.Id);
+
+        }
     }
 }
-
-
-
