@@ -7,8 +7,7 @@ using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Contexts;
 
-namespace NexTube.Persistence.Services
-{
+namespace NexTube.Persistence.Services {
     public class CommentService : IVideoCommentService {
         private readonly IDateTimeService _dateTimeService;
         private readonly ApplicationDbContext _dbContext;
@@ -17,7 +16,7 @@ namespace NexTube.Persistence.Services
             _dateTimeService = dateTimeService;
             _dbContext = dbContext;
         }
-        public async Task<Result> AddCommentAsync(int? videoId, string content, ApplicationUser creator) {
+        public async Task<(Result Result, CommentLookup Comment)> AddCommentAsync(int? videoId, string content, ApplicationUser creator) {
             var video = await _dbContext.Videos.FindAsync(videoId);
 
             if (video is null)
@@ -33,12 +32,24 @@ namespace NexTube.Persistence.Services
             _dbContext.VideoComments.Add(comment);
             await _dbContext.SaveChangesAsync();
 
-            return Result.Success();
+            return (Result.Success(), new CommentLookup() {
+                CommentId = comment.Id,
+                Content = comment.Content,
+                Creator = new UserLookup() {
+                    ChannelPhoto = comment.Creator.ChannelPhotoFileId.ToString(),
+                    FirstName = comment.Creator.FirstName,
+                    LastName = comment.Creator.LastName,
+                    UserId = comment.Creator.Id,
+                },
+                DateCreated = comment.DateCreated,
+            });
         }
 
         public async Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId, int page, int pageSize) {
             var query = _dbContext.VideoComments
                 .Where(c => c.VideoEntity.Id == videoId)
+                .OrderByDescending(c => c.DateCreated)
+                .Include(c => c.Creator)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(c => new CommentLookup() {
@@ -48,10 +59,10 @@ namespace NexTube.Persistence.Services
                     Creator = new UserLookup() {
                         UserId = c.Creator.Id,
                         FirstName = c.Creator.FirstName,
-                        LastName = c.Creator.LastName
+                        LastName = c.Creator.LastName,
+                        ChannelPhoto = c.Creator.ChannelPhotoFileId.ToString()
                     }
-                })
-                .OrderByDescending(c => c.DateCreated);
+                });
 
             var comments = await query.ToListAsync();
 

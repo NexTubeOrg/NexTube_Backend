@@ -24,14 +24,14 @@ namespace NexTube.WebApi.Controllers {
 
         [HttpPost]
         [Authorize(Roles = Roles.User)]
-        public async Task<ActionResult> AddComment([FromForm] AddCommentDto dto) {
+        public async Task<ActionResult> AddComment([FromBody] AddCommentDto dto) {
             await EnsureCurrentUserAssignedAsync();
 
             var command = mapper.Map<AddCommentCommand>(dto);
             command.Creator = CurrentUser;
-            await Mediator.Send(command);
+            var result = await Mediator.Send(command);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpGet]

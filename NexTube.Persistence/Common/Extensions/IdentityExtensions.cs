@@ -16,18 +16,15 @@ using NexTube.Persistence.Authorization.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NexTube.Persistence.Services;
 
-namespace NexTube.Persistence.Common.Extensions
-{
-    public static class IdentityExtensions
-    {
+namespace NexTube.Persistence.Common.Extensions {
+    public static class IdentityExtensions {
         /// <summary>
         /// Adds and configures the identity system for the specified User and Role types.
         /// </summary>
         /// <param name="services">The services available in the application.</param>
         /// <returns>An <see cref="IdentityBuilder"/> for creating and configuring the identity system.</returns>
         public static IdentityBuilder AddIdentityExtensions(
-            this IServiceCollection services, IConfiguration configuration)
-        {
+            this IServiceCollection services, IConfiguration configuration) {
             // register custom authorization handlers
             services.TryAddScoped<IAuthorizationHandler, CanDeleteOwnCommentPermissionHandler>();
 
@@ -39,7 +36,7 @@ namespace NexTube.Persistence.Common.Extensions
             });
             services.AddAuthorization(options => {
                 options.AddPolicy(Policies.CanDeleteOwnComment, policy => policy
-                    .RequireClaim("user_id")
+                    .RequireClaim("userId")
                     .Requirements.Add(new CanDeleteOwnCommentPermission())
                 );
             });
@@ -114,7 +111,7 @@ namespace NexTube.Persistence.Common.Extensions
             services.TryAddScoped<IProviderAuthManager, OAuth2Manager>();
             services.TryAddScoped<IIdentityService, IdentityService>();
 
-            
+
             return new IdentityBuilder(typeof(ApplicationUser), typeof(ApplicationRole), services);
         }
     }
