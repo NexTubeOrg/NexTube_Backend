@@ -6,5 +6,6 @@ namespace NexTube.Domain.Entities {
         public string? LastName { get; set; }
         public string? Nickname { get; set; }
         public string? Description { get; set; }
+        public Guid? ChannelPhotoFileId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using NexTube.Application.Common.Models;
+using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Common.Interfaces

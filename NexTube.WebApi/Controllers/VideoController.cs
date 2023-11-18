@@ -8,6 +8,10 @@ using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity;
 using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
 using NexTube.WebApi.DTO.Files.Video;
 using WebShop.Domain.Constants;
+using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
+using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
+using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
+using NexTube.WebApi.DTO.Comments.VideoComments;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -29,9 +33,9 @@ namespace NexTube.WebApi.Controllers
             };
 
             var query = mapper.Map<GetVideoUrlQuery>(getVideoDto);
-            var getVideoUrlVm = await Mediator.Send(query);
+            var getVideoUrlResult = await Mediator.Send(query);
 
-            return Redirect(getVideoUrlVm.VideoUrl);
+            return Redirect(getVideoUrlResult.VideoUrl);
         }
 
         [HttpGet("{videoEntityId}")]
@@ -43,18 +47,18 @@ namespace NexTube.WebApi.Controllers
             };
 
             var query = mapper.Map<GetVideoEntityQuery>(getVideoEntityDto);
-            var getVideoEntityVm = await Mediator.Send(query);
+            var getVideoEntityResult = await Mediator.Send(query);
 
-            return Ok(getVideoEntityVm);
+            return Ok(getVideoEntityResult);
         }
 
         [HttpGet]
         public async Task<ActionResult> GetAllVideoEntites()
         {
             var query = new GetAllVideoEntitiesQuery();
-            var getVideoEntityVm = await Mediator.Send(query);
+            var getVideoEntityResult = await Mediator.Send(query);
 
-            return Ok(getVideoEntityVm);
+            return Ok(getVideoEntityResult);
         }
 
         [HttpPost]

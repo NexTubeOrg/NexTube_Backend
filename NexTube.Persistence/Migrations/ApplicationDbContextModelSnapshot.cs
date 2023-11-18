@@ -165,6 +165,9 @@ namespace NexTube.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("ChannelPhotoFileId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -235,6 +238,42 @@ namespace NexTube.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("VideoEntityId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("VideoEntityId");
+
+                    b.ToTable("VideoComments");
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b =>
@@ -326,11 +365,30 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
+                {
+                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "VideoEntity")
+                        .WithMany()
+                        .HasForeignKey("VideoEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("VideoEntity");
+                });
+
             modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b =>
                 {
                     b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
                         .WithMany()
-                        .HasForeignKey("CreatorId");
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Creator");
                 });

@@ -3,7 +3,7 @@ using NexTube.Application.Common.Interfaces;
 
 namespace NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl
 {
-    public class GetPhotoUrlQueryHandler : IRequestHandler<GetPhotoUrlQuery, GetPhotoUrlQueryVm>
+    public class GetPhotoUrlQueryHandler : IRequestHandler<GetPhotoUrlQuery, GetPhotoUrlQueryResult>
     {
         private readonly IPhotoService _photoService;
 
@@ -12,16 +12,21 @@ namespace NexTube.Application.CQRS.Files.Photos.Queries.GetPhotoUrl
             _photoService = photoService;
         }
 
-        public async Task<GetPhotoUrlQueryVm> Handle(GetPhotoUrlQuery request, CancellationToken cancellationToken)
+        public async Task<GetPhotoUrlQueryResult> Handle(GetPhotoUrlQuery request, CancellationToken cancellationToken)
         {
-            var result = await _photoService.GetPhotoUrl(request.PhotoId);
+            string url = string.Empty;
 
-            var GetPhotoUrlQueryVm = new GetPhotoUrlQueryVm()
+            if(request.Size is null)
+                url = (await _photoService.GetPhotoUrl(request.PhotoId)).Url;
+            else
+                url = (await _photoService.GetPhotoUrl(request.PhotoId, request.Size.Value)).Url;
+
+            var GetPhotoUrlQueryResult = new GetPhotoUrlQueryResult()
             {
-                PhotoUrl = result.Url,
+                PhotoUrl = url,
             };
 
-            return GetPhotoUrlQueryVm;
+            return GetPhotoUrlQueryResult;
         }
     }
 }

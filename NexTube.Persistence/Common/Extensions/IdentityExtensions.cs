@@ -9,6 +9,12 @@ using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Identity;
 using System.Text;
 using NexTube.Domain.Entities;
+using WebShop.Domain.Constants;
+using NexTube.Persistence.Authorization.Requirements;
+using Microsoft.AspNetCore.Authorization;
+using NexTube.Persistence.Authorization.Handlers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NexTube.Persistence.Services;
 
 namespace NexTube.Persistence.Common.Extensions
 {
@@ -22,11 +28,20 @@ namespace NexTube.Persistence.Common.Extensions
         public static IdentityBuilder AddIdentityExtensions(
             this IServiceCollection services, IConfiguration configuration)
         {
+            // register custom authorization handlers
+            services.TryAddScoped<IAuthorizationHandler, CanDeleteOwnCommentPermissionHandler>();
+
             // Services used by identity
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            });
+            services.AddAuthorization(options => {
+                options.AddPolicy(Policies.CanDeleteOwnComment, policy => policy
+                    .RequireClaim("user_id")
+                    .Requirements.Add(new CanDeleteOwnCommentPermission())
+                );
             });
 
             // setup JWT bearer authentication
@@ -43,6 +58,14 @@ namespace NexTube.Persistence.Common.Extensions
                 o.DefaultChallengeScheme = "Bearer";
             })
             .AddJwtBearer(options => {
+                options.Events = new JwtBearerEvents {
+                    OnMessageReceived = context => {
+                        // ignore "Bearer" preffix
+                        context.Token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                        return Task.CompletedTask;
+                    }
+                };
+
                 options.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -91,6 +114,7 @@ namespace NexTube.Persistence.Common.Extensions
             services.TryAddScoped<IProviderAuthManager, OAuth2Manager>();
             services.TryAddScoped<IIdentityService, IdentityService>();
 
+            
             return new IdentityBuilder(typeof(ApplicationUser), typeof(ApplicationRole), services);
         }
     }

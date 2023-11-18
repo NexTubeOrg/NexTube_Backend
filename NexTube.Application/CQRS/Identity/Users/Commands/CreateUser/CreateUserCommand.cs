@@ -12,5 +12,6 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
         public string Nickname { get; set; } = null;
         public string Description { get; set; }=null;
 
+        public Stream ChannelPhotoStream { get; set; } = null!;
     }
 }

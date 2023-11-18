@@ -1,4 +1,4 @@
-﻿using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
+﻿using NexTube.Application.Models.Lookups;
 
 namespace NexTube.Application.Common.Interfaces
 {
