@@ -35,46 +35,46 @@ namespace NexTube.Persistence.Identity {
             if (user != null)
                 return (Result.Success(), user.Id);
 
-            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", "", "");
+            var result = await CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? ""  );
 
             return (result.Result, result.User.Id);
         }
 
-        public async Task<(Result Result, UserLookup User)> CreateUserAsync(
-            string password, string email, string firstName, string lastName, string nickname, string description) {
+        //public async Task<(Result Result, UserLookup User)> CreateUserAsync(
+        //    string password, string email, string firstName, string lastName) {
 
-            var result = await CreateUserAsync(email, firstName, lastName, nickname, description);
-            await _userManager.AddPasswordAsync(result.User, password);
+        //    var result = await CreateUserAsync(email, firstName, lastName);
+        //    await _userManager.AddPasswordAsync(result.User, password);
 
-            return (result.Result, new UserLookup() {
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                UserId = result.User.Id,
-                Roles = (await GetUserRolesAsync(result.User.Id)).Roles
-            });
-        }
-        private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
-            string email, string firstName, string lastName, string nickname, string description) {
-            if (await _userManager.FindByEmailAsync(email) != null) {
-                throw new AlreadyExistsException(email, "User is already exist");
-            }
+        //    return (result.Result, new UserLookup() {
+        //        Email = email,
+        //        FirstName = firstName,
+        //        LastName = lastName,
+        //        UserId = result.User.Id,
+        //        Roles = (await GetUserRolesAsync(result.User.Id)).Roles
+        //    });
+        //}
+        //private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
+        //    string email, string firstName, string lastName, string nickname, string description) {
+        //    if (await _userManager.FindByEmailAsync(email) != null) {
+        //        throw new AlreadyExistsException(email, "User is already exist");
+        //    }
 
-            var user = new ApplicationUser {
-                UserName = email,
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                Nickname = nickname,
-                Description = description
-            };
+        //    var user = new ApplicationUser {
+        //        UserName = email,
+        //        Email = email,
+        //        FirstName = firstName,
+        //        LastName = lastName,
+        //        Nickname = nickname,
+        //        Description = description
+        //    };
 
-            var result = await _userManager.CreateAsync(user);
+        //    var result = await _userManager.CreateAsync(user);
 
-            await AddToRoleAsync(user, Roles.User);
+        //    await AddToRoleAsync(user, Roles.User);
 
-            return (result.ToApplicationResult(), user);
-        }
+        //    return (result.ToApplicationResult(), user);
+        //}
 
 
         public async Task<Result> AddToRoleAsync(int userId, string roleName) {
