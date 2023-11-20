@@ -23,7 +23,7 @@ namespace NexTube.WebApi.Controllers {
         internal int UserId =>
             !User?.Identity?.IsAuthenticated ?? false
             ? -1
-          : int.Parse(User.FindFirst("user_id")?.Value ?? "");
+          : int.Parse(User.FindFirst("userId")?.Value ?? "");
 
         internal ApplicationUser? CurrentUser { get; set; }
 
@@ -41,7 +41,7 @@ namespace NexTube.WebApi.Controllers {
                 throw new UnauthorizedAccessException();
 
             CurrentUser = await Mediator.Send(new GetUserByIdQuery() {
-                UserId = int.Parse(User?.FindFirst("user_id")?.Value ?? "")
+                UserId = int.Parse(User?.FindFirst("userId")?.Value ?? "")
             });
         }
     }

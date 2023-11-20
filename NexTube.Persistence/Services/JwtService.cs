@@ -6,21 +6,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace NexTube.Persistence.Services
-{
-    public class JwtService : IJwtService
-    {
+namespace NexTube.Persistence.Services {
+    public class JwtService : IJwtService {
         private readonly IConfiguration _configuration;
         private readonly IDateTimeService _dateTimeService;
 
-        public JwtService(IConfiguration configuration, IDateTimeService dateTimeService)
-        {
+        public JwtService(IConfiguration configuration, IDateTimeService dateTimeService) {
             _configuration = configuration;
             _dateTimeService = dateTimeService;
         }
 
-        public string GenerateToken(int userId, UserLookup user)
-        {
+        public string GenerateToken(int userId, UserLookup user) {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key") ?? throw new Exception("Jwt:Key not found")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -29,16 +25,14 @@ namespace NexTube.Persistence.Services
                 new Claim("roles", "")
             };
 
-            if (user.Roles is not null)
-            {
-                foreach (var role in user.Roles)
-                {
+            if (user.Roles is not null) {
+                foreach (var role in user.Roles) {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                     claims.Add(new Claim("roles", role));
                 }
             }
 
-            claims.Add(new Claim("user_id", userId.ToString()));
+            claims.Add(new Claim("userId", userId.ToString()));
             claims.Add(new Claim(ClaimTypes.Email, user.Email ?? ""));
             claims.Add(new Claim("email", user.Email ?? ""));
             claims.Add(new Claim("firstName", user.FirstName ?? ""));

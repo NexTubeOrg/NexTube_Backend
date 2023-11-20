@@ -2,10 +2,9 @@
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Common.Interfaces
-{
+namespace NexTube.Application.Common.Interfaces {
     public interface IVideoCommentService {
-        Task<Result> AddCommentAsync(int? videoId, string content, ApplicationUser creator);
+        Task<(Result Result, CommentLookup Comment)> AddCommentAsync(int? videoId, string content, ApplicationUser creator);
         Task<(Result Result, IList<CommentLookup> Comments)> GetCommentsListAsync(int? videoId, int page, int pageSize);
         Task<Result> DeleteCommentAsync(int? commentId);
     }
