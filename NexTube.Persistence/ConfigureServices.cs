@@ -9,6 +9,7 @@ using NexTube.Application.Common.Interfaces;
 using NexTube.Persistence.Services;
 using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Settings.Configurations;
+using NexTube.Application.Common.DbContexts;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -25,7 +26,7 @@ public static class ConfigureServices {
         // ensure that connection string exists, else throw startup exception
         Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
-        services.AddDbContext<ApplicationDbContext>((sp, options) => {
+        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>((sp, options) => {
             options.UseNpgsql(connectionString);
         });
 
@@ -63,7 +64,6 @@ public static class ConfigureServices {
         services.TryAddScoped<IVideoService, VideoService>();
         services.TryAddScoped<IMailService, MailService>();
         services.TryAddScoped<IDateTimeService, DateTimeService>();
-        services.TryAddScoped<IVideoCommentService, CommentService>();
 
         return services;
     }
