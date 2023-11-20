@@ -2,16 +2,11 @@
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Common.Interfaces
-{
-    public interface IIdentityService
-    {
+namespace NexTube.Application.Common.Interfaces {
+    public interface IIdentityService {
         Task<(Result Result, UserLookup User)> CreateUserAsync(
             string password, string email, string firstName, string lastName, Guid channelPhotoFileId);
 
-        Task<(Result Result, string? Token, UserLookup? User)> SignInAsync(
-            string email, string password);
-      
 
         /// <summary>
         /// Ensure that user exist in database after execution
@@ -32,12 +27,10 @@ namespace NexTube.Application.Common.Interfaces
         Task<(Result Result, IList<string> Roles)> GetUserRolesAsync(
             int userId);
 
-        Task<(Result Result, int? UserId)> GetUserIdByEmailAsync(string email); 
-        
-        Task<Result> RecoverAsync( string email);
+        Task<(Result Result, int? UserId)> GetUserIdByEmailAsync(string email);
 
-        Task<Result> ChangePasswordAsync(int userId,string password, string newPassword);
+        Task<Result> RecoverAsync(string email);
 
-        Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId);
+        Task<Result> ChangePasswordAsync(int userId, string password, string newPassword);
     }
 }
