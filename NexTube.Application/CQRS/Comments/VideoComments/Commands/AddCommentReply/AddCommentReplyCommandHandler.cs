@@ -19,10 +19,15 @@ namespace NexTube.Application.CQRS.Comments.VideoComments.Commands.AddCommentRep
             var rootComment = await _dbContext.VideoComments
                 .Where(c => c.Id == request.ReplyToCommentId)
                 .Include(c => c.VideoEntity)
+                .Include(c => c.RepliedTo)
                 .FirstOrDefaultAsync();
 
             if (rootComment is null)
                 throw new NotFoundException(request.ReplyToCommentId.ToString(), nameof(VideoCommentEntity));
+
+            // forbid adding replies to replies
+            if (rootComment.RepliedTo != null)
+                rootComment = rootComment.RepliedTo;
 
             var comment = new VideoCommentEntity() {
                 Content = request.Content,
