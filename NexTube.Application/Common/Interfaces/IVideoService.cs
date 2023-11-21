@@ -6,10 +6,8 @@ namespace NexTube.Application.Common.Interfaces
 {
     public interface IVideoService
     {
-        Task<(Result Result, int VideoEntityId)> UploadVideo(string name, string description, Stream previewPhotoSource, Stream source, ApplicationUser creator);
-        Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoId);
-        Task<(Result Result, VideoLookup VideoEntity)> GetVideoEntity(int videoEntityId);
-        Task<(Result Result, IEnumerable<VideoLookup> VideoEntities)> GetAllVideoEntities();
-        Task<Result> RemoveVideoByEntityId(int videoEntityId);
+        Task<(Result Result, string VideoFileId)> UploadVideo(Stream source);
+        Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoFileId);
+        Task<Result> DeleteVideoFileById(string videoFileId);
     }
 }

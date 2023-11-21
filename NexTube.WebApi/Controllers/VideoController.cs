@@ -1,17 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NexTube.Application.CQRS.Files.Videos.Commands.RemoveVideoByEntityId;
-using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
 using NexTube.WebApi.DTO.Files.Video;
 using WebShop.Domain.Constants;
-using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
-using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
-using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
-using NexTube.WebApi.DTO.Comments.VideoComments;
+using NexTube.Application.CQRS.Videos.Commands.UploadVideo;
+using NexTube.Application.CQRS.Videos.Commands.DeleteVideoById;
+using NexTube.Application.CQRS.Videos.Queries.GetVideoById;
+using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
+using NexTube.Application.CQRS.Videos.Queries.GetAllVideos;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -24,12 +20,12 @@ namespace NexTube.WebApi.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{videoId}")]
-        public async Task<ActionResult> GetVideoUrl(string videoId)
+        [HttpGet("{videoFileId}")]
+        public async Task<ActionResult> GetVideoFileUrl(string videoFileId)
         {
-            var getVideoDto = new GetVideoUrlDto()
+            var getVideoDto = new GetVideoFileUrlDto()
             {
-                VideoUrl = videoId,
+                VideoFileId = videoFileId,
             };
 
             var query = mapper.Map<GetVideoUrlQuery>(getVideoDto);
@@ -38,27 +34,27 @@ namespace NexTube.WebApi.Controllers
             return Redirect(getVideoUrlResult.VideoUrl);
         }
 
-        [HttpGet("{videoEntityId}")]
-        public async Task<ActionResult> GetVideoEntity(int videoEntityId)
+        [HttpGet("{videoId}")]
+        public async Task<ActionResult> GetVideo(int videoEntityId)
         {
-            var getVideoEntityDto = new GetVideoEntityDto()
+            var getVideoDto = new GetVideoDto()
             {
-                VideoEntityId = videoEntityId,
+                VideoId = videoEntityId,
             };
 
-            var query = mapper.Map<GetVideoEntityQuery>(getVideoEntityDto);
-            var getVideoEntityResult = await Mediator.Send(query);
+            var query = mapper.Map<GetVideoByIdQuery>(getVideoDto);
+            var getVideoByIdResult = await Mediator.Send(query);
 
-            return Ok(getVideoEntityResult);
+            return Ok(getVideoByIdResult);
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllVideoEntities()
+        public async Task<ActionResult> GetAllVideos()
         {
-            var query = new GetAllVideoEntitiesQuery();
-            var getVideoEntityResult = await Mediator.Send(query);
+            var query = new GetAllVideosQuery();
+            var getVideosDto = await Mediator.Send(query);
 
-            return Ok(getVideoEntityResult);
+            return Ok(getVideosDto);
         }
 
         [HttpPost]
@@ -74,15 +70,15 @@ namespace NexTube.WebApi.Controllers
             return Ok(videoId);
         }
 
-        [HttpDelete("{videoEntityId}")]
-        public async Task<ActionResult> RemoveVideoByEntityId(int videoEntityId)
+        [HttpDelete("{videoId}")]
+        public async Task<ActionResult> DeleteVideoById(int videoEntityId)
         {
-            var removeVideoByEntityIdDto = new RemoveVideoByEntityIdDto()
+            var deleteVideoByIdDto = new DeleteVideoById()
             {
-                VideoEntityId = videoEntityId,
+                VideoId = videoEntityId,
             };
 
-            var command = mapper.Map<RemoveVideoByEntityIdCommand>(removeVideoByEntityIdDto);
+            var command = mapper.Map<DeleteVideoByIdCommand>(deleteVideoByIdDto);
             await Mediator.Send(command);
             
             return Ok();

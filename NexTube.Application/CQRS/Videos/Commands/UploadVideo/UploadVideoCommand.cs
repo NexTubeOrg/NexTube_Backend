@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo
+namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
 {
     public class UploadVideoCommand : IRequest<int>
     {

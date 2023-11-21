@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using NexTube.Application.Common.Mappings;
-using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
+using NexTube.Application.CQRS.Videos.Commands.UploadVideo;
 
 namespace NexTube.WebApi.DTO.Files.Video
 {

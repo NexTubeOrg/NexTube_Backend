@@ -1,12 +1,7 @@
 ﻿using MediatR;
 using NexTube.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl
+namespace NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl
 {
     public class GetVideoUrlQueryHandler : IRequestHandler<GetVideoUrlQuery, GetVideoUrlQueryResult>
     {
@@ -19,7 +14,7 @@ namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl
 
         public async Task<GetVideoUrlQueryResult> Handle(GetVideoUrlQuery request, CancellationToken cancellationToken)
         {
-            var result = await _videoService.GetUrlVideo(request.VideoId);
+            var result = await _videoService.GetUrlVideo(request.VideoFileId);
 
             var getVideoUrlResult = new GetVideoUrlQueryResult()
             {

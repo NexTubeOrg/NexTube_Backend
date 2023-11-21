@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NexTube.Application.CQRS.Files.Videos.Commands.RemoveVideoByEntityId;
-using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoEntity;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl;
-using NexTube.WebApi.DTO.Files.Video;
 using WebShop.Domain.Constants;
 using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;

@@ -1,4 +1,4 @@
-﻿namespace NexTube.Application.CQRS.Files.Videos.Queries.GetVideoUrl
+﻿namespace NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl
 {
     public class GetVideoUrlQueryResult
     {
