@@ -22,7 +22,7 @@ namespace NexTube.WebApi.Controllers {
             this.mapper = mapper;
         }
 
-        
+
 
         [HttpPost]
         public async Task<ActionResult<int>> SignUp([FromForm] SignUpDto dto) {
@@ -39,10 +39,6 @@ namespace NexTube.WebApi.Controllers {
             var command = mapper.Map<SignInUserCommand>(dto);
             var result = await Mediator.Send(command);
 
-            // if operation has fault
-            if (result.Result.Succeeded == false)
-                return UnprocessableEntity(result);
-
             return Ok(result);
         }
 
@@ -52,10 +48,9 @@ namespace NexTube.WebApi.Controllers {
             var result = await Mediator.Send(command);
             return Ok(result);
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult> Recover([FromBody] RecoverDto dto)
-        {
+        public async Task<ActionResult> Recover([FromBody] RecoverDto dto) {
             // map received from request dto to cqrs command
             var command = mapper.Map<RecoverCommand>(dto);
             var result = await Mediator.Send(command);
@@ -64,8 +59,7 @@ namespace NexTube.WebApi.Controllers {
 
         [Authorize(Roles = Roles.User)]
         [HttpPost]
-        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
-        {
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto dto) {
             // map received from request dto to cqrs command
             var command = mapper.Map<ChangePasswordCommand>(dto);
             command.UserId = UserId;
