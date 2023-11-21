@@ -12,6 +12,7 @@ using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
 using NexTube.WebApi.DTO.Comments.VideoComments;
+using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddCommentReply;
 
 namespace NexTube.WebApi.Controllers {
     [Route("api/Video/Comment/[action]")]
@@ -28,6 +29,18 @@ namespace NexTube.WebApi.Controllers {
             await EnsureCurrentUserAssignedAsync();
 
             var command = mapper.Map<AddCommentCommand>(dto);
+            command.Creator = CurrentUser;
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Roles.User)]
+        public async Task<ActionResult> AddCommentReply([FromBody] AddCommentReplyDto dto) {
+            await EnsureCurrentUserAssignedAsync();
+
+            var command = mapper.Map<AddCommentReplyCommand>(dto);
             command.Creator = CurrentUser;
             var result = await Mediator.Send(command);
 
