@@ -5,5 +5,6 @@ namespace NexTube.Application.Common.Interfaces {
         Task<(Result Result, string? FileId)> UploadFileAsync(string bucket, Stream source);
         Task<(Result Result, string? FileId)> UploadFileAsync(string bucket, Stream source, string filename);
         Task<(Result Result, string Url)> GetFileUrlAsync(string bucket, string fileId, string contentType);
+        Task DeleteFileAsync(string bucket, string filename);
     }
 }

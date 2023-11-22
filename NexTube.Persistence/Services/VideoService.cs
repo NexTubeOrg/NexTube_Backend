@@ -29,9 +29,10 @@ namespace NexTube.Persistence.Services
         }
 
 
-        public Task<Result> DeleteVideoFileById(string videoFileId)
+        public async Task<Result> DeleteVideoFileById(string videoFileId)
         {
-            throw new NotImplementedException();
+            await _fileService.DeleteFileAsync("videos", videoFileId);
+            return Result.Success();
         }
     }
 }

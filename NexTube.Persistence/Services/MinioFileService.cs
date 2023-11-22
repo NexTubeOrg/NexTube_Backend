@@ -39,5 +39,15 @@ namespace NexTube.Persistence.Services {
 
             return (Result.Success(), obj.ObjectName);
         }
+
+
+        public async Task DeleteFileAsync(string bucket, string filename)
+        {
+            var removeObjArgs = new RemoveObjectArgs()
+                .WithBucket(bucket)
+                .WithObject(filename);
+
+            await minioClient.RemoveObjectAsync(removeObjArgs);
+        }
     }
 }

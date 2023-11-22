@@ -71,11 +71,11 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpDelete("{videoId}")]
-        public async Task<ActionResult> DeleteVideoById(int videoEntityId)
+        public async Task<ActionResult> DeleteVideoById(int videoId)
         {
             var deleteVideoByIdDto = new DeleteVideoById()
             {
-                VideoId = videoEntityId,
+                VideoId = videoId,
             };
 
             var command = mapper.Map<DeleteVideoByIdCommand>(deleteVideoByIdDto);
