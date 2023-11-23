@@ -8,6 +8,8 @@ using NexTube.Domain.Entities;
 using NexTube.Domain.Entities.Abstract;
 using NexTube.Persistence.Identity;
 using NexTube.Application.Models.Lookups;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace NexTube.Persistence.Services
 {
@@ -255,5 +257,24 @@ namespace NexTube.Persistence.Services
 
             return (Result.Success(), user);
         }
+        public async Task<(Result Result, IEnumerable<ApplicationUser> Users)> GetAllUsersAsync()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            return (Result.Success(), users);
+        }
+
+        public async Task<Result> BanUserAsync(int userId) {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return Result.Failure(new[] {
+                        "User not found!"
+                    });
+            }
+            user.isBanned = true;
+            return Result.Success();
+        }
+
+
     }
 }

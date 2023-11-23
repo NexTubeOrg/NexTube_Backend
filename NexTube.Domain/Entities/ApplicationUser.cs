@@ -5,5 +5,6 @@ namespace NexTube.Domain.Entities {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public Guid? ChannelPhotoFileId { get; set; }
+        public bool? isBanned { get; set; }
     }
 }

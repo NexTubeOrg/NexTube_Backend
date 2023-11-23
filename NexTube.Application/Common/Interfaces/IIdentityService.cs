@@ -39,5 +39,9 @@ namespace NexTube.Application.Common.Interfaces
         Task<Result> ChangePasswordAsync(int userId,string password, string newPassword);
 
         Task<(Result Result, ApplicationUser User)> GetUserByIdAsync(int userId);
+
+        Task<(Result Result, IEnumerable<ApplicationUser> Users)> GetAllUsersAsync();
+
+        Task<Result> BanUserAsync(int userId);
     }
 }
