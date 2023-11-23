@@ -1,5 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
+using NexTube.Application.Common.Models;
+using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.Identity.Users.Commands.BanUser
 {
@@ -7,6 +10,8 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.BanUser
     {
         private readonly IIdentityService _identityService;
         private readonly IMediator _mediator;
+        private readonly UserManager<ApplicationUser> _userManager;
+
 
         public BanUserCommnadHandler(IIdentityService identityService, IJwtService jwtService, IPhotoService photoService, IMediator mediator)
         {
@@ -15,10 +20,22 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.BanUser
         }
         public async Task<BanUserCommandResult> Handle(BanUserCommand request, CancellationToken cancellationToken)
         {
-                var result = await _identityService.BanUserAsync(request.UserId);
+           var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            if (user == null)
+            {
+                return new BanUserCommandResult()
+                {
+                    Result = Result.Failure(new[] {
+                        "User not found!"
+                    })
+                };
+            }
+            
+           //_userManager.
+            
 
             return new BanUserCommandResult() {
-                Result = result
+                Result = Result.Success()
             };
         }
     }
