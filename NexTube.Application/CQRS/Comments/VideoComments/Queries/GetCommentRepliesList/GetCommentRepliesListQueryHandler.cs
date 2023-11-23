@@ -18,7 +18,7 @@ namespace NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentRepl
         public async Task<GetCommentRepliesListQueryResult> Handle(GetCommentRepliesListQuery request, CancellationToken cancellationToken) {
             var query = _dbContext.VideoComments
                 .Where(c => c.VideoEntity.Id == request.VideoId && c.RepliedTo.Id == request.RootCommentId)
-                .OrderByDescending(c => c.DateCreated)
+                .OrderBy(c => c.DateCreated)
                 .Include(c => c.Creator)
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
