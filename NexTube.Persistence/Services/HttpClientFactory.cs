@@ -16,5 +16,6 @@ namespace NexTube.Persistence.Services {
         public HttpClient CreateClient(string name = "") {
             return httpClientFactory.CreateClient(name);
         }
+
     }
 }

@@ -7,6 +7,7 @@
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? ChannelPhoto { get; set; }
+
         public IList<string>? Roles { get; set; }
     }
 }
