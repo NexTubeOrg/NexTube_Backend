@@ -36,6 +36,33 @@ namespace NexTube.Persistence.Data.Seeders {
                 catch (AggregateException) {
 
                 }
+
+
+                try
+                {
+                    identityService.CreateRoleAsync(Roles.Moderator).Wait();
+                }
+                catch (AlreadyExistsException)
+                {
+
+                }
+                catch (AggregateException)
+                {
+
+                }
+
+                try
+                {
+                    identityService.CreateRoleAsync(Roles.Banned).Wait();
+                }
+                catch (AlreadyExistsException)
+                {
+
+                }
+                catch (AggregateException)
+                {
+
+                }
             }
         }
     }

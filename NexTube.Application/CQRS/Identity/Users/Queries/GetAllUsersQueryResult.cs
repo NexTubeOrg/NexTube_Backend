@@ -1,9 +1,10 @@
-﻿using NexTube.Domain.Entities;
+﻿using NexTube.Application.Models.Lookups;
+using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.Identity.Users.Queries
 {
     public class GetAllUsersQueryResult
     {
-        public IEnumerable<ApplicationUser> Users { get; set; } = null!;
+        public IEnumerable<UserLookup> Users { get; set; } = null!;
     }
 }

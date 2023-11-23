@@ -34,10 +34,12 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
 
         private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
             ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email ?? "");
+
             if (user != null) {
                 userInfo.ChannelPhoto = user.ChannelPhotoFileId.ToString();
                 return (Result.Success(), user.Id);
             }
+
 
             Guid photoFileId = default;
 

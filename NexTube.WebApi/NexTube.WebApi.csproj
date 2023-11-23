@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\Admin\" />
     <Folder Include="Swagger\" />
   </ItemGroup>
 
