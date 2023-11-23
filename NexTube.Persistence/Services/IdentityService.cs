@@ -8,6 +8,7 @@ using NexTube.Domain.Entities;
 using NexTube.Domain.Entities.Abstract;
 using NexTube.Persistence.Identity;
 using NexTube.Application.Models.Lookups;
+using IHttpClientFactory = NexTube.Application.Common.Interfaces.IHttpClientFactory;
 
 namespace NexTube.Persistence.Services
 {
@@ -97,9 +98,8 @@ namespace NexTube.Persistence.Services
                 );
             return result.ToApplicationResult();
         }
-
-        public async Task<(Result Result, UserLookup User)> CreateUserAsync(
-            string password, string email, string firstName, string lastName, Guid channelPhotoFileId)
+      
+        public async Task<(Result Result, UserLookup User)> CreateUserAsync( string password, string email, string firstName, string lastName, Guid channelPhotoFileId)
         {
 
             var result = await CreateUserAsync(email, firstName, lastName, channelPhotoFileId);
@@ -115,8 +115,7 @@ namespace NexTube.Persistence.Services
                 ChannelPhoto = result.User.ChannelPhotoFileId.ToString()
             });
         }
-        private async Task<(Result Result, ApplicationUser User)> CreateUserAsync(
-            string email, string firstName, string lastName, Guid photoFileId)
+        public async Task<(Result Result, ApplicationUser User)> CreateUserAsync( string email, string firstName, string lastName, Guid photoFileId)
         {
             if (await _userManager.FindByEmailAsync(email) != null)
             {
@@ -273,5 +272,7 @@ namespace NexTube.Persistence.Services
             return (result.ToApplicationResult(), user.Id);
 
         }
+
+      
     }
 }

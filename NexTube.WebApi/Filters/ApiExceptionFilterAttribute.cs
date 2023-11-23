@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Ardalis.GuardClauses;
 using FluentValidation;
 using WebShop.Application.Common.Exceptions;
+using System.Security.Authentication;
 
 namespace NexTube.WebAPI.Filters;
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute {
@@ -17,6 +18,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute {
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
                 { typeof(AlreadyExistsException), HandleAlreadyExistsException },
+                { typeof(InvalidCredentialException), HandleInvalidCredentialException },
             };
     }
 
@@ -28,12 +30,12 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute {
 
     private void HandleException(ExceptionContext context) {
         Type type = context.Exception.GetType();
-        if ( _exceptionHandlers.ContainsKey(type) ) {
+        if (_exceptionHandlers.ContainsKey(type)) {
             _exceptionHandlers[type].Invoke(context);
             return;
         }
 
-        if ( !context.ModelState.IsValid ) {
+        if (!context.ModelState.IsValid) {
             HandleInvalidModelStateException(context);
             return;
         }
@@ -115,6 +117,20 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute {
 
         context.Result = new ObjectResult(details) {
             StatusCode = StatusCodes.Status403Forbidden
+        };
+
+        context.ExceptionHandled = true;
+    }
+
+    private void HandleInvalidCredentialException(ExceptionContext context) {
+        var details = new ProblemDetails {
+            Status = StatusCodes.Status422UnprocessableEntity,
+            Title = "Wrong credentials",
+            Type = "https://tools.ietf.org/html/rfc7235#section-3.1"
+        };
+
+        context.Result = new ObjectResult(details) {
+            StatusCode = StatusCodes.Status422UnprocessableEntity
         };
 
         context.ExceptionHandled = true;

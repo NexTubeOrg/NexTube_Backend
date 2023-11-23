@@ -10,8 +10,7 @@ namespace NexTube.Persistence.Authorization.Handlers {
     public class CanDeleteOwnCommentPermissionHandler : AuthorizationHandler<CanDeleteOwnCommentPermission> {
         private readonly ApplicationDbContext dbContext;
 
-        public CanDeleteOwnCommentPermissionHandler(ApplicationDbContext dbContext)
-        {
+        public CanDeleteOwnCommentPermissionHandler(ApplicationDbContext dbContext) {
             this.dbContext = dbContext;
         }
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CanDeleteOwnCommentPermission requirement) {
@@ -21,7 +20,7 @@ namespace NexTube.Persistence.Authorization.Handlers {
                 return;
 
             int.TryParse(httpContext.Request.Query["id"].ToString(), out int resourceId);
-            int.TryParse(context.User.FindFirst("user_id")?.Value, out int userId);
+            int.TryParse(context.User.FindFirst("userId")?.Value, out int userId);
 
             if (await IsCreatorAsync(userId, resourceId)) {
                 context.Succeed(requirement);
@@ -29,7 +28,7 @@ namespace NexTube.Persistence.Authorization.Handlers {
         }
 
         private async Task<bool> IsCreatorAsync(int userId, int resourceId) {
-            return await dbContext.VideoComments.AnyAsync(c=>c.Id == resourceId && c.Creator.Id == userId);
+            return await dbContext.VideoComments.AnyAsync(c => c.Id == resourceId && c.Creator.Id == userId);
         }
     }
 }
