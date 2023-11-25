@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NexTube.Persistence.Data.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231124154033_AddReport")]
+    partial class AddReport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,16 +264,11 @@ namespace NexTube.Persistence.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("VideoId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AbuserId");
 
                     b.HasIndex("CreatorId");
-
-                    b.HasIndex("VideoId");
 
                     b.ToTable("Reports");
                 });
@@ -412,15 +410,9 @@ namespace NexTube.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CreatorId");
 
-                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "Video")
-                        .WithMany()
-                        .HasForeignKey("VideoId");
-
                     b.Navigation("Abuser");
 
                     b.Navigation("Creator");
-
-                    b.Navigation("Video");
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>

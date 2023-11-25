@@ -11,11 +11,13 @@ namespace NexTube.Persistence.Data.Contexts {
         public DbSet<VideoEntity> Videos { get; set; } = null!;
         public DbSet<VideoCommentEntity> VideoComments { get; set; } = null!;
 
+        public DbSet<Report> Reports { get; set; } = null!;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder) {
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
-
+            builder.ApplyConfiguration(new ReportConfiguration());
             builder.ApplyConfiguration(new VideoEntityConfiguration());
             builder.ApplyConfiguration(new VideoCommentEntityConfiguration());
 

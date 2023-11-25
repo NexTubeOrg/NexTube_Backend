@@ -25,14 +25,22 @@ namespace NexTube.Application.CQRS.Identity.Users.Queries
 
         public async Task<GetAllUsersQueryResult> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await iadminService.GetAllUsers();
+            var users = await iadminService.GetAllUsers(request.Page,request.PageSize);
 
-            var GetAllUsersQueryResult = new GetAllUsersQueryResult()
+            var getAllUsersQueryResult = new GetAllUsersQueryResult()
             {
-                Users = users.Select(x => new UserLookup {FirstName = x.FirstName,LastName = x.LastName,UserId = x.Id,Email = x.Email })
+                Users = users.Select(x => new UserLookup { FirstName = x.FirstName, LastName = x.LastName, UserId = x.Id, Email = x.Email })
            };
+            UserLookup temp = null;
+            foreach (var user in getAllUsersQueryResult.Users) {
+                user.Roles = (await identityService.GetUserRolesAsync(user.UserId??0)).Roles;
+                temp = user;
+            }
 
-            return GetAllUsersQueryResult;
+            var temp2 = getAllUsersQueryResult.Users.First();
+            bool xxx = temp.Equals(temp2);
+
+            return getAllUsersQueryResult;
         }
     }
 }
