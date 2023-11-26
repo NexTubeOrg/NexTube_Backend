@@ -3,7 +3,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Models.Lookups;
+using NexTube.Domain.Constants;
 using NexTube.Domain.Entities;
+using WebShop.Application.Common.Exceptions;
 
 namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
 {
@@ -19,15 +21,16 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
         public async Task<GetVideoEntityQueryResult> Handle(GetVideoByIdQuery request, CancellationToken cancellationToken)
         {
             var videoLookup = await _dbContext.Videos
-                .Where(e => e.Id == request.VideoId)
+                .Where(v => v.Id == request.VideoId)
                 .Include(e => e.Creator)
                 .Select(v => new VideoLookup()
                 {
                     Id = v.Id,
                     Name = v.Name,
                     Description = v.Description,
-                    VideoFile = v.VideoId,
-                    PreviewPhotoFile = v.PreviewPhotoId,
+                    VideoFile = v.VideoFileId,
+                    AccessModificator = v.AccessModificator.Modificator,
+                    PreviewPhotoFile = v.PreviewPhotoFileId,
                     DateCreated = v.DateCreated,
                     Creator = new UserLookup()
                     {
@@ -41,6 +44,11 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
             if (videoLookup == null)
             {
                 throw new NotFoundException(request.VideoId.ToString(), nameof(VideoEntity));
+            }
+
+            if (videoLookup.AccessModificator == VideoAccessModificators.Private && videoLookup.Creator?.UserId != request.UserId)
+            {
+                throw new ForbiddenAccessException();
             }
 
             var GetVideoEntityQueryResult = new GetVideoEntityQueryResult()

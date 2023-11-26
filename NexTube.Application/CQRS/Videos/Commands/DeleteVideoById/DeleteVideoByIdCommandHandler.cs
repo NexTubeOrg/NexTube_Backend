@@ -28,7 +28,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.DeleteVideoById
             }
 
             _dbContext.Videos.Remove(videoEntity);
-            await _videoService.DeleteVideoFileById(videoEntity.VideoId.ToString());
+            await _videoService.DeleteVideoFileById(videoEntity.VideoFileId.ToString());
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

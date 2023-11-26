@@ -35,11 +35,12 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpGet("{videoId}")]
-        public async Task<ActionResult> GetVideo(int videoEntityId)
+        public async Task<ActionResult> GetVideo(int videoId)
         {
             var getVideoDto = new GetVideoDto()
             {
-                VideoId = videoEntityId,
+                VideoId = videoId,
+                UserId = CurrentUser?.Id
             };
 
             var query = mapper.Map<GetVideoByIdQuery>(getVideoDto);
@@ -51,7 +52,10 @@ namespace NexTube.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllVideos()
         {
-            var query = new GetAllVideosQuery();
+            var query = new GetAllVideosQuery()
+            {
+                UserId = CurrentUser?.Id
+            };
             var getVideosDto = await Mediator.Send(query);
 
             return Ok(getVideosDto);
@@ -80,7 +84,7 @@ namespace NexTube.WebApi.Controllers
 
             var command = mapper.Map<DeleteVideoByIdCommand>(deleteVideoByIdDto);
             await Mediator.Send(command);
-            
+
             return Ok();
         }
     }
