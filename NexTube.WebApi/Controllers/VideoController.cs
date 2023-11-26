@@ -43,7 +43,7 @@ namespace NexTube.WebApi.Controllers
             var getVideoDto = new GetVideoDto()
             {
                 VideoId = videoId,
-                UserId = UserId
+                UserId = this.UserId
             };
 
             var query = mapper.Map<GetVideoByIdQuery>(getVideoDto);
