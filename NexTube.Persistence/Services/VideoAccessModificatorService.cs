@@ -1,8 +1,6 @@
-﻿using Ardalis.GuardClauses;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
-using NexTube.Domain.Constants;
 using NexTube.Domain.Entities;
 using WebShop.Application.Common.Exceptions;
 
@@ -31,45 +29,6 @@ namespace NexTube.Persistence.Services
 
             await _dbContext.VideoAccessModificators.AddAsync(videoAccessModificator);
             await _dbContext.SaveChangesAsync(CancellationToken.None);
-        }
-
-        public async Task<bool> CanUserWatchVideo(int videoId, int userId)
-        {
-            var video = await _dbContext.Videos.FirstOrDefaultAsync(v => v.Id == videoId);
-
-            if (video == null)
-            {
-                throw new NotFoundException(videoId.ToString(), nameof(VideoEntity));
-            }
-
-            if (video.AccessModificator.Modificator == VideoAccessModificators.Public)
-            {
-                return true;
-            }
-
-            if (video.AccessModificator.Modificator == VideoAccessModificators.Private)
-            {
-                if (video.Creator.Id == userId)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-
-            return true;
-        }
-
-        public async Task<VideoAccessModificatorEntity> GetPublicAccessModificatorAsync()
-        {
-            var publicAccessModificator = await _dbContext.VideoAccessModificators
-                .Where(a => a.Modificator == VideoAccessModificators.Public)
-                .FirstOrDefaultAsync();
-
-            if (publicAccessModificator == null)
-                throw new NotFoundException(VideoAccessModificators.Public, nameof(VideoAccessModificatorEntity));
-
-            return publicAccessModificator;
         }
     }
 }

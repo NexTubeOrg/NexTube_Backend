@@ -2,7 +2,7 @@
 
 namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
 {
-    public class GetVideoEntityQueryResult
+    public class GetVideoByIdQueryResult
     {
         public VideoLookup Video { get; set; } = null!;
     }

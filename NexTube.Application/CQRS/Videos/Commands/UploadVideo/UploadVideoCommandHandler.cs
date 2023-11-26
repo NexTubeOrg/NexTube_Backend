@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
+using NexTube.Domain.Constants;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
@@ -11,26 +13,20 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
         private readonly IPhotoService _photoService;
         private readonly IDateTimeService _dateTimeService;
         private readonly IApplicationDbContext _dbContext;
-        private readonly IVideoAccessModificatorService _videoAccessModificatorService;
 
-        public UploadVideoCommandHandler(
-            IVideoService videoService,
-            IPhotoService photoService,
-            IDateTimeService dateTimeService,
-            IApplicationDbContext dbContext,
-            IVideoAccessModificatorService videoAccessModificatorService)
+        public UploadVideoCommandHandler(IVideoService videoService, IPhotoService photoService, IDateTimeService dateTimeService, IApplicationDbContext dbContext)
         {
             _videoService = videoService;
             _photoService = photoService;
             _dateTimeService = dateTimeService;
             _dbContext = dbContext;
-            _videoAccessModificatorService = videoAccessModificatorService;
         }
 
         public async Task<int> Handle(UploadVideoCommand request, CancellationToken cancellationToken)
         {
             var videoUploadResult = await _videoService.UploadVideo(request.Source);
             var photoUploadResult = await _photoService.UploadPhoto(request.PreviewPhotoSource);
+            var publicAccessModificator = await _dbContext.VideoAccessModificators.Where(v => v.Modificator == VideoAccessModificators.Public).FirstOrDefaultAsync();
 
             var video = new VideoEntity()
             {
@@ -39,7 +35,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
                 VideoFileId = Guid.Parse(videoUploadResult.VideoFileId),
                 PreviewPhotoFileId = Guid.Parse(photoUploadResult.PhotoId),
                 Creator = request.Creator,
-                AccessModificator =  await _videoAccessModificatorService.GetPublicAccessModificatorAsync(),
+                AccessModificator =  publicAccessModificator,
                 DateCreated = _dateTimeService.Now,
             };
 

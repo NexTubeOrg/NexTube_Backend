@@ -1,5 +1,4 @@
-﻿
-namespace NexTube.Application.Common.Interfaces
+﻿namespace NexTube.Application.Common.Interfaces
 {
     public interface IVideoAccessModificatorService
     {
