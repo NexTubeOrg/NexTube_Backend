@@ -8,6 +8,7 @@ using NexTube.Application.CQRS.Videos.Commands.DeleteVideoById;
 using NexTube.Application.CQRS.Videos.Queries.GetVideoById;
 using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Queries.GetAllVideos;
+using NexTube.Application.CQRS.Videos.Commands.UpdateVideo;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -37,10 +38,12 @@ namespace NexTube.WebApi.Controllers
         [HttpGet("{videoId}")]
         public async Task<ActionResult> GetVideo(int videoId)
         {
+            var user = HttpContext.User.FindFirst("userId");
+
             var getVideoDto = new GetVideoDto()
             {
                 VideoId = videoId,
-                UserId = CurrentUser?.Id
+                UserId = UserId
             };
 
             var query = mapper.Map<GetVideoByIdQuery>(getVideoDto);
@@ -52,9 +55,10 @@ namespace NexTube.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllVideos()
         {
+
             var query = new GetAllVideosQuery()
             {
-                UserId = CurrentUser?.Id
+                UserId = this.UserId
             };
             var getVideosDto = await Mediator.Send(query);
 
@@ -86,6 +90,15 @@ namespace NexTube.WebApi.Controllers
             await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateVideo([FromForm] UpdateVideoDto dto)
+        {
+            var command = mapper.Map<UpdateVideoCommand>(dto);
+            var videoLookup = await Mediator.Send(command);
+
+            return Ok(videoLookup);
         }
     }
 }

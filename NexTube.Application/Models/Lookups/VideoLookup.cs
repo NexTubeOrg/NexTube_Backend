@@ -10,5 +10,6 @@
         public Guid? PreviewPhotoFile { get; set; } = null;
         public UserLookup? Creator { get; set; } = null;
         public DateTime? DateCreated { get; set; } = null;
+        public DateTime? DateModified { get; set; } = null;
     }
 }
