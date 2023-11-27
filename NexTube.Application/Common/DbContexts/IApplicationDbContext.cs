@@ -8,8 +8,8 @@ namespace NexTube.Application.Common.DbContexts {
     public interface IApplicationDbContext {
         DbSet<VideoEntity> Videos { get; set; }
         DbSet<VideoCommentEntity> VideoComments { get; set; }
-        public DbSet<Subscription> Subscriptions { get; set; }
-        public DbSet<UserLookup> Users { get; set; }
+         DbSet<SubscriptionEntity> Subscriptions { get; set; }
+ 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     }

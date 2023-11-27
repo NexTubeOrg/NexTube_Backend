@@ -13,7 +13,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
         public string LastName { get; set; } = null!;
         public string Nickname { get; set; } = null;
         public string Description { get; set; }=null;
-        public ICollection<Subscription> Subscriptions { get; set; }
+     
         public Stream ChannelPhotoStream { get; set; } = null!;
     }
 }

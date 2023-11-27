@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace NexTube.Application.Common.Interfaces
 {
 
-    public interface ISubscriptionsRepository
+    public interface ISubscriptionsService
     {
 
         //Task<(Result Result, int UserId)> SaveAsync(SubscriptionsUserCommand subscription);
@@ -22,13 +22,15 @@ namespace NexTube.Application.Common.Interfaces
         //Task SubscribeAsync(int userId, int subscriberId);
         //Task UnsubscribeAsync(int userId, int subscriberId);
         //IEnumerable<SubscriptionsUserCommand> GetSubscriptions(int userId);
-         
-            IEnumerable<Subscription> GetSubscriptions(int userId);
-      //void Unsubscribe(int userId, int subscriberId);
-      //      void Subscribe(int userId, int subscriberId );
-        void Subscribe(Subscription subscription);
+        //void Unsubscribe(int userId, int subscriberId);
+        //      void Subscribe(int userId, int subscriberId );
+
+
+        IEnumerable<SubscriptionEntity> GetSubscriptions(int userId);
   
-        void Unsubscribe(Subscription subscription);
+        Task<Result> Subscribe(SubscriptionEntity subscription);
+
+        Task<Result> Unsubscribe(SubscriptionEntity subscription);
     }
 
 }

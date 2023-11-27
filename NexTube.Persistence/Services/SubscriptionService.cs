@@ -1,36 +1,38 @@
 ﻿using NexTube.Application.Common.Interfaces;
+using NexTube.Application.Common.Models;
 using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
+using NexTube.Domain.Entities;
 
-public class SubscriptionService: ISubscriptionsRepository
+public class SubscriptionService: ISubscriptionsService
 {
-    private readonly ISubscriptionsRepository _subscriptionRepository;
+    private readonly ISubscriptionsService _subscriptionRepository;
 
-    public SubscriptionService(ISubscriptionsRepository subscriptionRepository)
+    public SubscriptionService(ISubscriptionsService subscriptionRepository)
     {
         _subscriptionRepository = subscriptionRepository;
     }
 
-    public IEnumerable<Subscription> GetSubscriptions(int userId)
+    public IEnumerable<SubscriptionEntity> GetSubscriptions(int userId)
     {
         return _subscriptionRepository.GetSubscriptions(userId);
     }
 
-    public void Subscribe(Subscription subscriber )
+    public Task<Result> Subscribe(SubscriptionEntity subscriber )
     {
-        var subscription = new Subscription
+        var subscription = new SubscriptionEntity
         {
             UserId = subscriber.UserId,
             SubscriberId = subscriber.SubscriberId,
-            DateCreated = subscriber.DateCreated
+      
         };
 
-        _subscriptionRepository.Subscribe(subscription);
+        return _subscriptionRepository.Subscribe(subscription);
     }
 
-    public void Unsubscribe(Subscription subscriber)
+    public Task<Result> Unsubscribe(SubscriptionEntity subscriber)
     {
-        _subscriptionRepository.Unsubscribe(new Subscription
-        {
+      return   _subscriptionRepository.Unsubscribe(new SubscriptionEntity
+      {
             UserId = subscriber.UserId,
             SubscriberId = subscriber.SubscriberId,
         });

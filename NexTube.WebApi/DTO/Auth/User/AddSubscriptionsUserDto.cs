@@ -3,6 +3,7 @@
 using NexTube.Application.Common.Mappings;
 using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser;
+using NexTube.Domain.Entities;
 
 namespace NexTube.WebApi.DTO.Auth.User
 {
@@ -14,7 +15,7 @@ namespace NexTube.WebApi.DTO.Auth.User
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AddSubscriptionsUserDto, Subscription>()
+            profile.CreateMap<AddSubscriptionsUserDto, SubscriptionEntity>()
 
                 .ForMember(command => command.SubscriberId, opt => opt.MapFrom(dto => dto.SubscriberId))
                 .ForMember(command => command.UserId, opt => opt.MapFrom(dto => dto.UserId));
