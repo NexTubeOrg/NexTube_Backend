@@ -10,9 +10,7 @@ using NexTube.Persistence.Identity;
 using System.Text;
 using NexTube.Domain.Entities;
 using WebShop.Domain.Constants;
-using NexTube.Persistence.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
-using NexTube.Persistence.Authorization.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NexTube.Persistence.Services;
 
@@ -25,8 +23,6 @@ namespace NexTube.Persistence.Common.Extensions {
         /// <returns>An <see cref="IdentityBuilder"/> for creating and configuring the identity system.</returns>
         public static IdentityBuilder AddIdentityExtensions(
             this IServiceCollection services, IConfiguration configuration) {
-            // register custom authorization handlers
-            services.TryAddScoped<IAuthorizationHandler, CanDeleteOwnCommentPermissionHandler>();
 
             // Services used by identity
             services.AddAuthentication(options => {
@@ -34,12 +30,7 @@ namespace NexTube.Persistence.Common.Extensions {
                 options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             });
-            services.AddAuthorization(options => {
-                options.AddPolicy(Policies.CanDeleteOwnComment, policy => policy
-                    .RequireClaim("userId")
-                    .Requirements.Add(new CanDeleteOwnCommentPermission())
-                );
-            });
+            services.AddAuthorization();
 
             // setup JWT bearer authentication
             string? issuer = configuration.GetValue<string>("Jwt:Issuer");
