@@ -5,20 +5,20 @@ using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Constants;
 
-namespace NexTube.Application.CQRS.Videos.Queries.GetAllVideos
+namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
 {
-    public class GetAllVideosQueryHandler : IRequestHandler<GetAllVideosQuery, GetAllVideosQueryResult>
+    public class GetVideoListQueryHandler : IRequestHandler<GetVideoListQuery, GetVideoListQueryResult>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IVideoAccessModificatorService _videoAccessModificatorService;
 
-        public GetAllVideosQueryHandler(IApplicationDbContext dbContext, IVideoAccessModificatorService videoAccessModificatorService)
+        public GetVideoListQueryHandler(IApplicationDbContext dbContext, IVideoAccessModificatorService videoAccessModificatorService)
         {
             _dbContext = dbContext;
             _videoAccessModificatorService = videoAccessModificatorService;
         }
 
-        public async Task<GetAllVideosQueryResult> Handle(GetAllVideosQuery request, CancellationToken cancellationToken)
+        public async Task<GetVideoListQueryResult> Handle(GetVideoListQuery request, CancellationToken cancellationToken)
         {
             var videoLookups = await _dbContext.Videos
                .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public || v.Creator.Id == request.RequesterId)
@@ -45,7 +45,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetAllVideos
                })
                .ToListAsync();
 
-            var GetAllVideoEntitiesQueryResult = new GetAllVideosQueryResult()
+            var GetAllVideoEntitiesQueryResult = new GetVideoListQueryResult()
             {
                 VideoEntities = videoLookups,
             };

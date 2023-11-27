@@ -7,18 +7,18 @@ using NexTube.Domain.Constants;
 using NexTube.Domain.Entities;
 using WebShop.Application.Common.Exceptions;
 
-namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
+namespace NexTube.Application.CQRS.Videos.Queries.GetVideo
 {
-    public class GetVideoByIdQueryHandler : IRequestHandler<GetVideoByIdQuery, GetVideoByIdQueryResult>
+    public class GetVideoQueryHandler : IRequestHandler<GetVideoQuery, GetVideoQueryResult>
     {
         private readonly IApplicationDbContext _dbContext;
 
-        public GetVideoByIdQueryHandler(IApplicationDbContext dbContext)
+        public GetVideoQueryHandler(IApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<GetVideoByIdQueryResult> Handle(GetVideoByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetVideoQueryResult> Handle(GetVideoQuery request, CancellationToken cancellationToken)
         {
             var videoLookup = await _dbContext.Videos
                 .Where(v => v.Id == request.VideoId)
@@ -51,7 +51,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
                 throw new ForbiddenAccessException();
             }
 
-            var GetVideoEntityQueryResult = new GetVideoByIdQueryResult()
+            var GetVideoEntityQueryResult = new GetVideoQueryResult()
             {
                 Video = videoLookup
             };

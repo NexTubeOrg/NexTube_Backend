@@ -1,8 +1,8 @@
 ﻿using NexTube.Application.Models.Lookups;
 
-namespace NexTube.Application.CQRS.Videos.Queries.GetAllVideos
+namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
 {
-    public class GetAllVideosQueryResult
+    public class GetVideoListQueryResult
     {
         public IEnumerable<VideoLookup> VideoEntities { get; set; } = null!;
     }

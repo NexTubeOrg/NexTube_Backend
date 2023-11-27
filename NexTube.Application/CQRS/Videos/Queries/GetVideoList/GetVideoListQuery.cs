@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace NexTube.Application.CQRS.Videos.Queries.GetAllVideos
+namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
 {
-    public class GetAllVideosQuery : IRequest<GetAllVideosQueryResult>
+    public class GetVideoListQuery : IRequest<GetVideoListQueryResult>
     {
         public int? RequesterId { get; set; } = null;
         public int Page { get; set; }
