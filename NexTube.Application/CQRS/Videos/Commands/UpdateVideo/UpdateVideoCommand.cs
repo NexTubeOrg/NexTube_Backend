@@ -8,6 +8,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
         public int VideoId { get; set; } = 0;
         public string? Name { get; set; } = null!;
         public string? Description { get; set; } = null!;
-        public string? AccessModificator { get; set; } = null!;   
+        public string? AccessModificator { get; set; } = null!;
+        public int? RequesterId { get; set; } = null!;
     }
 }

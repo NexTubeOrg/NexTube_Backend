@@ -22,7 +22,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetAllVideos
         {
             var videoLookups = await _dbContext.Videos
                .Include(e => e.Creator)
-               .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public || v.Creator.Id == request.UserId)
+               .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public || v.Creator.Id == request.RequesterId)
                .Select(v => new VideoLookup()
                {
                    Id = v.Id,

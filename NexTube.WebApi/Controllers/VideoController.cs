@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using NexTube.WebApi.DTO.Files.Video;
 using WebShop.Domain.Constants;
 using NexTube.Application.CQRS.Videos.Commands.UploadVideo;
-using NexTube.Application.CQRS.Videos.Commands.DeleteVideoById;
 using NexTube.Application.CQRS.Videos.Queries.GetVideoById;
 using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Queries.GetAllVideos;
 using NexTube.Application.CQRS.Videos.Commands.UpdateVideo;
+using NexTube.Application.CQRS.Videos.Commands.DeleteVideo;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -35,18 +35,12 @@ namespace NexTube.WebApi.Controllers
             return Redirect(getVideoUrlResult.VideoUrl);
         }
 
-        [HttpGet("{videoId}")]
-        public async Task<ActionResult> GetVideo(int videoId)
+        [HttpGet]
+        public async Task<ActionResult> GetVideo([FromQuery] GetVideoDto dto)
         {
-            var user = HttpContext.User.FindFirst("userId");
+            var query = mapper.Map<GetVideoByIdQuery>(dto);
+            query.RequsterId = this.UserId;
 
-            var getVideoDto = new GetVideoDto()
-            {
-                VideoId = videoId,
-                UserId = this.UserId
-            };
-
-            var query = mapper.Map<GetVideoByIdQuery>(getVideoDto);
             var getVideoByIdResult = await Mediator.Send(query);
 
             return Ok(getVideoByIdResult);
@@ -58,8 +52,9 @@ namespace NexTube.WebApi.Controllers
 
             var query = new GetAllVideosQuery()
             {
-                UserId = this.UserId
+                RequesterId = this.UserId
             };
+            
             var getVideosDto = await Mediator.Send(query);
 
             return Ok(getVideosDto);
@@ -78,24 +73,23 @@ namespace NexTube.WebApi.Controllers
             return Ok(videoId);
         }
 
-        [HttpDelete("{videoId}")]
-        public async Task<ActionResult> DeleteVideoById(int videoId)
+        [HttpDelete]
+        [Authorize(Roles = Roles.User)]
+        public async Task<ActionResult> DeleteVideo([FromQuery] DeleteVideoDto dto)
         {
-            var deleteVideoByIdDto = new DeleteVideoById()
-            {
-                VideoId = videoId,
-            };
-
-            var command = mapper.Map<DeleteVideoByIdCommand>(deleteVideoByIdDto);
+            var command = mapper.Map<DeleteVideoCommand>(dto);
+            command.RequsterId = this.UserId;
             await Mediator.Send(command);
 
             return Ok();
         }
 
         [HttpPut]
+        [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> UpdateVideo([FromForm] UpdateVideoDto dto)
         {
             var command = mapper.Map<UpdateVideoCommand>(dto);
+            command.RequesterId = this.UserId;
             var videoLookup = await Mediator.Send(command);
 
             return Ok(videoLookup);

@@ -5,6 +5,7 @@ using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
+using WebShop.Application.Common.Exceptions;
 
 namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
 {
@@ -22,17 +23,8 @@ namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
         public async Task<VideoLookup> Handle(UpdateVideoCommand request, CancellationToken cancellationToken)
         {
             var video = await _dbContext.Videos
-                .Select(v => new VideoEntity
-                {
-                    Id = v.Id,
-                    Name = v.Name,
-                    Description = v.Description,
-                    VideoFileId = v.VideoFileId,
-                    AccessModificator = v.AccessModificator,
-                    PreviewPhotoFileId = v.PreviewPhotoFileId,
-                    DateCreated = v.DateCreated,
-                    Creator = v.Creator
-                })
+                .Include(v => v.AccessModificator)
+                .Include(v => v.Creator)
                 .Where(v => v.Id == request.VideoId)
                 .FirstOrDefaultAsync();
 
@@ -41,6 +33,12 @@ namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
                 throw new NotFoundException(request.VideoId.ToString(), nameof(VideoEntity));
             }
 
+            if (video.Creator.Id != request.RequesterId)
+            {
+                throw new ForbiddenAccessException();
+            }
+
+            
             video.Name = request.Name ?? video.Name;
             video.Description = request.Description ?? video.Description;
             video.DateModified = _dateTimeService.Now;
