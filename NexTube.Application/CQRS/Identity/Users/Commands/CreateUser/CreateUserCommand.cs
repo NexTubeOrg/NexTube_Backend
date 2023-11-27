@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
+ 
 using NexTube.Application.Models.Lookups;
 
 namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser

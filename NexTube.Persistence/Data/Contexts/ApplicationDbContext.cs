@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
-using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
-using NexTube.Application.Models.Lookups;
+ using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Configurations.Comments.VideoComments;
 using NexTube.Persistence.Data.Configurations.Identity;

@@ -4,13 +4,13 @@ using NexTube.Application.CQRS.Files.Photos.Commands.UploadSquarePhoto;
 
 namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
 {
-    public class CreateUserCommnadHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
+    public class SubscriptionUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
     {
         private readonly IIdentityService _identityService;
         private readonly IJwtService _jwtService;
         private readonly IMediator _mediator;
 
-        public CreateUserCommnadHandler(IIdentityService identityService, IJwtService jwtService, IPhotoService photoService, IMediator mediator)
+        public SubscriptionUserCommandHandler(IIdentityService identityService, IJwtService jwtService, IPhotoService photoService, IMediator mediator)
         {
             _identityService = identityService;
             _jwtService = jwtService;
