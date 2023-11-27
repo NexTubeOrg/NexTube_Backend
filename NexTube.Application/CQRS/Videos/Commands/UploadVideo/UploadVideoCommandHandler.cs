@@ -24,7 +24,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
 
         public async Task<int> Handle(UploadVideoCommand request, CancellationToken cancellationToken)
         {
-            var videoUploadResult = await _videoService.UploadVideo(request.Source);
+            var videoUploadResult = await _videoService.UploadVideoAsync(request.Source);
             var photoUploadResult = await _photoService.UploadPhoto(request.PreviewPhotoSource);
             var publicAccessModificator = await _dbContext.VideoAccessModificators.Where(v => v.Modificator == VideoAccessModificators.Public).FirstOrDefaultAsync();
 

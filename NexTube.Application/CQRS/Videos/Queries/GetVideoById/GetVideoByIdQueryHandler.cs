@@ -46,7 +46,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoById
                 throw new NotFoundException(request.VideoId.ToString(), nameof(VideoEntity));
             }
 
-            if (videoLookup.AccessModificator == VideoAccessModificators.Private && videoLookup.Creator?.UserId != request.RequsterId)
+            if (videoLookup.AccessModificator == VideoAccessModificators.Private && videoLookup.Creator?.UserId != request.RequesterId)
             {
                 throw new ForbiddenAccessException();
             }

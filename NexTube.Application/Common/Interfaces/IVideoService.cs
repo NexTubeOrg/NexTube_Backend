@@ -6,8 +6,8 @@ namespace NexTube.Application.Common.Interfaces
 {
     public interface IVideoService
     {
-        Task<(Result Result, string VideoFileId)> UploadVideo(Stream source);
-        Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoFileId);
-        Task<Result> DeleteVideoFileById(string videoFileId);
+        Task<(Result Result, string VideoFileId)> UploadVideoAsync(Stream source);
+        Task<(Result Result, string VideoUrl)> GetUrlVideoAsync(string videoFileId);
+        Task<Result> DeleteVideoAsync(string videoFileId);
     }
 }

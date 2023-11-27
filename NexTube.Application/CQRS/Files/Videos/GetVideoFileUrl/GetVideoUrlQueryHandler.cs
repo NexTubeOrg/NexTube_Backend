@@ -14,7 +14,7 @@ namespace NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl
 
         public async Task<GetVideoUrlQueryResult> Handle(GetVideoUrlQuery request, CancellationToken cancellationToken)
         {
-            var result = await _videoService.GetUrlVideo(request.VideoFileId);
+            var result = await _videoService.GetUrlVideoAsync(request.VideoFileId);
 
             var getVideoUrlResult = new GetVideoUrlQueryResult()
             {

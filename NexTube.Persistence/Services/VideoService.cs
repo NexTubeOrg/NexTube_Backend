@@ -18,18 +18,18 @@ namespace NexTube.Persistence.Services
             _fileService = fileService;
         }
 
-        public async Task<(Result Result, string VideoFileId)> UploadVideo(Stream source) {
+        public async Task<(Result Result, string VideoFileId)> UploadVideoAsync(Stream source) {
             var uploadVideo = await _fileService.UploadFileAsync("videos", source);
             return (uploadVideo.Result, uploadVideo.FileId);
         }
 
-        public async Task<(Result Result, string VideoUrl)> GetUrlVideo(string videoFileId) {
+        public async Task<(Result Result, string VideoUrl)> GetUrlVideoAsync(string videoFileId) {
             var getVideo = await _fileService.GetFileUrlAsync("videos", videoFileId, "video/mp4");
             return (getVideo.Result, getVideo.Url);
         }
 
 
-        public async Task<Result> DeleteVideoFileById(string videoFileId)
+        public async Task<Result> DeleteVideoAsync(string videoFileId)
         {
             await _fileService.DeleteFileAsync("videos", videoFileId);
             return Result.Success();

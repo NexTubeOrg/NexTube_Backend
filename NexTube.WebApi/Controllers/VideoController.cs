@@ -39,7 +39,7 @@ namespace NexTube.WebApi.Controllers
         public async Task<ActionResult> GetVideo([FromQuery] GetVideoDto dto)
         {
             var query = mapper.Map<GetVideoByIdQuery>(dto);
-            query.RequsterId = this.UserId;
+            query.RequesterId = this.UserId;
 
             var getVideoByIdResult = await Mediator.Send(query);
 
@@ -78,7 +78,7 @@ namespace NexTube.WebApi.Controllers
         public async Task<ActionResult> DeleteVideo([FromQuery] DeleteVideoDto dto)
         {
             var command = mapper.Map<DeleteVideoCommand>(dto);
-            command.RequsterId = this.UserId;
+            command.RequesterId = this.UserId;
             await Mediator.Send(command);
 
             return Ok();

@@ -10,5 +10,6 @@ namespace NexTube.Application.Common.Interfaces
         Task<(Result Result, string Url)> GetPhotoUrl(string photoId, int size);
         Task<(Result Result, Size Dimensions)> GetPhotoDimensionsAsync(Stream source);
         Task<bool> IsFileImageAsync(Stream source);
+        Task DeletePhotoAsync(string photoId);
     }
 }
