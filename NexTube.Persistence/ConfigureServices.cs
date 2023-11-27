@@ -11,6 +11,7 @@ using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Settings.Configurations;
 using NexTube.Application.Common.DbContexts;
 using IHttpClientFactory = NexTube.Application.Common.Interfaces.IHttpClientFactory;
+using HttpClientFactory = NexTube.Persistence.Services.HttpClientFactory;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -66,6 +67,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IMailService, MailService>();
         services.TryAddScoped<IDateTimeService, DateTimeService>();
         services.TryAddScoped<IHttpClientFactory, HttpClientFactory>();
+        services.TryAddScoped<ISubscriptionsRepository, SubscriptionService>();
 
         return services;
     }

@@ -1,47 +1,37 @@
-﻿using Ardalis.GuardClauses;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.Common.Interfaces;
-using NexTube.WebApi.DTO.Auth.User;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
+using NexTube.WebApi.Controllers;
+using System.Xml.Linq;
 
-namespace NexTube.WebApi.Controllers
+[Route("api/subscriptions")]
+public class SubscriptionController : BaseController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AddSubscriptionsUserController : BaseController
+    private readonly ISubscriptionsRepository _subscriptionService;
+
+    public SubscriptionController(ISubscriptionsRepository subscriptionService)
     {
-        private readonly ISubscriptionsRepository _subscriptionsRepository;
+        _subscriptionService = subscriptionService;
+    }
 
-        public AddSubscriptionsUserController(ISubscriptionsRepository subscriptionsRepository)
-        {
-            _subscriptionsRepository = subscriptionsRepository ?? throw new ArgumentNullException(nameof(subscriptionsRepository));
-        }
+    [HttpGet("{userId}", Name = "GetSubscriptions")]
+    public ActionResult<IEnumerable<Subscription>> GetSubscriptions(int userId)
+    {
+        var subscriptions = _subscriptionService.GetSubscriptions(userId);
+        return Ok(subscriptions.Select(x => new Subscription(x)));
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> AddSubscription([FromBody] AddSubscriptionsUserDto subscriptionDto)
-        {
-            try
-            {
-                Guard.Against.Null(subscriptionDto, nameof(subscriptionDto));
+    [HttpPost("subscribe")]
+    public ActionResult Subscribe(Subscription subscriptionDto)
+    {
+        _subscriptionService.Subscribe(subscriptionDto );
+        return Ok();
+    }
 
-                await _subscriptionsRepository.AddSubscriptionAsync(subscriptionDto.SubscriberId, subscriptionDto.TargetUserId);
-
-                return Ok();
-            }
-            catch (ValidationException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (NotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
-        }
+    [HttpDelete("unsubscribe")]
+    public ActionResult Unsubscribe(Subscription subscriptionDto)
+    {
+        _subscriptionService.Unsubscribe(subscriptionDto );
+        return Ok();
     }
 }

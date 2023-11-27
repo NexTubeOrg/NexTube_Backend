@@ -10,14 +10,14 @@ namespace NexTube.WebApi.DTO.Auth.User
     {
 
         public int? SubscriberId { get; set; }
-        public int? TargetUserId { get; set; }
+        public int? UserId { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AddSubscriptionsUserDto, SubscriptionsUserCommand>()
+            profile.CreateMap<AddSubscriptionsUserDto, Subscription>()
 
                 .ForMember(command => command.SubscriberId, opt => opt.MapFrom(dto => dto.SubscriberId))
-                .ForMember(command => command.TargetUserId, opt => opt.MapFrom(dto => dto.TargetUserId));
+                .ForMember(command => command.UserId, opt => opt.MapFrom(dto => dto.UserId));
 
         }
     }

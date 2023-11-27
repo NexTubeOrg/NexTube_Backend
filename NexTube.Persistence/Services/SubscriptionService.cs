@@ -1,93 +1,38 @@
-﻿using Ardalis.GuardClauses;
-using MySql.Data.MySqlClient;
-using NexTube.Application.Common.Interfaces;
+﻿using NexTube.Application.Common.Interfaces;
 using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
-using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
 
-public class SubscriptionService
+public class SubscriptionService: ISubscriptionsRepository
 {
-    private readonly ISubscriptionsRepository _subscriptionsRepository;
+    private readonly ISubscriptionsRepository _subscriptionRepository;
 
-    public SubscriptionService(ISubscriptionsRepository subscriptionsRepository)
+    public SubscriptionService(ISubscriptionsRepository subscriptionRepository)
     {
-        _subscriptionsRepository = subscriptionsRepository;
+        _subscriptionRepository = subscriptionRepository;
     }
 
-    public async Task SubscribeUserToUser(int subscriberId, int targetUserId)
+    public IEnumerable<Subscription> GetSubscriptions(int userId)
     {
-        // Додавання підписки
-        await _subscriptionsRepository.AddSubscriptionAsync(subscriberId, targetUserId);
+        return _subscriptionRepository.GetSubscriptions(userId);
     }
 
-    public async Task UnsubscribeUserFromUser(int subscriberId, int targetUserId)
+    public void Subscribe(Subscription subscriber )
     {
-        // Видалення підписки
-        await _subscriptionsRepository.DeleteSubscriptionAsync(subscriberId, targetUserId);
-    }
-    public async Task AddSubscriptionAsync(int subscriberId, int targetUserId)
-    {
-        // Check if the subscription exists
-        var subscription = await _subscriptionsRepository.GetByIdAsync(subscriberId, targetUserId);
-        if (subscription != null)
+        var subscription = new Subscription
         {
-            throw new ValidationException($"Subscription already exists for subscriber ID {subscriberId} and target user ID {targetUserId}");
-        }
-
-        // Create a new subscription
-        var newSubscription = new SubscriptionsUserCommand
-        {
-
-            SubscriberId = subscriberId,
-            TargetUserId = targetUserId,
+            UserId = subscriber.UserId,
+            SubscriberId = subscriber.SubscriberId,
+            DateCreated = subscriber.DateCreated
         };
 
-        // Save the subscription
-        await _subscriptionsRepository.SaveAsync(newSubscription);
+        _subscriptionRepository.Subscribe(subscription);
     }
-    public async Task SaveAsync(SubscriptionsUserCommand subscription)
+
+    public void Unsubscribe(Subscription subscriber)
     {
-        if (subscription == null)
+        _subscriptionRepository.Unsubscribe(new Subscription
         {
-            throw new ArgumentNullException(nameof(subscription));
-        }
-
-        // Check if the subscription exists
-        var existingSubscription = await _subscriptionsRepository.GetByIdAsync(subscription.SubscriberId, subscription.TargetUserId);
-        if (existingSubscription != null)
-        {
-            // Update the existing subscription
-            existingSubscription.SubscriberId = subscription.SubscriberId;
-            existingSubscription.TargetUserId = subscription.TargetUserId;
-
-            await _subscriptionsRepository.SaveAsync(existingSubscription);
-        }
-        else
-        {
-            // Create a new subscription
-            var newSubscription = new SubscriptionsUserCommand
-            {
-                SubscriberId = subscription.SubscriberId,
-                TargetUserId = subscription.TargetUserId,
-            };
-
-            await _subscriptionsRepository.SaveAsync(newSubscription);
-        }
+            UserId = subscriber.UserId,
+            SubscriberId = subscriber.SubscriberId,
+        });
     }
-
-
-
-    public async Task DeleteSubscriptionAsync(int subscriberId, int targetUserId)
-    {
-        // Check if the subscription exists
-        var subscription = await _subscriptionsRepository.GetByIdAsync(subscriberId, targetUserId);
-        if (subscription == null)
-        {
-            throw new NotFoundException("",$"Subscription does not exist for subscriber ID {subscriberId} and target user ID {targetUserId}");
-        }
-
-        // Delete the subscription
-        await _subscriptionsRepository.DeleteAsync(subscription);
-    }
-
 }

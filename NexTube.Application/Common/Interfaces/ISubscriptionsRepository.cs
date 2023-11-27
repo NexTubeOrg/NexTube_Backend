@@ -2,6 +2,7 @@
 using NexTube.Application.CQRS.Identity.Users.Commands.CreateUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.SubscriptionsUser;
 using NexTube.Application.Models.Lookups;
+using NexTube.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +15,20 @@ namespace NexTube.Application.Common.Interfaces
 
     public interface ISubscriptionsRepository
     {
-        Task<SubscriptionsUserCommand> GetByIdAsync(int id, int targetUserId);
-        Task<IEnumerable<SubscriptionsUserCommand>> GetBySubscriberIdAsync(int subscriberId);
-        Task<IEnumerable<SubscriptionsUserCommand>> GetByTargetUserIdAsync(int targetUserId);
-        Task<(Result Result, int UserId)> SaveAsync(SubscriptionsUserCommand subscription);
-        Task DeleteAsync(SubscriptionsUserCommand subscription);
 
-        Task AddSubscriptionAsync(int subscriberId, int targetUserId);
-        Task DeleteSubscriptionAsync(int subscriberId, int targetUserId);
-        Task AddSubscriptionAsync(int? subscriberId, int? targetUserId);
-        Task<(Result Result, int UserId)> SaveAsync(int id, int subscriberId, int targetUserId);
+        //Task<(Result Result, int UserId)> SaveAsync(SubscriptionsUserCommand subscription);
+        //Task<(Result Result, ApplicationUser User)> GetByIdAsync(int userId);
+        //Task DeleteSubscriptionAsync(int subscriberId, int targetUserId);
+        //Task SubscribeAsync(int userId, int subscriberId);
+        //Task UnsubscribeAsync(int userId, int subscriberId);
+        //IEnumerable<SubscriptionsUserCommand> GetSubscriptions(int userId);
+         
+            IEnumerable<Subscription> GetSubscriptions(int userId);
+      //void Unsubscribe(int userId, int subscriberId);
+      //      void Subscribe(int userId, int subscriberId );
+        void Subscribe(Subscription subscription);
+  
+        void Unsubscribe(Subscription subscription);
     }
 
 }
