@@ -2,7 +2,7 @@
 using NexTube.Application.Common.Mappings;
 using NexTube.Application.CQRS.Videos.Commands.DeleteVideo;
 
-namespace NexTube.WebApi.DTO.Files.Video
+namespace NexTube.WebApi.DTO.Videos
 {
     public class DeleteVideoDto : IMapWith<DeleteVideoCommand>
     {

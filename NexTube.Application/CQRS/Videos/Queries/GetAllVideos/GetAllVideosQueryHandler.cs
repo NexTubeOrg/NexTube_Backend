@@ -21,8 +21,11 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetAllVideos
         public async Task<GetAllVideosQueryResult> Handle(GetAllVideosQuery request, CancellationToken cancellationToken)
         {
             var videoLookups = await _dbContext.Videos
-               .Include(e => e.Creator)
                .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public || v.Creator.Id == request.RequesterId)
+               .OrderByDescending(c => c.DateCreated)
+               .Include(e => e.Creator)
+               .Skip((request.Page - 1) * request.PageSize)
+               .Take(request.PageSize)
                .Select(v => new VideoLookup()
                {
                    Id = v.Id,
