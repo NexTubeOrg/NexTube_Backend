@@ -41,10 +41,13 @@ namespace NexTube.WebApi.Controllers {
             return Ok(result);
         }
 
-        [Authorize(Roles = Roles.User, Policy = Policies.CanDeleteOwnComment)]
+        [Authorize(Roles = Roles.User)]
         [HttpDelete]
         public async Task<ActionResult> DeleteComment([FromQuery] DeleteCommentDto dto) {
+            await EnsureCurrentUserAssignedAsync();
+
             var command = mapper.Map<DeleteCommentCommand>(dto);
+            command.Requester = CurrentUser;
             await Mediator.Send(command);
 
             return Ok();
