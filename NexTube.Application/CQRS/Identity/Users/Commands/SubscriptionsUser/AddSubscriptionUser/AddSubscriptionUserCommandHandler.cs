@@ -11,11 +11,11 @@ using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Subscriptions.Handlers
 {
-    public class SubscriptionUserCommandHandler : IRequestHandler<SubscriptionUserCommand, bool>
+    public class AddSubscriptionUserCommandHandler : IRequestHandler<SubscriptionUserCommand, bool>
     {
         private readonly IApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public SubscriptionUserCommandHandler(UserManager<ApplicationUser> userManager,IApplicationDbContext context)
+        public AddSubscriptionUserCommandHandler(UserManager<ApplicationUser> userManager,IApplicationDbContext context)
         {
             _context = context;
             _userManager = userManager;
@@ -38,7 +38,7 @@ namespace NexTube.Application.Subscriptions.Handlers
             var subscriptionEntity = new SubscriptionEntity
             {
                 User = await _userManager.FindByIdAsync(request.User.ToString()),
-                Subscriber = await _userManager.FindByIdAsync(request.User.ToString()),
+                Subscriber = await _userManager.FindByIdAsync(request.Subscriber.ToString()),
             };
 
             _context.Subscriptions.Add(subscriptionEntity);

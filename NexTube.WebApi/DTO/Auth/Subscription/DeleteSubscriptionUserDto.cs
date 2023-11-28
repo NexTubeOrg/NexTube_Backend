@@ -6,12 +6,12 @@ using NexTube.Domain.Entities;
 
 namespace NexTube.WebApi.DTO.Auth.User
 {
-    public class SubscriptionUserDto : IMapWith<SubscriptionUserCommand> {
+    public class DeleteSubscriptionUserDto : IMapWith<DeleteSubscriptionUserCommand> {
 
         public int SubscribeTo { get;  set; }
 
         public void Mapping(Profile profile) {
-            profile.CreateMap< SubscriptionUserDto, SubscriptionUserCommand >()
+            profile.CreateMap<DeleteSubscriptionUserDto, DeleteSubscriptionUserCommand>()
           
                  .ForMember(dest => dest.Subscriber, opt => opt.MapFrom(dto => dto.SubscribeTo));
 
