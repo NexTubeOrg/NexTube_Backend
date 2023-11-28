@@ -21,15 +21,10 @@ namespace NexTube.WebApi.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{videoFileId}")]
-        public async Task<ActionResult> GetVideoFileUrl(string videoFileId)
+        [HttpGet]
+        public async Task<ActionResult> GetVideoFileUrl([FromQuery] GetVideoFileUrlDto dto)
         {
-            var getVideoDto = new GetVideoFileUrlDto()
-            {
-                VideoFileId = videoFileId,
-            };
-
-            var query = mapper.Map<GetVideoUrlQuery>(getVideoDto);
+            var query = mapper.Map<GetVideoUrlQuery>(dto);
             var getVideoUrlResult = await Mediator.Send(query);
 
             return Redirect(getVideoUrlResult.VideoUrl);

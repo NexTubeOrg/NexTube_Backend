@@ -9,5 +9,6 @@ namespace NexTube.Application.Common.Interfaces
         Task<(Result Result, string VideoFileId)> UploadVideoAsync(Stream source);
         Task<(Result Result, string VideoUrl)> GetUrlVideoAsync(string videoFileId);
         Task<Result> DeleteVideoAsync(string videoFileId);
+        Task<bool> IsVideoExists(string videoFileId);
     }
 }

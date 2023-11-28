@@ -34,5 +34,7 @@ namespace NexTube.Persistence.Services
             await _fileService.DeleteFileAsync("videos", videoFileId);
             return Result.Success();
         }
+
+        public async Task<bool> IsVideoExists(string videoFileId) => await _fileService.IsFileExistsAsync("videos", videoFileId);
     }
 }

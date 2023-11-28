@@ -9,12 +9,12 @@ using WebShop.Application.Common.Exceptions;
 
 namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
 {
-    public class UpdateVideoHandler : IRequestHandler<UpdateVideoCommand, VideoLookup>
+    public class UpdateVideoCommandHandler : IRequestHandler<UpdateVideoCommand, VideoLookup>
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IDateTimeService _dateTimeService;
 
-        public UpdateVideoHandler(IApplicationDbContext context, IDateTimeService dateTimeService)
+        public UpdateVideoCommandHandler(IApplicationDbContext context, IDateTimeService dateTimeService)
         {
             _dbContext = context;
             _dateTimeService = dateTimeService;
