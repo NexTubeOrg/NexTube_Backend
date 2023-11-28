@@ -12,6 +12,7 @@ using NexTube.Application.CQRS.Reactions.VideoReactions.Commands.SetReaction;
 using NexTube.Domain.Entities;
 using NexTube.WebApi.DTO.Reactions.VideoReactions;
 using NexTube.Application.CQRS.Reactions.VideoReactions.Queries.GetVideoUserReaction;
+using NexTube.Application.CQRS.Reactions.VideoReactions.Queries.GetVideoCountReactions;
 
 namespace NexTube.WebApi.Controllers {
     [Route("api/Video/Reaction/[action]")]
@@ -40,6 +41,15 @@ namespace NexTube.WebApi.Controllers {
         public async Task<ActionResult> GetRequesterReaction([FromRoute] int videoId) {
             var query = new GetVideoUserReactionQuery() {
                 UserId = this.UserId,
+                VideoId = videoId
+            };
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet("{videoId}")]
+        public async Task<ActionResult> GetCountVideoReactions([FromRoute] int videoId) {
+            var query = new GetVideoCountReactionsQuery() {
                 VideoId = videoId
             };
             var result = await Mediator.Send(query);
