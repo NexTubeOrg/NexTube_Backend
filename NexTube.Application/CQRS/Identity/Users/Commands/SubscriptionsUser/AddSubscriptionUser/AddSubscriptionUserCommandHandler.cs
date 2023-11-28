@@ -11,7 +11,7 @@ using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Subscriptions.Handlers
 {
-    public class AddSubscriptionUserCommandHandler : IRequestHandler<SubscriptionUserCommand, bool>
+    public class AddSubscriptionUserCommandHandler : IRequestHandler<AddSubscriptionUserCommand, bool>
     {
         private readonly IApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,7 +22,7 @@ namespace NexTube.Application.Subscriptions.Handlers
 
         }
 
-        public async Task<bool> Handle(SubscriptionUserCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AddSubscriptionUserCommand request, CancellationToken cancellationToken)
         {
             var existingSubscription = await _context.Subscriptions
                 .FirstOrDefaultAsync(s =>

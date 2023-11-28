@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
+using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Application.Subscriptions.Commands;
 using NexTube.WebApi.DTO.Auth.Subscription;
 using NexTube.WebApi.DTO.Auth.User;
@@ -34,7 +35,7 @@ namespace NexTube.WebApi.Controllers
         {
             await EnsureCurrentUserAssignedAsync();
             
-            var command = mapper.Map<SubscriptionUserCommand>(dto);
+            var command = mapper.Map<AddSubscriptionUserCommand>(dto);
         
             command.User = UserId;
 
@@ -42,7 +43,14 @@ namespace NexTube.WebApi.Controllers
 
             return Ok(result);
         }
-
+        [HttpGet ("Subscriptions")]
+        public async Task<ActionResult> GetCommentsList([FromQuery] GetSubscriptionUserDto dto)
+        {
+            var query = mapper.Map<GetSubscriptionQueriesCommand>(dto);
+         
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
 
         [Authorize(Roles = Roles.User )]
         [HttpDelete ("UnSubscribe")]
