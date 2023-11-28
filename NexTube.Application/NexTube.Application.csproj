@@ -26,8 +26,4 @@
     <ProjectReference Include="..\NexTube.Domain\NexTube.Domain.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="CQRS\Reactions\VideoReactions\Queries\" />
-	</ItemGroup>
-
 </Project>

@@ -11,9 +11,10 @@ using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentRepliesL
 using NexTube.Application.CQRS.Reactions.VideoReactions.Commands.SetReaction;
 using NexTube.Domain.Entities;
 using NexTube.WebApi.DTO.Reactions.VideoReactions;
+using NexTube.Application.CQRS.Reactions.VideoReactions.Queries.GetVideoUserReaction;
 
 namespace NexTube.WebApi.Controllers {
-    [Route("api/Video/React/[action]")]
+    [Route("api/Video/Reaction/[action]")]
     public class VideoReactionController : BaseController {
         private readonly IMapper mapper;
 
@@ -31,6 +32,17 @@ namespace NexTube.WebApi.Controllers {
 
             var result = await Mediator.Send(command);
 
+            return Ok(result);
+        }
+
+        [HttpGet("{videoId}")]
+        [Authorize(Roles = Roles.User)]
+        public async Task<ActionResult> GetRequesterReaction([FromRoute] int videoId) {
+            var query = new GetVideoUserReactionQuery() {
+                UserId = this.UserId,
+                VideoId = videoId
+            };
+            var result = await Mediator.Send(query);
             return Ok(result);
         }
     }
