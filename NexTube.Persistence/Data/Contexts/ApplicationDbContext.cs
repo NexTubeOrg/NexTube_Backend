@@ -15,13 +15,14 @@ namespace NexTube.Persistence.Data.Contexts
         public DbSet<VideoEntity> Videos { get; set; } = null!;
         public DbSet<VideoCommentEntity> VideoComments { get; set; } = null!;
         public DbSet<SubscriptionEntity> Subscriptions { get; set; } = null!;
-
+        public DbSet<ChannelEntity > Channel { get; set; } = null!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new ChannelUserConfiguration());
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
             builder.ApplyConfiguration(new SubscriptionEntityConfiguration());

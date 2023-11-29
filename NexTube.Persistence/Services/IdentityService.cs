@@ -21,18 +21,20 @@ namespace NexTube.Persistence.Services
         private readonly IPhotoService photoService;
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IProviderAuthManager providerAuthManager;
-
+        private readonly UserManager<ChannelEntity> _ChannelManager;
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager,
             IJwtService jwtService,
             IProviderAuthManager providerAuthManager,
             IMailService mailService,
-            IPhotoService photoService,
+            UserManager<ChannelEntity> ChannelManager,
+        IPhotoService photoService,
             IHttpClientFactory httpClientFactory)
         {
 
             _userManager = userManager;
+            _ChannelManager = ChannelManager;
             this.roleManager = roleManager;
             this.jwtService = jwtService;
             this.providerAuthManager = providerAuthManager;
@@ -254,10 +256,11 @@ namespace NexTube.Persistence.Services
 
             return (Result.Success(), user);
         }
+     
 
         public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _ChannelManager.FindByIdAsync(userId.ToString());
 
             if (user == null)
             {
@@ -268,7 +271,7 @@ namespace NexTube.Persistence.Services
             user.Description = description;
 
 
-            var result = await _userManager.UpdateAsync(user);
+            var result = await _ChannelManager.UpdateAsync(user);
             return (result.ToApplicationResult(), user.Id);
 
         }
