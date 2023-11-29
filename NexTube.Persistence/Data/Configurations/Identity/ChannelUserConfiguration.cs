@@ -9,7 +9,7 @@ namespace NexTube.Persistence.Data.Configurations.Identity
         public void Configure(EntityTypeBuilder<ChannelEntity> builder)
         {
             #region Properties
-
+            builder.Property(a => a.Name).HasMaxLength(500).IsRequired();
             builder.Property(a => a.Nickname).HasMaxLength(500).IsRequired();
             builder.Property(a => a.Description).HasMaxLength(500).IsRequired();
 
