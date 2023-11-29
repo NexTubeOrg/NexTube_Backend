@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CQRS\Identity\Users\Commands\Channel\**" />
+    <EmbeddedResource Remove="CQRS\Identity\Users\Commands\Channel\**" />
+    <None Remove="CQRS\Identity\Users\Commands\Channel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<PackageReference Include="Ardalis.GuardClauses">
 		<Version>4.0.1</Version>
 	</PackageReference>
@@ -31,9 +37,5 @@
 	<ItemGroup>
     <ProjectReference Include="..\NexTube.Domain\NexTube.Domain.csproj" />
   </ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="CQRS\Identity\Users\Commands\Channel\" />
-	</ItemGroup>
 
 </Project>
