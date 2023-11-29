@@ -32,4 +32,8 @@
     <ProjectReference Include="..\NexTube.Domain\NexTube.Domain.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="CQRS\Identity\Users\Commands\Channel\" />
+	</ItemGroup>
+
 </Project>
