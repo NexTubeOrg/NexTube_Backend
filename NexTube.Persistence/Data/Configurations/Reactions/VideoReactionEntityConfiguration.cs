@@ -5,17 +5,18 @@ using NexTube.Domain.Entities;
 namespace NexTube.Persistence.Data.Configurations.Reactions {
     public class VideoReactionEntityConfiguration : IEntityTypeConfiguration<VideoReactionEntity> {
         public void Configure(EntityTypeBuilder<VideoReactionEntity> builder) {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => new {
+                x.CreatorId,
+                x.ReactedVideoId
+            });
 
-            // remove like when user was deleted
             builder.HasOne(r => r.Creator)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(x => x.CreatorId);
 
-            // remove like when video was deleted
             builder.HasOne(r => r.ReactedVideo)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(x => x.ReactedVideoId);
 
             builder.Property(r => r.Type)
                 .IsRequired();
