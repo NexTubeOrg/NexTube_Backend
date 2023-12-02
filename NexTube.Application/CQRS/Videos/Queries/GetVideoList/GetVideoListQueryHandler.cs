@@ -35,6 +35,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
                    AccessModificator = v.AccessModificator.Modificator,
                    PreviewPhotoFile = v.PreviewPhotoFileId,
                    DateCreated = v.DateCreated,
+                   Views = v.Views,
                    Creator = new UserLookup()
                    {
                        UserId = v.Creator.Id,
@@ -47,7 +48,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
 
             var GetAllVideoEntitiesQueryResult = new GetVideoListQueryResult()
             {
-                VideoEntities = videoLookups,
+                Videos = videoLookups,
             };
 
             return GetAllVideoEntitiesQueryResult;

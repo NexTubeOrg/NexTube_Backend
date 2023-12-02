@@ -32,6 +32,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideo
                     AccessModificator = v.AccessModificator.Modificator,
                     PreviewPhotoFile = v.PreviewPhotoFileId,
                     DateCreated = v.DateCreated,
+                    Views = v.Views,
                     Creator = new UserLookup()
                     {
                         UserId = v.Creator.Id,

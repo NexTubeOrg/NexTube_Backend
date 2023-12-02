@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebShop.Domain.Constants;
 using NexTube.Application.CQRS.Videos.Commands.UploadVideo;
-using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Commands.UpdateVideo;
 using NexTube.Application.CQRS.Videos.Commands.DeleteVideo;
 using NexTube.WebApi.DTO.Videos;
 using NexTube.Application.CQRS.Videos.Queries.GetVideoList;
+using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Queries.GetVideo;
 
 namespace NexTube.WebApi.Controllers
@@ -22,9 +22,9 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetVideoFileUrl([FromQuery] GetVideoUrlDto dto)
+        public async Task<ActionResult> GetVideoUrl([FromQuery] GetVideoUrlDto dto)
         {
-            var query = mapper.Map<Application.CQRS.Files.Videos.GetVideoFileUrl.GetVideoUrlQuery>(dto);
+            var query = mapper.Map<GetVideoUrlQuery>(dto);
             var getVideoUrlResult = await Mediator.Send(query);
 
             return Redirect(getVideoUrlResult.VideoUrl);
@@ -33,7 +33,7 @@ namespace NexTube.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult> GetVideo([FromQuery] GetVideoDto dto)
         {
-            var query = mapper.Map<Application.CQRS.Videos.Queries.GetVideo.GetVideoQuery>(dto);
+            var query = mapper.Map<GetVideoQuery>(dto);
             query.RequesterId = this.UserId;
 
             var getVideoByIdResult = await Mediator.Send(query);
@@ -42,7 +42,7 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllVideos([FromQuery] GetVideoListDto dto)
+        public async Task<ActionResult> GetVideoList([FromQuery] GetVideoListDto dto)
         {
             var query = mapper.Map<GetVideoListQuery>(dto);
             query.RequesterId = this.UserId;
