@@ -4,6 +4,6 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
 {
     public class GetVideoListQueryResult
     {
-        public IEnumerable<VideoLookup> Videos { get; set; } = null!;
+        public IEnumerable<VideoLookup> VideoEntities { get; set; } = null!;
     }
 }
