@@ -51,7 +51,15 @@ namespace NexTube.WebApi.Controllers
             var result = await Mediator.Send(query);
             return Ok(result);
         }
-
+        [Authorize(Roles = Roles.User)]
+        [HttpGet("isSubscriptions")]
+        public async Task<ActionResult> CheckSubscriber([FromQuery] CheckSubscribeUserDto dto)
+        {
+            var query = mapper.Map<CheckSubscriptionUserCommand>(dto);
+            query.UserID = UserId;
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
         [Authorize(Roles = Roles.User )]
         [HttpDelete ("UnSubscribe")]
         public async Task<IActionResult> UnSubscribe([FromQuery] DeleteSubscriptionUserDto dto)
