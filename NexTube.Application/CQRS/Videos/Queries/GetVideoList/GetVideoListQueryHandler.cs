@@ -47,7 +47,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
 
             var GetAllVideoEntitiesQueryResult = new GetVideoListQueryResult()
             {
-                VideoEntities = videoLookups,
+                Videos = videoLookups,
             };
 
             return GetAllVideoEntitiesQueryResult;

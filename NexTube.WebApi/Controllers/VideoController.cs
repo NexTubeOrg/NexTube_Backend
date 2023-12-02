@@ -22,7 +22,7 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetVideoFileUrl([FromQuery] GetVideoFileUrlDto dto)
+        public async Task<ActionResult> GetVideoUrl([FromQuery] GetVideoFileUrlDto dto)
         {
             var query = mapper.Map<GetVideoUrlQuery>(dto);
             var getVideoUrlResult = await Mediator.Send(query);
@@ -42,7 +42,7 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllVideos([FromQuery] GetVideoListDto dto)
+        public async Task<ActionResult> GetVideoList([FromQuery] GetVideoListDto dto)
         {
             var query = mapper.Map<GetVideoListQuery>(dto);
             query.RequesterId = this.UserId;
