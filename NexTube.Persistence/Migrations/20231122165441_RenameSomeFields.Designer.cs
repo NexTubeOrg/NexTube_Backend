@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NexTube.Persistence.Data.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122165441_RenameSomeFields")]
+    partial class RenameSomeFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,9 +275,6 @@ namespace NexTube.Persistence.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("RepliedToId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("VideoEntityId")
                         .HasColumnType("integer");
 
@@ -284,8 +284,6 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("RepliedToId");
 
                     b.HasIndex("VideoEntityId");
 
@@ -325,9 +323,6 @@ namespace NexTube.Persistence.Migrations
 
                     b.Property<Guid?>("VideoFileId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Views")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -396,11 +391,6 @@ namespace NexTube.Persistence.Migrations
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("NexTube.Domain.Entities.VideoCommentEntity", "RepliedTo")
-                        .WithMany()
-                        .HasForeignKey("RepliedToId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("NexTube.Domain.Entities.VideoEntity", "VideoEntity")
                         .WithMany()
                         .HasForeignKey("VideoEntityId")
@@ -408,8 +398,6 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Creator");
-
-                    b.Navigation("RepliedTo");
 
                     b.Navigation("VideoEntity");
                 });

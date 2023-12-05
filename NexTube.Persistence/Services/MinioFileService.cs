@@ -2,6 +2,7 @@
 using NexTube.Application.Common.Models;
 using Minio;
 using Minio.DataModel.Args;
+using Minio.Exceptions;
 
 namespace NexTube.Persistence.Services {
     public class MinioFileService : IFileService {
@@ -38,6 +39,34 @@ namespace NexTube.Persistence.Services {
             var obj = await minioClient.PutObjectAsync(putObjArgs);
 
             return (Result.Success(), obj.ObjectName);
+        }
+
+
+        public async Task DeleteFileAsync(string bucket, string filename)
+        {
+            var removeObjArgs = new RemoveObjectArgs()
+                .WithBucket(bucket)
+                .WithObject(filename);
+
+            await minioClient.RemoveObjectAsync(removeObjArgs);
+        }
+
+        public async Task<bool> IsFileExistsAsync(string bucket, string filename)
+        {
+            try
+            {
+                var statObjArgs = new StatObjectArgs()
+                    .WithBucket(bucket)
+                    .WithObject(filename);
+
+                await minioClient.StatObjectAsync(statObjArgs);
+            }
+            catch (ObjectNotFoundException)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace NexTube.Persistence.Data.Contexts {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IApplicationDbContext {
         public DbSet<VideoEntity> Videos { get; set; } = null!;
         public DbSet<VideoCommentEntity> VideoComments { get; set; } = null!;
+        public DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; } = null!;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder) {
@@ -17,6 +18,7 @@ namespace NexTube.Persistence.Data.Contexts {
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
 
             builder.ApplyConfiguration(new VideoEntityConfiguration());
+            builder.ApplyConfiguration(new VideoAccessModificatorEntityConfiguration());
             builder.ApplyConfiguration(new VideoCommentEntityConfiguration());
 
             base.OnModelCreating(builder);
