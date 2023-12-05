@@ -34,7 +34,8 @@ namespace NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsLis
                         FirstName = c.Creator.FirstName,
                         LastName = c.Creator.LastName,
                         ChannelPhoto = c.Creator.ChannelPhotoFileId.ToString()
-                    }
+                    },
+                    RepliesCount = _dbContext.VideoComments.Count(v => v.RepliedTo.Id == c.Id)
                 });
 
             var comments = await query.ToListAsync();
