@@ -44,7 +44,7 @@ namespace NexTube.WebApi.Controllers
             return Ok(result);
         }
         [HttpGet ("Subscriptions")]
-        public async Task<ActionResult> GetCommentsList([FromQuery] GetSubscriptionUserDto dto)
+        public async Task<ActionResult> GetSubscribeList([FromQuery] GetSubscriptionUserDto dto)
         {
             var query = mapper.Map<GetSubscriptionQueriesCommand>(dto);
          

@@ -14,7 +14,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser
         public async Task<int> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
              
-          var result   = await _ichenalServise.UdateUserAsync(request.UserId, request.Nickname, request.Description);
+          var result   = await _ichenalServise.UdateUserAsync(request.UserId, request.Nickname, request.Description,request.FirstName,request.LastName);
 
             return result.UserId;
         }

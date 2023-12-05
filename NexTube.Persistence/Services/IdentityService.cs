@@ -255,7 +255,7 @@ namespace NexTube.Persistence.Services
             return (Result.Success(), user);
         }
 
-        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description)
+        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description,string firstname,string lastname )
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
 
@@ -264,6 +264,8 @@ namespace NexTube.Persistence.Services
                 throw new NotFoundException("User", userId.ToString());
             }
             user.Id = userId;
+            user.FirstName = nickname;
+            user.LastName = nickname;   
             user.Nickname = nickname;
             user.Description = description;
 
