@@ -14,6 +14,14 @@ namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
             RuleFor(c => c.VideoId)
                 .NotNull()
                 .GreaterThan(0);
+
+            RuleFor(c => c.Name)
+                .MinimumLength(2)
+                .MaximumLength(100);
+
+            RuleFor(c => c.Description)
+                .MinimumLength(2)
+                .MaximumLength(1000);
         }
     }
 }

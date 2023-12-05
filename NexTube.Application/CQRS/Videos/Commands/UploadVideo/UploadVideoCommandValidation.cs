@@ -8,11 +8,11 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
         public UploadVideoCommandValidation(IPhotoService photoService)
         {
             RuleFor(c => c.Name)
-                .MinimumLength(1)
+                .MinimumLength(2)
                 .MaximumLength(100);
 
             RuleFor(c => c.Description)
-                .MinimumLength(1)
+                .MinimumLength(2)
                 .MaximumLength(1000);
 
             RuleFor(c => c.PreviewPhotoSource)
