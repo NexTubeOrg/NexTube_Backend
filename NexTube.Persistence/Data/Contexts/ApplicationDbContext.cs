@@ -16,7 +16,7 @@ namespace NexTube.Persistence.Data.Contexts
         public DbSet<VideoCommentEntity> VideoComments { get; set; } = null!;
         public DbSet<SubscriptionEntity> Subscriptions { get; set; } = null!;
         public DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; } = null!;
-
+ 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
 

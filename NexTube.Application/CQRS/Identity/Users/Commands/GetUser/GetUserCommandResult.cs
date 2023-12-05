@@ -1,10 +1,15 @@
-﻿using NexTube.Application.Common.Models;
+﻿
+using NexTube.Domain.Entities;
 
-namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser {
-    public class CreateUserCommandResult
+namespace NexTube.Application.CQRS.Identity.Users.Commands.GetUser {
+    public class GetUserCommandResponse
     {
-        public Result Result { get; set; } = null!;
-        public string? Token { get; set; }
-        public int? UserId { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Nickname { get; set; }
+        public string? Description { get; set; }
+        public int Subsciptions { get; set; }
+        public int Video { get; set; }
+        public Guid? ChannelPhotoFileId { get; set; }
     }
 }

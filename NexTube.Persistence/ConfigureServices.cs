@@ -12,6 +12,8 @@ using NexTube.Persistence.Settings.Configurations;
 using NexTube.Application.Common.DbContexts;
 using IHttpClientFactory = NexTube.Application.Common.Interfaces.IHttpClientFactory;
 using HttpClientFactory = NexTube.Persistence.Services.HttpClientFactory;
+using MediatR;
+using NexTube.Application.CQRS.Identity.Users.Commands.GetUser;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -68,6 +70,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IDateTimeService, DateTimeService>();
         services.TryAddScoped<IHttpClientFactory, HttpClientFactory>();
         services.TryAddScoped<IVideoAccessModificatorService, VideoAccessModificatorService>();
+    
 
         return services;
     }

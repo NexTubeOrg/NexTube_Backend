@@ -1,33 +1,54 @@
-﻿using MediatR;
-using NexTube.Application.Common.Interfaces;
-using NexTube.Application.CQRS.Files.Photos.Commands.UploadSquarePhoto;
+﻿
+using Ardalis.GuardClauses;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NexTube.Application.Common.DbContexts;
+using NexTube.Domain.Entities;
 
-namespace NexTube.Application.CQRS.Identity.Users.Commands.CreateUser
+
+namespace NexTube.Application.CQRS.Identity.Users.Commands.GetUser
 {
-    public class CreateUserCommnadHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult>
+    public class GetUserCommnadHandler : IRequestHandler<GetUserCommand, GetUserCommandResponse>
     {
-        private readonly IIdentityService _identityService;
-        private readonly IJwtService _jwtService;
-        private readonly IMediator _mediator;
+        private readonly IApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CreateUserCommnadHandler(IIdentityService identityService, IJwtService jwtService, IPhotoService photoService, IMediator mediator)
+        public GetUserCommnadHandler(UserManager<ApplicationUser> userManager, IApplicationDbContext context)
         {
-            _identityService = identityService;
-            _jwtService = jwtService;
-            _mediator = mediator;
+            _userManager = userManager;
+            _context=context;
         }
-        public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+
+        public async Task<GetUserCommandResponse> Handle(GetUserCommand request, CancellationToken cancellationToken)
         {
-            var photo = await _mediator.Send(new UploadSquarePhotoCommand() { Source = request.ChannelPhotoStream });
+            // Замініть "User" та інші назви відповідно до вашої моделі користувача та контексту бази даних
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
-            var result = await _identityService.CreateUserAsync(
-                 request.Password, request.Email, request.FirstName, request.LastName, Guid.Parse(photo));
 
-            return new CreateUserCommandResult() {
-                Result = result.Result,
-                UserId = result.User.UserId,
-                Token = _jwtService.GenerateToken(result.User.UserId ?? -1, result.User)
+            if (user == null)
+            {
+                // Можна викинути виняток чи повернути null в залежності від ваших потреб
+                throw new NotFoundException(request.UserId.ToString(), nameof(ApplicationUser));
+            }
+
+            return new GetUserCommandResponse
+            {
+
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Nickname = user.Nickname,
+                Description = user.Description,
+                Subsciptions = await _context.Subscriptions
+    .Where(s => s.Subscriber.Id == request.UserId)
+    .CountAsync(),
+                Video= await _context.Videos
+    .Where(s => s.Creator.Id == request.UserId)
+    .CountAsync(),
+                ChannelPhotoFileId = Guid.Parse(user.ChannelPhotoFileId.ToString()),
+                // Додайте інші поля, які вам потрібні
             };
+
         }
     }
 }

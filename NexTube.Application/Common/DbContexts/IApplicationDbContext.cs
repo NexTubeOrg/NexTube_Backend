@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
- using NexTube.Application.Models.Lookups;
+ 
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Common.DbContexts {

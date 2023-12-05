@@ -21,4 +21,9 @@ public class Result
     {
         return new Result(false, errors);
     }
+
+    internal static T Fail<T>(string v)
+    {
+        throw new NotImplementedException();
+    }
 }

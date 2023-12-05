@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Identity.Users.Commands.ChangePassword;
 using NexTube.Application.CQRS.Identity.Users.Commands.CreateUser;
+using NexTube.Application.CQRS.Identity.Users.Commands.GetUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.Recover;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider;
 using NexTube.WebApi.DTO.Auth.ChangePassword;
+using NexTube.WebApi.DTO.Auth.Subscription;
 using NexTube.WebApi.DTO.Auth.User;
 using WebShop.Domain.Constants;
 
@@ -56,6 +58,17 @@ namespace NexTube.WebApi.Controllers {
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+        
+        
+        [HttpGet]
+        public async Task<ActionResult> GetUser([FromQuery] GetUserDto dto)
+        {
+           
+            var command = mapper.Map<GetUserCommand>(dto);
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+
 
         [Authorize(Roles = Roles.User)]
         [HttpPost]
