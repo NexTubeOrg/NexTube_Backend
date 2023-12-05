@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NexTube.Persistence.Data.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122165441_RenameSomeFields")]
+    partial class RenameSomeFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,9 +175,6 @@ namespace NexTube.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -197,9 +197,6 @@ namespace NexTube.Persistence.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Nickname")
-                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -240,40 +237,6 @@ namespace NexTube.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.SubscriptionEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("SubscriberId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("SubscriberId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Subscriptions");
-                });
-
             modelBuilder.Entity("NexTube.Domain.Entities.VideoAccessModificatorEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -312,9 +275,6 @@ namespace NexTube.Persistence.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("RepliedToId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("VideoEntityId")
                         .HasColumnType("integer");
 
@@ -324,8 +284,6 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("RepliedToId");
 
                     b.HasIndex("VideoEntityId");
 
@@ -365,9 +323,6 @@ namespace NexTube.Persistence.Migrations
 
                     b.Property<Guid?>("VideoFileId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Views")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -429,42 +384,12 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.SubscriptionEntity", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
-
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Subscriber")
-                        .WithMany()
-                        .HasForeignKey("SubscriberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Subscriber");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
                 {
                     b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("NexTube.Domain.Entities.VideoCommentEntity", "RepliedTo")
-                        .WithMany()
-                        .HasForeignKey("RepliedToId")
-                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("NexTube.Domain.Entities.VideoEntity", "VideoEntity")
                         .WithMany()
@@ -473,8 +398,6 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Creator");
-
-                    b.Navigation("RepliedTo");
 
                     b.Navigation("VideoEntity");
                 });

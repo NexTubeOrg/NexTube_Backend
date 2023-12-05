@@ -67,7 +67,7 @@ public static class ConfigureServices {
         services.TryAddScoped<IMailService, MailService>();
         services.TryAddScoped<IDateTimeService, DateTimeService>();
         services.TryAddScoped<IHttpClientFactory, HttpClientFactory>();
-     
+        services.TryAddScoped<IVideoAccessModificatorService, VideoAccessModificatorService>();
 
         return services;
     }
