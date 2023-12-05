@@ -8,6 +8,7 @@ using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
 using NexTube.WebApi.DTO.Comments.VideoComments;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddCommentReply;
 using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentRepliesList;
+using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetVideoCommentsCount;
 
 namespace NexTube.WebApi.Controllers {
     [Route("api/Video/Comment/[action]")]
