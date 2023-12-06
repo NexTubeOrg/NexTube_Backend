@@ -248,7 +248,7 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VideoAccessModificators");
+                    b.ToTable("VideoAccessModificators", (string)null);
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
@@ -289,7 +289,7 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("VideoEntityId");
 
-                    b.ToTable("VideoComments");
+                    b.ToTable("VideoComments", (string)null);
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b =>
@@ -340,7 +340,7 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("PlaylistId");
 
-                    b.ToTable("Videos");
+                    b.ToTable("Videos", (string)null);
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
@@ -368,7 +368,7 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("VideoPlaylists");
+                    b.ToTable("VideoPlaylists", (string)null);
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b =>
@@ -392,7 +392,7 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("ReactedVideoId");
 
-                    b.ToTable("VideoReactions");
+                    b.ToTable("VideoReactions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
