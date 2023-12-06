@@ -4,6 +4,7 @@ using NexTube.Application.Common.DbContexts;
 using NexTube.Domain.Entities;
 using NexTube.Persistence.Data.Configurations.Comments.VideoComments;
 using NexTube.Persistence.Data.Configurations.Identity;
+using NexTube.Persistence.Data.Configurations.Playlists;
 using NexTube.Persistence.Data.Configurations.Reactions;
 using NexTube.Persistence.Data.Configurations.Videos;
 
@@ -13,6 +14,7 @@ namespace NexTube.Persistence.Data.Contexts {
         public DbSet<VideoCommentEntity> VideoComments { get; set; } = null!;
         public DbSet<VideoReactionEntity> VideoReactions { get; set; } = null!;
         public DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; } = null!;
+        public DbSet<VideoPlaylistEntity> VideoPlaylists { get; set; } = null!;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder) {
@@ -23,6 +25,7 @@ namespace NexTube.Persistence.Data.Contexts {
             builder.ApplyConfiguration(new VideoAccessModificatorEntityConfiguration());
             builder.ApplyConfiguration(new VideoCommentEntityConfiguration());
             builder.ApplyConfiguration(new VideoReactionEntityConfiguration());
+            builder.ApplyConfiguration(new VideoPlaylistEntityConfiguration());
 
             base.OnModelCreating(builder);
         }
