@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.CreatePlaylist;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlaylists;
 using NexTube.WebApi.DTO.Playlists;
+using WebShop.Domain.Constants;
 
 namespace NexTube.WebApi.Controllers {
     [Route("api/Video/Playlist/[action]")]
@@ -20,6 +23,18 @@ namespace NexTube.WebApi.Controllers {
             var query = mapper.Map<GetUserPlaylistsQuery>(dto);
             var result = await mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Roles.User)]
+        public async Task<ActionResult> CreatePlaylist([FromBody] CreatePlaylistDto dto) {
+            await EnsureCurrentUserAssignedAsync();
+
+            var command = mapper.Map<CreatePlaylistCommand>(dto);
+            command.User = CurrentUser;
+            await mediator.Send(command);
+
+            return Ok();
         }
     }
 }
