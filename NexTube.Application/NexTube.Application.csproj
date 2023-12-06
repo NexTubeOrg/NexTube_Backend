@@ -26,4 +26,8 @@
     <ProjectReference Include="..\NexTube.Domain\NexTube.Domain.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="CQRS\Playlists\VideoPlaylists\Commands\" />
+	</ItemGroup>
+
 </Project>
