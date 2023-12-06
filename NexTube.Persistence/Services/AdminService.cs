@@ -26,6 +26,7 @@ namespace NexTube.Persistence.Services {
             _userManager = userManager;
             _roleManager = roleManager;
             
+            
         }
         public async Task<IEnumerable<ApplicationUser>> GetAllUsers(int page,int pageSize) {
             var users = await _userManager.Users
@@ -52,6 +53,7 @@ namespace NexTube.Persistence.Services {
         public async Task<Result> ReportUser(int creatorId,int abuserId,int videoId,Report.TypeOfReport typeOfReport, string body)
         {
             var abuser = await _dbContext.Users.Where(e => e.Id == abuserId).FirstOrDefaultAsync();
+  
 
             var creator = await _dbContext.Users.Where(e => e.Id == creatorId).FirstOrDefaultAsync();
 
