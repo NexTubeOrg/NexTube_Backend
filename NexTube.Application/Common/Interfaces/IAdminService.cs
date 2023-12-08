@@ -13,6 +13,10 @@ namespace NexTube.Application.Common.Interfaces
         Task<IEnumerable<ReportLookup>> GetAllReports(int page,int pageSize);
         Task<IEnumerable<ReportLookup>> GetAllReportsFromUser(int userId, int page, int pageSize);
 
+        Task<Result> AssignModerator(int userId);
+
+        Task<Result> RemoveModerator(int userId);
+
         Task<Result> RemoveReportById(int id);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NexTube.Application.CQRS.Files.Videos.Commands.UploadVideo;
+using NexTube.Application.CQRS.Videos.Commands.UploadVideo;
 using NexTube.Domain.Entities;
 namespace NexTube.Application.Models.Lookups
 {

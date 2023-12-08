@@ -22,7 +22,7 @@ namespace NexTube.Application.Models.Lookups
 
         public int? Id { get; set; }
 
-        public int? VideoId { get; set; }
+        public int? VideoId { get; set; }           
 
     }
 }

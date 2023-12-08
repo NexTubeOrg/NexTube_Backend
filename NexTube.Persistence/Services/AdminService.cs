@@ -28,10 +28,16 @@ namespace NexTube.Persistence.Services {
             
             
         }
-        public async Task<IEnumerable<ApplicationUser>> GetAllUsers(int page,int pageSize) {
-            var users = await _userManager.Users
-            .Skip((page - 1) * pageSize)
-                .Take(pageSize).ToListAsync();
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsers(int page, int pageSize) {
+            if (page < 1 || pageSize < 1 || (page - 1) * pageSize > _userManager.Users.Count())
+            {
+                throw new ArgumentException("Invalid page or pageSize values");
+            }
+
+            var users = (await _userManager.GetUsersInRoleAsync("User"))
+           .OrderBy(u => u.UserName)
+           .Skip((page - 1) * pageSize)
+           .Take(pageSize);
 
             return users;
 
@@ -47,6 +53,33 @@ namespace NexTube.Persistence.Services {
             await _userManager.RemoveFromRolesAsync(user,await _userManager.GetRolesAsync(user));
             await _userManager.AddToRoleAsync(user, "Banned");
             
+            return Result.Success();
+        }
+        public async Task<Result> AssignModerator(int userId)
+        {
+            var user = await _dbContext.Users.Where(e => e.Id == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
+            }
+            if(! await _userManager.IsInRoleAsync(_userManager.Users.Where(c => c.Id == userId).First(),"Moderator"))
+            await _userManager.AddToRoleAsync(user, "Moderator");
+            else
+            await _userManager.RemoveFromRoleAsync(user, "Moderator");
+
+            return Result.Success();
+        }
+        public async Task<Result> RemoveModerator(int userId)
+        {
+            var user = await _dbContext.Users.Where(e => e.Id == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
+            }
+            await _userManager.RemoveFromRolesAsync(user, new List<string>() { "Moderator" });
+
             return Result.Success();
         }
 

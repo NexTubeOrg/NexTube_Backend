@@ -11,8 +11,6 @@ namespace NexTube.WebApi.DTO.Admin
     {
         public int AbuserId { get; set; }
 
-        public int CreatorId { get; set; }
-
         public int? VideoId { get; set; } = null; 
 
         public string Body { get; set; } = string.Empty;
@@ -22,7 +20,6 @@ namespace NexTube.WebApi.DTO.Admin
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ReportUserDto, ReportUserCommand>()
-                .ForMember(command => command.CreatorId, opt => opt.MapFrom(dto => dto.CreatorId))
             .ForMember(command => command.AbuserId, opt => opt.MapFrom(dto => dto.AbuserId))
             .ForMember(command => command.TypeOfReport, opt => opt.MapFrom(dto => dto.Type))
             .ForMember(command => command.Body, opt => opt.MapFrom(dto => dto.Body))

@@ -2,15 +2,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NexTube.Application.CQRS.Files.Videos.Commands.RemoveVideoByEntityId;
-using NexTube.Application.CQRS.Files.Videos.Queries.GetAllVideoEntities;
+
 using NexTube.Application.CQRS.Identity.Reports.Commands;
 using NexTube.Application.CQRS.Identity.Reports.Queries;
+using NexTube.Application.CQRS.Identity.Users.Commands.AssignModerator;
 using NexTube.Application.CQRS.Identity.Users.Commands.BanUser;
+
 using NexTube.Application.CQRS.Identity.Users.Queries;
 using NexTube.WebApi.DTO.Admin;
 using NexTube.WebApi.DTO.Auth.User;
-using NexTube.WebApi.DTO.Files.Video;
+
 using WebShop.Domain.Constants;
 
 namespace NexTube.WebApi.Controllers
@@ -34,7 +35,7 @@ namespace NexTube.WebApi.Controllers
             return Ok(getAllUsersQueryResult);
         }
         [Authorize(Roles = Roles.Administrator + "," + Roles.Moderator)]
-        [HttpPost]
+        [HttpPost]  
         public async Task<ActionResult> BanUser([FromBody] BanUserDto dto)
         {
             var command = mapper.Map<BanUserCommand>(dto);
@@ -47,9 +48,10 @@ namespace NexTube.WebApi.Controllers
 
         [Authorize(Roles = Roles.User)]
         [HttpPost]
-        public async Task<ActionResult> ReportUser([FromForm] ReportUserDto dto)
+        public async Task<ActionResult> ReportUser(ReportUserDto dto)
         {
             var command = mapper.Map<ReportUserCommand>(dto);
+            command.CreatorId =  UserId;    
             var result = await Mediator.Send(command);
             if (result.Succeeded == false)
                 return UnprocessableEntity(result);
@@ -86,6 +88,19 @@ namespace NexTube.WebApi.Controllers
 
             return Ok();
         }
+
+        [Authorize(Roles = Roles.Administrator )]
+        [HttpPost]
+        public async Task<ActionResult> AssignModerator([FromBody] int userId)
+        {
+            var command = new AssignModeratorCommand() { UserId = userId };
+            var result = await Mediator.Send(command);
+            if (result.Result.Succeeded == false)
+                return UnprocessableEntity(result);
+
+            return Ok(result);
+        }
+       
 
 
     }
