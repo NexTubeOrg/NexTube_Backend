@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Minio.Exceptions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
 using NexTube.Persistence.Settings.Configurations;
@@ -68,6 +69,18 @@ namespace NexTube.Persistence.Services
             }
             catch (UnknownImageFormatException) {
                 return false;
+            }
+        }
+
+        public async Task DeletePhotoAsync(string photoId)
+        {
+            foreach (var size in _options.ChannelPhotoWidths)   
+            {
+                try
+                {
+                    await _fileService.DeleteFileAsync("photos", $"{photoId}_{size}");
+                }
+                catch (InvalidObjectNameException) { }
             }
         }
     }

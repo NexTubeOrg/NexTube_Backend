@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
 
-namespace NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment
-{
-    public class AddCommentCommandValidation : AbstractValidator<AddCommentCommand>
-    {
-        public AddCommentCommandValidation()
-        {
+namespace NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment {
+    public class AddCommentReplyCommandValidation : AbstractValidator<AddCommentCommand> {
+        public AddCommentReplyCommandValidation() {
             RuleFor(c => c.Content)
                 .NotEmpty()
                 .MinimumLength(1)

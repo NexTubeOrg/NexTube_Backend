@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NexTube.Application.Common.Interfaces;
+using NexTube.Domain.Constants;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Identity;
 using WebShop.Application.Common.Exceptions;
@@ -36,6 +37,23 @@ namespace NexTube.Persistence.Data.Seeders {
                 catch (AggregateException) {
 
                 }
+
+
+                //add video modificators
+                var videoAccessModificatorService = scope.ServiceProvider.GetRequiredService<IVideoAccessModificatorService>();
+                try
+                {
+                    videoAccessModificatorService.CreateAccessModificatorAsync(VideoAccessModificators.Public).Wait();
+                }
+                catch (AlreadyExistsException) { }
+                catch (AggregateException) { }
+
+                try
+                {
+                    videoAccessModificatorService.CreateAccessModificatorAsync(VideoAccessModificators.Private).Wait();
+                }
+                catch (AlreadyExistsException) { }
+                catch (AggregateException) { }
 
 
                 try

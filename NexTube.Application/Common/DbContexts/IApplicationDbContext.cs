@@ -6,6 +6,8 @@ namespace NexTube.Application.Common.DbContexts {
     public interface IApplicationDbContext {
         DbSet<VideoEntity> Videos { get; set; }
         DbSet<VideoCommentEntity> VideoComments { get; set; }
+        DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; }
+        DbSet<VideoReactionEntity> VideoReactions { get; set; }
 
   
         DbSet<Report> Reports { get; set; }
