@@ -43,7 +43,7 @@ namespace NexTube.WebApi.Controllers
             if (result.Result.Succeeded == false)
                 return UnprocessableEntity(result);
 
-            return Ok(result);
+            return Ok(result);  
         }
 
         [Authorize(Roles = Roles.User)]
