@@ -28,6 +28,8 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInUser {
                 throw new InvalidCredentialException("Wrong login or password");
             }
 
+            
+
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var userLookup = new UserLookup() {
