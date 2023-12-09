@@ -9,6 +9,8 @@ using NexTube.Application.CQRS.Identity.Users.Commands.AssignModerator;
 using NexTube.Application.CQRS.Identity.Users.Commands.BanUser;
 
 using NexTube.Application.CQRS.Identity.Users.Queries;
+using NexTube.Application.CQRS.Videos.Commands.DeleteVideo;
+using NexTube.Application.CQRS.Videos.Commands.DeleteVideoAsModerator;
 using NexTube.WebApi.DTO.Admin;
 using NexTube.WebApi.DTO.Auth.User;
 
@@ -100,8 +102,16 @@ namespace NexTube.WebApi.Controllers
 
             return Ok(result);
         }
-       
 
+        [HttpDelete("{videoEntityId}")]
+        [Authorize(Roles = Roles.Moderator + "," + Roles.Moderator)]
+        public async Task<ActionResult> DeleteVideoAsModerator(int videoEntityId)
+        {
+            var command =  new DeleteVideoAsModeratorCommand() { VideoId= videoEntityId };
+            await Mediator.Send(command);
+
+            return Ok();
+        }
 
     }
 }

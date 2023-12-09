@@ -10,6 +10,7 @@ namespace NexTube.Application.CQRS.Identity.Reports.Commands
     {
         private readonly IAdminService _adminService;
 
+
         public RemoveReportByEntityIdCommandHandler(IAdminService adminService)
         {
             _adminService = adminService;
