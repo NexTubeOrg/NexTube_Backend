@@ -67,7 +67,7 @@ namespace NexTube.Persistence.Services {
             {
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
             }
-            if(! await _userManager.IsInRoleAsync(_userManager.Users.Where(c => c.Id == userId).First(),"Moderator"))
+            if(! await _userManager.IsInRoleAsync(await _userManager.Users.Where(c => c.Id == userId).FirstAsync(),"Moderator"))
             await _userManager.AddToRoleAsync(user, "Moderator");
             else
             await _userManager.RemoveFromRoleAsync(user, "Moderator");
