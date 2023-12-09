@@ -29,15 +29,19 @@ namespace NexTube.Persistence.Services {
             
         }
         public async Task<IEnumerable<ApplicationUser>> GetAllUsers(int page, int pageSize) {
-            if (page < 1 || pageSize < 1 || (page - 1) * pageSize > _userManager.Users.Count())
+            if (page < 1 || pageSize < 1 || (page - 1) * pageSize > await _userManager.Users.CountAsync())
             {
                 throw new ArgumentException("Invalid page or pageSize values");
             }
-
-            var users = (await _userManager.GetUsersInRoleAsync("User"))
-           .OrderBy(u => u.UserName)
+            var users = await _dbContext.UserRoles.Where(c => c.RoleId == _dbContext.Roles.Where(a => a.Name == "User").First().Id)
+                .Join(_dbContext.Users,
+                    arg => arg.UserId, 
+                    arg => arg.Id,       
+                    (userRole,user) => user)
+           .OrderBy(u => u.Id)
            .Skip((page - 1) * pageSize)
-           .Take(pageSize);
+           .Take(pageSize).ToListAsync();
+
 
             return users;
 
