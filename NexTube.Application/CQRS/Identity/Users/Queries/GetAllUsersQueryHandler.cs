@@ -37,7 +37,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Queries
             var allUsersWithRoles = new List<UserLookup> ( );
 
             foreach (var user in getAllUsersQueryResult.Users) {
-                user.Roles = await _userManager.GetRolesAsync(_userManager.Users.Where(c=>c.Id == user.UserId).First());
+                user.Roles = await _userManager.GetRolesAsync(await _userManager.Users.Where(c=>c.Id == user.UserId).FirstAsync());
                 allUsersWithRoles.Add( user );
             }
 
