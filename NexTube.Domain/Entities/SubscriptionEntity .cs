@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NexTube.Domain.Entities.Abstract;
 
 namespace NexTube.Domain.Entities
 {
-    internal class SubscriptionEntity
+    public class SubscriptionEntity : OwnedEntity
     {
+         
+        public ApplicationUser Subscriber { get; set; }
+
     }
 }

@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NexTube.Domain.Entities;
 
-namespace NexTube.Persistence.Data.Configurations.SubscriptionEntityConfiguration
+namespace NexTube.Persistence.Data.Configurations.Identity
 {
-    internal class SubscriptionEntityConfiguration
+    public class SubscriptionEntityConfiguration : IEntityTypeConfiguration<SubscriptionEntity>
     {
+        public void Configure(EntityTypeBuilder<SubscriptionEntity> builder)
+        {
+            builder.HasKey(x => x.Id);
+        }
     }
 }
