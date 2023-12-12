@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace NexTube.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class SubscriptionUserInfo : Migration
+    public partial class UpdateUserInfo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,14 +21,11 @@ namespace NexTube.Persistence.Migrations
                 table: "AspNetUsers",
                 type: "text",
                 nullable: true);
-
-         
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-           
             migrationBuilder.DropColumn(
                 name: "Description",
                 table: "AspNetUsers");

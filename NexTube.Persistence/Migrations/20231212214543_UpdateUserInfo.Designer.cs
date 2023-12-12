@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231212210550_SubscriptionUserInfo")]
-    partial class SubscriptionUserInfo
+    [Migration("20231212214543_UpdateUserInfo")]
+    partial class UpdateUserInfo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
