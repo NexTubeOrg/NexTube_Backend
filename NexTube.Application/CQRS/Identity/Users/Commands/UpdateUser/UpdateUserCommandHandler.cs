@@ -24,10 +24,10 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser
                 throw new NotFoundException("User", request.UserId.ToString());
             }
             user.Id = request.UserId;
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
-            user.Nickname = request.Nickname;
-            user.Description = request.Description;
+            user.FirstName = request.FirstName ?? user.FirstName;
+            user.LastName = request.LastName ?? user.LastName;
+            user.Nickname = request.Nickname ?? user.Nickname;
+            user.Description = request.Description ?? user.Description ;
 
 
           await _userManager.UpdateAsync(user);

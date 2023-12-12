@@ -7,10 +7,10 @@ namespace NexTube.WebApi.DTO.Auth.User
 {
     public class UpdateUserDto : IMapWith<UpdateUserCommand>
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string Nickname { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string? FirstName { get; set; } = null!;
+        public string? LastName { get; set; } = null!;
+        public string? Nickname { get; set; } = null!;
+        public string? Description { get; set; } = null!;
 
         public void Mapping(Profile profile)
         {
