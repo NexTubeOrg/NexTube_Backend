@@ -90,5 +90,24 @@ namespace NexTube.Persistence.Services {
 
             return (Result.Success(), roles);
         }
+        public async Task<(Result Result, int UserId)> UdateUserAsync(int userId, string nickname, string description, string firstname, string lastname)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                throw new NotFoundException("User", userId.ToString());
+            }
+            user.Id = userId;
+            user.FirstName = nickname;
+            user.LastName = nickname;
+            user.Nickname = nickname;
+            user.Description = description;
+
+
+            var result = await _userManager.UpdateAsync(user);
+            return (result.ToApplicationResult(), user.Id);
+
+        }
     }
 }
