@@ -26,11 +26,4 @@
     <ProjectReference Include="..\NexTube.Domain\NexTube.Domain.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="CQRS\Comments\SubscriptionUser\CheckIfSigned\" />
-	  <Folder Include="CQRS\Comments\SubscriptionUser\Queries\" />
-	  <Folder Include="CQRS\Comments\SubscriptionUser\DeleteUserCommand\" />
-	  <Folder Include="CQRS\Comments\SubscriptionUser\AddSubscriptionUser\" />
-	</ItemGroup>
-
 </Project>
