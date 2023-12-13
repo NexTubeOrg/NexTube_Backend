@@ -1,6 +1,6 @@
 ﻿using NexTube.Application.Models.Lookups;
 
-namespace NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList
+namespace NexTube.Application.CQRS.SubscriptionUser.Queries
 {
     public class GetSubscriptionsListQueryResult
     {

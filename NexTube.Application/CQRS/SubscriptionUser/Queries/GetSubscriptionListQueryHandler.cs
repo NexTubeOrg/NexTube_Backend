@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
-using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
+using NexTube.Application.CQRS.SubscriptionUser.Queries;
 using NexTube.Application.Models.Lookups;
-using NexTube.Application.Subscriptions.Commands;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 public class GetSubscriptionQueriesCommandHandler : IRequestHandler<GetSubscriptionQueries, GetSubscriptionsListQueryResult>

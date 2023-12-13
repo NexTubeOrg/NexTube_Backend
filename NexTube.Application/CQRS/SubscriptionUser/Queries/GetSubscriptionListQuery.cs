@@ -1,9 +1,8 @@
 ﻿
 using MediatR;
-using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Subscriptions.Commands
+namespace NexTube.Application.CQRS.SubscriptionUser.Queries
 {
     public class GetSubscriptionQueries : IRequest<GetSubscriptionsListQueryResult>
     {

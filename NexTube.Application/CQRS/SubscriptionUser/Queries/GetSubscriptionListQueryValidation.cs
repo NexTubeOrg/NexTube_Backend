@@ -7,10 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.CQRS.Identity.Users.Commands.CreateUser;
-using NexTube.Application.Subscriptions.Commands;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Subscriptions.Handlers
+namespace NexTube.Application.CQRS.SubscriptionUser.Queries
 {
     public class GetSubscriptionQueriesValidator : AbstractValidator<GetSubscriptionQueries>
     {

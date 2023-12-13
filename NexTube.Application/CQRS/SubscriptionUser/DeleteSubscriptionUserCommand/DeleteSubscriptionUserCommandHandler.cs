@@ -5,10 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
-using NexTube.Application.Subscriptions.Commands;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Subscriptions.Handlers
+namespace NexTube.Application.CQRS.SubscriptionUser.DeleteSubscriptionUserCommand
 {
     public class DeleteSubscriptionUserCommandHandler : IRequestHandler<DeleteSubscriptionUserCommand, bool>
     {

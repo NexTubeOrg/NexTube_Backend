@@ -2,7 +2,7 @@
 using MediatR;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Subscriptions.Commands
+namespace NexTube.Application.CQRS.SubscriptionUser.DeleteSubscriptionUserCommand
 {
     public class DeleteSubscriptionUserCommand : IRequest<bool>
     {

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
+using NexTube.Application.CQRS.SubscriptionUser.CheckIfSigned;
 using NexTube.Application.Models.Lookups;
-using NexTube.Application.Subscriptions.Commands;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 public class CheckSubscriptionUserCommandHandler : IRequestHandler<CheckSubscriptionUserCommand, bool>

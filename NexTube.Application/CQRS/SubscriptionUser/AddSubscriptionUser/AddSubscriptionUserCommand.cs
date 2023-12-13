@@ -2,7 +2,7 @@
 using MediatR;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.Subscriptions.Commands
+namespace NexTube.Application.CQRS.SubscriptionUser.AddSubscriptionUser
 {
     public class AddSubscriptionUserCommand : IRequest<bool>
     {

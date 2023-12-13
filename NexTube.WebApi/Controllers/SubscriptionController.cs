@@ -7,7 +7,10 @@ using NexTube.Application.Common.Interfaces;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
 using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
-using NexTube.Application.Subscriptions.Commands;
+using NexTube.Application.CQRS.SubscriptionUser.AddSubscriptionUser;
+using NexTube.Application.CQRS.SubscriptionUser.CheckIfSigned;
+using NexTube.Application.CQRS.SubscriptionUser.DeleteSubscriptionUserCommand;
+using NexTube.Application.CQRS.SubscriptionUser.Queries;
 using NexTube.WebApi.DTO.Auth.Subscription;
 using NexTube.WebApi.DTO.Auth.User;
 using NexTube.WebApi.DTO.Comments.VideoComments;
@@ -55,8 +58,9 @@ namespace NexTube.WebApi.Controllers
         [HttpGet("isSubscriptions")]
         public async Task<ActionResult> CheckSubscriber([FromQuery] CheckSubscribeUserDto dto)
         {
+            await EnsureCurrentUserAssignedAsync();
             var query = mapper.Map<CheckSubscriptionUserCommand>(dto);
-            query.UserID = UserId;
+            query.UserID = CurrentUser.Id;
             var result = await Mediator.Send(query);
             return Ok(result);
         }
@@ -66,7 +70,7 @@ namespace NexTube.WebApi.Controllers
         {
             await EnsureCurrentUserAssignedAsync();
             var command = mapper.Map<DeleteSubscriptionUserCommand>(dto);
-            command.User = UserId;
+            command.User = CurrentUser.Id;
 
             var result = await Mediator.Send(command);
 
