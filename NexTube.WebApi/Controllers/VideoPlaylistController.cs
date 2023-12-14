@@ -28,7 +28,7 @@ namespace NexTube.WebApi.Controllers {
 
         [HttpPost]
         [Authorize(Roles = Roles.User)]
-        public async Task<ActionResult> CreatePlaylist([FromBody] CreatePlaylistDto dto) {
+        public async Task<ActionResult> CreatePlaylist([FromForm] CreatePlaylistDto dto) {
             await EnsureCurrentUserAssignedAsync();
 
             var command = mapper.Map<CreatePlaylistCommand>(dto);

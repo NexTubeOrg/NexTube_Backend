@@ -22,6 +22,7 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlayl
                     TotalCountVideos = _dbContext.Videos
                         .Where(v => v.Playlist.Id == p.Id)
                         .Count(),
+                    Preview = p.PreviewImage.ToString()
                 });
 
             var result = await query.ToListAsync();
