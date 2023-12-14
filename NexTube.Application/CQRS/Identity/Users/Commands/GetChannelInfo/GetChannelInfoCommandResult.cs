@@ -1,7 +1,7 @@
 ﻿
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.CQRS.Identity.Users.Commands.GetUser
+namespace NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo
 {
     public class GetChannelInfoCommandResult
     {

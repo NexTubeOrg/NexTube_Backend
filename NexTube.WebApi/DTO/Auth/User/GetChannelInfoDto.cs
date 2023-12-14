@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using NexTube.Application.Common.Mappings;
-using NexTube.Application.CQRS.Identity.Users.Commands.GetUser;
+using NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo;
 
 
 namespace NexTube.WebApi.DTO.Auth.Subscription

@@ -2,7 +2,7 @@
 
 
 
-namespace NexTube.Application.CQRS.Identity.Users.Commands.GetUser
+namespace NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo
 {
     public class GetChannelInfoCommand : IRequest<GetChannelInfoCommandResult>
     {

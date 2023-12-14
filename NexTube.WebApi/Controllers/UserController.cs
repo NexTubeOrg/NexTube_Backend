@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NexTube.Application.CQRS.Identity.Users.Commands.GetUser;
+using NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo;
 using NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser;
 using NexTube.WebApi.DTO.Auth.Subscription;
 using NexTube.WebApi.DTO.Auth.User;
