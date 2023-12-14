@@ -6,11 +6,11 @@ using NexTube.Application.CQRS.SubscriptionUser.Queries;
 using NexTube.Application.Models.Lookups;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-public class GetSubscriptionQueriesCommandHandler : IRequestHandler<GetSubscriptionListQuery, GetSubscriptionsListQueryResult>
+public class GetSubscriptionListQueryHandler : IRequestHandler<GetSubscriptionListQuery, GetSubscriptionsListQueryResult>
 {
     private readonly IApplicationDbContext _context;
 
-    public GetSubscriptionQueriesCommandHandler(IApplicationDbContext context)
+    public GetSubscriptionListQueryHandler(IApplicationDbContext context)
     {
         _context = context;
     }
