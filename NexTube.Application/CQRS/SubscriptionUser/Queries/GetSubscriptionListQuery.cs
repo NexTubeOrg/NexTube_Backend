@@ -4,7 +4,7 @@ using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.SubscriptionUser.Queries
 {
-    public class GetSubscriptionQueries : IRequest<GetSubscriptionsListQueryResult>
+    public class GetSubscriptionListQuery : IRequest<GetSubscriptionsListQueryResult>
     {
 
         public int SubscriptionUserTo { get; set; }
