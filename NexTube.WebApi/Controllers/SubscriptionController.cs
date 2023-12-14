@@ -52,7 +52,7 @@ namespace NexTube.WebApi.Controllers
         { 
             var query = new GetSubscriptionListQuery
             {
-                SubscriptionUserTo =UserId
+                SubscriptionUserTo = UserId
             };
             var result = await Mediator.Send(query);
             return Ok(result);
