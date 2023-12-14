@@ -18,6 +18,7 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlayl
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(p => new VideoPlaylistLookup() {
+                    Id = p.Id,
                     Title = p.Title,
                     TotalCountVideos = _dbContext.Videos
                         .Where(v => v.Playlist.Id == p.Id)

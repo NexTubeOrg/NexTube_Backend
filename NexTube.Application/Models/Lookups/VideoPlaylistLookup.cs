@@ -4,6 +4,7 @@ using NexTube.Domain.Entities;
 
 namespace NexTube.Application.Models.Lookups {
     public class VideoPlaylistLookup : IMapWith<VideoPlaylistEntity> {
+        public int? Id { get; set; }
         public string? Title { get; set; }
         public int? TotalCountVideos { get; set; }
         public string? Preview { get; set; }
