@@ -46,11 +46,14 @@ namespace NexTube.WebApi.Controllers
 
             return Ok(result);
         }
+        [Authorize(Roles = Roles.User)]
         [HttpGet("Subscriptions")]
-        public async Task<ActionResult> GetSubscribeList([FromQuery] GetSubscriptionUserDto dto)
-        {
-            var query = mapper.Map<GetSubscriptionListQuery>(dto);
-
+        public async Task<ActionResult> GetSubscribeList( )
+        { 
+            var query = new GetSubscriptionListQuery
+            {
+                SubscriptionUserTo =UserId
+            };
             var result = await Mediator.Send(query);
             return Ok(result);
         }
