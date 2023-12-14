@@ -6,7 +6,7 @@ using NexTube.Application.CQRS.SubscriptionUser.Queries;
 using NexTube.Application.Models.Lookups;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-public class GetSubscriptionQueriesCommandHandler : IRequestHandler<GetSubscriptionQueries, GetSubscriptionsListQueryResult>
+public class GetSubscriptionQueriesCommandHandler : IRequestHandler<GetSubscriptionListQuery, GetSubscriptionsListQueryResult>
 {
     private readonly IApplicationDbContext _context;
 
@@ -15,7 +15,7 @@ public class GetSubscriptionQueriesCommandHandler : IRequestHandler<GetSubscript
         _context = context;
     }
 
-    public async Task<GetSubscriptionsListQueryResult> Handle(GetSubscriptionQueries request, CancellationToken cancellationToken)
+    public async Task<GetSubscriptionsListQueryResult> Handle(GetSubscriptionListQuery request, CancellationToken cancellationToken)
     {
 
         var subscriptions = await _context.Subscriptions

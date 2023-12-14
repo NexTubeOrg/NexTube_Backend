@@ -2,7 +2,7 @@
 using MediatR;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.CQRS.SubscriptionUser.CheckIfSigned
+namespace NexTube.Application.CQRS.SubscriptionUser.CheckSubscriptionUser
 {
     public class CheckSubscriptionUserCommand : IRequest<bool>
     {

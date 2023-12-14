@@ -8,7 +8,7 @@ using NexTube.Application.CQRS.Comments.VideoComments.Commands.AddComment;
 using NexTube.Application.CQRS.Comments.VideoComments.Commands.DeleteComment;
 using NexTube.Application.CQRS.Comments.VideoComments.Queries.GetCommentsList;
 using NexTube.Application.CQRS.SubscriptionUser.AddSubscriptionUser;
-using NexTube.Application.CQRS.SubscriptionUser.CheckIfSigned;
+using NexTube.Application.CQRS.SubscriptionUser.CheckSubscriptionUser;
 using NexTube.Application.CQRS.SubscriptionUser.DeleteSubscriptionUserCommand;
 using NexTube.Application.CQRS.SubscriptionUser.Queries;
 using NexTube.WebApi.DTO.Auth.Subscription;
@@ -49,7 +49,7 @@ namespace NexTube.WebApi.Controllers
         [HttpGet("Subscriptions")]
         public async Task<ActionResult> GetSubscribeList([FromQuery] GetSubscriptionUserDto dto)
         {
-            var query = mapper.Map<GetSubscriptionQueries>(dto);
+            var query = mapper.Map<GetSubscriptionListQuery>(dto);
 
             var result = await Mediator.Send(query);
             return Ok(result);
