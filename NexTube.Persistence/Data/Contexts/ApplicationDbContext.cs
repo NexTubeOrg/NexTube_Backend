@@ -13,7 +13,7 @@ namespace NexTube.Persistence.Data.Contexts {
         public DbSet<VideoCommentEntity> VideoComments { get; set; } = null!;
         public DbSet<VideoReactionEntity> VideoReactions { get; set; } = null!;
         public DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; } = null!;
-
+        public DbSet<SubscriptionEntity> Subscriptions { get; set; } = null!;
         public DbSet<Report> Reports { get; set; } = null!;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -25,7 +25,7 @@ namespace NexTube.Persistence.Data.Contexts {
             builder.ApplyConfiguration(new VideoAccessModificatorEntityConfiguration());
             builder.ApplyConfiguration(new VideoCommentEntityConfiguration());
             builder.ApplyConfiguration(new VideoReactionEntityConfiguration());
-
+            builder.ApplyConfiguration(new SubscriptionEntityConfiguration());
             base.OnModelCreating(builder);
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
