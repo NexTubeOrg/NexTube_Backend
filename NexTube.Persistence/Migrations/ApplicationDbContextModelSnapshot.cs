@@ -8,13 +8,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace NexTube.Persistence.Migrations
-{
+namespace NexTube.Persistence.Migrations {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
-    {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot {
+        protected override void BuildModel(ModelBuilder modelBuilder) {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.12")
@@ -22,584 +19,620 @@ namespace NexTube.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("text");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                b.Property<int>("RoleId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
+                b.ToTable("AspNetRoleClaims", (string)null);
+            });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                b.Property<int>("UserId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
+                b.ToTable("AspNetUserClaims", (string)null);
+            });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b => {
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                b.Property<string>("ProviderKey")
+                    .HasColumnType("text");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                b.Property<string>("ProviderDisplayName")
+                    .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                b.Property<int>("UserId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+                b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
+                b.ToTable("AspNetUserLogins", (string)null);
+            });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b => {
+                b.Property<int>("UserId")
+                    .HasColumnType("integer");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
+                b.Property<int>("RoleId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("UserId", "RoleId");
+                b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
+                b.ToTable("AspNetUserRoles", (string)null);
+            });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b => {
+                b.Property<int>("UserId")
+                    .HasColumnType("integer");
 
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+                b.Property<string>("Name")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
+                b.Property<string>("Value")
+                    .HasColumnType("text");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
+                b.ToTable("AspNetUserTokens", (string)null);
+            });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.ApplicationRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("NexTube.Domain.Entities.ApplicationRole", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("Name")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("NormalizedName")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                b.HasIndex("NormalizedName")
+                    .IsUnique()
+                    .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles", (string)null);
-                });
+                b.ToTable("AspNetRoles", (string)null);
+            });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("NexTube.Domain.Entities.ApplicationUser", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+                b.Property<int>("AccessFailedCount")
+                    .HasColumnType("integer");
 
-                    b.Property<Guid?>("ChannelPhotoFileId")
-                        .HasColumnType("uuid");
+                b.Property<Guid?>("ChannelPhotoFileId")
+                    .HasColumnType("uuid");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
+                b.Property<string>("Description")
+                    .HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("Email")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+                b.Property<bool>("EmailConfirmed")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                b.Property<string>("FirstName")
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnType("character varying(500)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                b.Property<string>("LastName")
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnType("character varying(500)");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+                b.Property<bool>("LockoutEnabled")
+                    .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTimeOffset?>("LockoutEnd")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Nickname")
-                        .HasColumnType("text");
+                b.Property<string>("Nickname")
+                    .HasColumnType("text");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("NormalizedEmail")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("NormalizedUserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                b.Property<string>("PasswordHash")
+                    .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("text");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+                b.Property<bool>("PhoneNumberConfirmed")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                b.Property<string>("SecurityStamp")
+                    .HasColumnType("text");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+                b.Property<bool>("TwoFactorEnabled")
+                    .HasColumnType("boolean");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                b.Property<string>("UserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("character varying(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                b.HasIndex("NormalizedEmail")
+                    .HasDatabaseName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                b.HasIndex("NormalizedUserName")
+                    .IsUnique()
+                    .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers", (string)null);
-                });
+                b.ToTable("AspNetUsers", (string)null);
+            });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.Report", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("NexTube.Domain.Entities.Report", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AbuserId")
-                        .HasColumnType("integer");
+                b.Property<int>("AbuserId")
+                    .HasColumnType("integer");
 
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("Body")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
+                b.Property<int?>("CreatorId")
+                    .HasColumnType("integer");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("DateModified")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                b.Property<int>("Type")
+                    .HasColumnType("integer");
 
-                    b.Property<int?>("VideoId")
-                        .HasColumnType("integer");
+                b.Property<int?>("VideoId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AbuserId");
+                b.HasIndex("AbuserId");
 
-                    b.HasIndex("CreatorId");
+                b.HasIndex("CreatorId");
 
-                    b.HasIndex("VideoId");
+                b.HasIndex("VideoId");
 
-                    b.ToTable("Reports");
-                });
+                b.ToTable("Reports");
+            });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoAccessModificatorEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+            modelBuilder.Entity("NexTube.Domain.Entities.SubscriptionEntity", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Modificator")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<int?>("CreatorId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.ToTable("VideoAccessModificators");
-                });
+                b.Property<DateTime?>("DateModified")
+                    .HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                b.Property<int>("SubscriberId")
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                b.HasKey("Id");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.HasIndex("CreatorId");
 
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
+                b.HasIndex("SubscriberId");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                b.ToTable("Subscriptions");
+            });
 
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoAccessModificatorEntity", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    b.Property<int?>("RepliedToId")
-                        .HasColumnType("integer");
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("VideoEntityId")
-                        .HasColumnType("integer");
+                b.Property<string>("Modificator")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
+                b.ToTable("VideoAccessModificators");
+            });
 
-                    b.HasIndex("Id")
-                        .IsUnique();
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoAccessModificatorEntity", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    b.HasIndex("RepliedToId");
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.HasIndex("VideoEntityId");
+                b.Property<string>("Modificator")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.ToTable("VideoComments");
-                });
+                b.HasKey("Id");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                b.ToTable("VideoAccessModificators");
+            });
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    b.Property<int?>("AccessModificatorId")
-                        .HasColumnType("integer");
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
+                b.Property<string>("Content")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<int?>("CreatorId")
+                    .HasColumnType("integer");
 
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<DateTime?>("DateModified")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<int?>("RepliedToId")
+                    .HasColumnType("integer");
 
-                    b.Property<int?>("PlaylistId")
-                        .HasColumnType("integer");
+                b.Property<int>("VideoEntityId")
+                    .HasColumnType("integer");
 
-                    b.Property<Guid?>("PreviewPhotoFileId")
-                        .HasColumnType("uuid");
+                b.HasKey("Id");
 
-                    b.Property<Guid?>("VideoFileId")
-                        .HasColumnType("uuid");
+                b.HasIndex("CreatorId");
 
-                    b.Property<int>("Views")
-                        .HasColumnType("integer");
+                b.HasIndex("Id")
+                    .IsUnique();
 
-                    b.HasKey("Id");
+                b.HasIndex("RepliedToId");
 
-                    b.HasIndex("AccessModificatorId");
+                b.HasIndex("VideoEntityId");
 
-                    b.HasIndex("CreatorId");
+                b.ToTable("VideoComments");
+            });
 
-                    b.HasIndex("PlaylistId");
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    b.ToTable("Videos");
-                });
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                b.Property<int?>("AccessModificatorId")
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                b.Property<int?>("CreatorId")
+                    .HasColumnType("integer");
 
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<DateTime?>("DateModified")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<Guid?>("PreviewImage")
-                        .HasColumnType("uuid");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<int?>("PlaylistId")
+                    .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                b.Property<Guid?>("PreviewPhotoFileId")
+                    .HasColumnType("uuid");
 
-                    b.HasIndex("CreatorId");
+                b.Property<Guid?>("VideoFileId")
+                    .HasColumnType("uuid");
 
-                    b.ToTable("VideoPlaylists");
-                });
+                b.Property<int>("Views")
+                    .HasColumnType("integer");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b =>
-                {
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
+                b.HasKey("Id");
 
-                    b.Property<int?>("ReactedVideoId")
-                        .HasColumnType("integer");
+                b.HasIndex("AccessModificatorId");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
+                b.HasIndex("CreatorId");
 
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
+                b.HasIndex("PlaylistId");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                b.ToTable("Videos");
+            });
 
-                    b.HasKey("CreatorId", "ReactedVideoId");
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    b.HasIndex("ReactedVideoId");
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.ToTable("VideoReactions");
-                });
+                b.Property<int?>("CreatorId")
+                    .HasColumnType("integer");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.Property<DateTime?>("DateModified")
+                    .HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.Property<Guid?>("PreviewImage")
+                    .HasColumnType("uuid");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.HasKey("Id");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.HasIndex("CreatorId");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.Report", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Abuser")
-                        .WithMany()
-                        .HasForeignKey("AbuserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.ToTable("VideoPlaylists");
+            });
 
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b => {
+                b.Property<int?>("CreatorId")
+                    .HasColumnType("integer");
 
-                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "Video")
-                        .WithMany()
-                        .HasForeignKey("VideoId");
+                b.Property<int?>("ReactedVideoId")
+                    .HasColumnType("integer");
 
-                    b.Navigation("Abuser");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Navigation("Creator");
+                b.Property<DateTime?>("DateModified")
+                    .HasColumnType("timestamp with time zone");
 
-                    b.Navigation("Video");
-                });
+                b.Property<int>("Type")
+                    .HasColumnType("integer");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                b.HasKey("CreatorId", "ReactedVideoId");
 
-                    b.HasOne("NexTube.Domain.Entities.VideoCommentEntity", "RepliedTo")
-                        .WithMany()
-                        .HasForeignKey("RepliedToId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                b.HasIndex("ReactedVideoId");
 
-                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "VideoEntity")
-                        .WithMany()
-                        .HasForeignKey("VideoEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.ToTable("VideoReactions");
+            });
 
-                    b.Navigation("Creator");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-                    b.Navigation("RepliedTo");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-                    b.Navigation("VideoEntity");
-                });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.VideoAccessModificatorEntity", "AccessModificator")
-                        .WithMany()
-                        .HasForeignKey("AccessModificatorId")
-                        .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-                    b.HasOne("NexTube.Domain.Entities.VideoPlaylistEntity", "Playlist")
-                        .WithMany("Videos")
-                        .HasForeignKey("PlaylistId")
-                        .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-                    b.Navigation("AccessModificator");
+            modelBuilder.Entity("NexTube.Domain.Entities.Report", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Abuser")
+                    .WithMany()
+                    .HasForeignKey("AbuserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Creator");
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                    .WithMany()
+                    .HasForeignKey("CreatorId");
 
-                    b.Navigation("Playlist");
-                });
+                b.HasOne("NexTube.Domain.Entities.VideoEntity", "Video")
+                    .WithMany()
+                    .HasForeignKey("VideoId");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
+                b.Navigation("Abuser");
 
-                    b.Navigation("Creator");
-                });
+                b.Navigation("Creator");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.Navigation("Video");
+            });
 
-                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "ReactedVideo")
-                        .WithMany()
-                        .HasForeignKey("ReactedVideoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            modelBuilder.Entity("NexTube.Domain.Entities.SubscriptionEntity", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                    .WithMany()
+                    .HasForeignKey("CreatorId");
 
-                    b.Navigation("Creator");
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Subscriber")
+                    .WithMany()
+                    .HasForeignKey("SubscriberId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("ReactedVideo");
-                });
+                b.Navigation("Creator");
 
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
-                {
-                    b.Navigation("Videos");
-                });
+                b.Navigation("Subscriber");
+            });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                    .WithMany()
+                    .HasForeignKey("CreatorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.HasOne("NexTube.Domain.Entities.VideoCommentEntity", "RepliedTo")
+                    .WithMany()
+                    .HasForeignKey("RepliedToId")
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne("NexTube.Domain.Entities.VideoEntity", "VideoEntity")
+                    .WithMany()
+                    .HasForeignKey("VideoEntityId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Creator");
+
+                b.Navigation("RepliedTo");
+
+                b.Navigation("VideoEntity");
+            });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b => {
+                b.HasOne("NexTube.Domain.Entities.VideoAccessModificatorEntity", "AccessModificator")
+                    .WithMany()
+                    .HasForeignKey("AccessModificatorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                    .WithMany()
+                    .HasForeignKey("CreatorId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.HasOne("NexTube.Domain.Entities.VideoPlaylistEntity", "Playlist")
+                    .WithMany("Videos")
+                    .HasForeignKey("PlaylistId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.Navigation("AccessModificator");
+
+                b.Navigation("Creator");
+
+                b.Navigation("Playlist");
+            });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                    .WithMany()
+                    .HasForeignKey("CreatorId");
+
+                b.Navigation("Creator");
+            });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b => {
+                b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                    .WithMany()
+                    .HasForeignKey("CreatorId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("NexTube.Domain.Entities.VideoEntity", "ReactedVideo")
+                    .WithMany()
+                    .HasForeignKey("ReactedVideoId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Creator");
+
+                b.Navigation("ReactedVideo");
+            });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b => {
+                b.Navigation("Videos");
+            });
 #pragma warning restore 612, 618
         }
     }
