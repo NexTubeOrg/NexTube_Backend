@@ -9,7 +9,7 @@ using NexTube.Application.Common.DbContexts;
 using NexTube.Application.CQRS.Identity.Users.Commands.CreateUser;
 using NexTube.Domain.Entities;
 
-namespace NexTube.Application.CQRS.SubscriptionUser.CheckIfSigned
+namespace NexTube.Application.CQRS.SubscriptionUser.CheckSubscriptionUser
 {
     public class CheckSubscriptionUserValidator : AbstractValidator<CheckSubscriptionUserCommand>
     {

@@ -11,9 +11,9 @@ using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.SubscriptionUser.Queries
 {
-    public class GetSubscriptionQueriesValidator : AbstractValidator<GetSubscriptionQueries>
+    public class GetSubscriptionListQueriesValidator : AbstractValidator<GetSubscriptionListQuery>
     {
-        public GetSubscriptionQueriesValidator()
+        public GetSubscriptionListQueriesValidator()
         {
             RuleFor(dto => dto.SubscriptionUserTo)
                 .NotEmpty().WithMessage("Ідентифікатор підписника не може бути порожнім.");
