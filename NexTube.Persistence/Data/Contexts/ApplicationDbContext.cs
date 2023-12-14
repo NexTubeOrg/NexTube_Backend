@@ -16,11 +16,13 @@ namespace NexTube.Persistence.Data.Contexts {
         public DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; } = null!;
         public DbSet<VideoPlaylistEntity> VideoPlaylists { get; set; } = null!;
 
+        public DbSet<Report> Reports { get; set; } = null!;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder) {
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
-
+            builder.ApplyConfiguration(new ReportConfiguration());
             builder.ApplyConfiguration(new VideoEntityConfiguration());
             builder.ApplyConfiguration(new VideoAccessModificatorEntityConfiguration());
             builder.ApplyConfiguration(new VideoCommentEntityConfiguration());

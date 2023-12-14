@@ -75,6 +75,7 @@ namespace NexTube.WebApi.Controllers
 
             return Ok();
         }
+        
 
         [HttpPut]
         [Authorize(Roles = Roles.User)]

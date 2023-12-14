@@ -8,6 +8,8 @@ using NexTube.Domain.Entities;
 using NexTube.Domain.Entities.Abstract;
 using NexTube.Persistence.Identity;
 using NexTube.Application.Models.Lookups;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace NexTube.Persistence.Services {
     public class IdentityService : IIdentityService {
