@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NexTube.Persistence.Data.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231212214543_UpdateUserInfo")]
+    partial class UpdateUserInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,47 +243,6 @@ namespace NexTube.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.Report", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AbuserId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("VideoId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AbuserId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("VideoId");
-
-                    b.ToTable("Reports");
-                });
-
             modelBuilder.Entity("NexTube.Domain.Entities.VideoAccessModificatorEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -367,9 +329,6 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PlaylistId")
-                        .HasColumnType("integer");
-
                     b.Property<Guid?>("PreviewPhotoFileId")
                         .HasColumnType("uuid");
 
@@ -385,40 +344,7 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.HasIndex("PlaylistId");
-
                     b.ToTable("Videos");
-                });
-
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("PreviewImage")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("VideoPlaylists");
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b =>
@@ -496,29 +422,6 @@ namespace NexTube.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NexTube.Domain.Entities.Report", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Abuser")
-                        .WithMany()
-                        .HasForeignKey("AbuserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
-
-                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "Video")
-                        .WithMany()
-                        .HasForeignKey("VideoId");
-
-                    b.Navigation("Abuser");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Video");
-                });
-
             modelBuilder.Entity("NexTube.Domain.Entities.VideoCommentEntity", b =>
                 {
                     b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
@@ -556,23 +459,7 @@ namespace NexTube.Persistence.Migrations
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("NexTube.Domain.Entities.VideoPlaylistEntity", "Playlist")
-                        .WithMany("Videos")
-                        .HasForeignKey("PlaylistId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("AccessModificator");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Playlist");
-                });
-
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
-                {
-                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
 
                     b.Navigation("Creator");
                 });
@@ -594,11 +481,6 @@ namespace NexTube.Persistence.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("ReactedVideo");
-                });
-
-            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
-                {
-                    b.Navigation("Videos");
                 });
 #pragma warning restore 612, 618
         }
