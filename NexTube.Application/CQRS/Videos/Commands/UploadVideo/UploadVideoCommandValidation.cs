@@ -15,6 +15,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
                 .MinimumLength(2)
                 .MaximumLength(1000);
 
+
             RuleFor(c => c.PreviewPhotoSource)
                 .NotNull()
                 .MustAsync(async (s, cancellation) =>

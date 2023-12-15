@@ -10,6 +10,7 @@ namespace NexTube.WebApi.DTO.Videos
         public IFormFile PreviewPhoto { get; set; } = null!;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string? AccessModificator { get; set; } = null;
 
         public void Mapping(Profile profile)
         {
@@ -17,7 +18,8 @@ namespace NexTube.WebApi.DTO.Videos
                 .ForMember(command => command.Source, opt => opt.MapFrom(dto => dto.Video.OpenReadStream()))
                 .ForMember(command => command.PreviewPhotoSource, opt => opt.MapFrom(dto => dto.PreviewPhoto.OpenReadStream()))
                 .ForMember(command => command.Name, opt => opt.MapFrom(dto => dto.Name))
-                .ForMember(command => command.Description, opt => opt.MapFrom(dto => dto.Description));
+                .ForMember(command => command.Description, opt => opt.MapFrom(dto => dto.Description))
+                .ForMember(command => command.AccessModificator, opt => opt.MapFrom(dto => dto.AccessModificator));
         }
     }
 }
