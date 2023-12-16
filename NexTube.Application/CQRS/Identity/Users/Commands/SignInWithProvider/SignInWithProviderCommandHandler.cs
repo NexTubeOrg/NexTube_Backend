@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Common.Models;
@@ -22,8 +23,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
             IPhotoService photoService,
             IProviderAuthManager providerAuthManager,
             IJwtService jwtService,
-            IIdentityService identityService
-            ) {
+            IIdentityService identityService) {
             _userManager = userManager;
             _httpClientFactory = httpClientFactory;
             _photoService = photoService;
@@ -32,12 +32,14 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
             _identityService = identityService;
         }
 
-        private async Task<(Result Result, int UserId)> VerifyUserExist(UserLookup userInfo) {
+        private async Task<(Result Result, ApplicationUser User)> VerifyUserExist(UserLookup userInfo) {
             ApplicationUser? user = await _userManager.FindByEmailAsync(userInfo.Email ?? "");
+
             if (user != null) {
                 userInfo.ChannelPhoto = user.ChannelPhotoFileId.ToString();
-                return (Result.Success(), user.Id);
+                return (Result.Success(), user);
             }
+
 
             Guid photoFileId = default;
 
@@ -51,7 +53,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
             var result = await _identityService.CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", photoFileId);
             userInfo.ChannelPhoto = photoFileId.ToString();
 
-            return (result.Result, result.User.Id);
+            return (result.Result, result.User);
         }
 
         public async Task<SignInWithProviderCommandResult> Handle(SignInWithProviderCommand request, CancellationToken cancellationToken) {
@@ -62,12 +64,19 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
             var existenceVerificationResult = await VerifyUserExist(tokenVerificationResult.User);
 
             // get user roles
-            tokenVerificationResult.User.Roles = (await _identityService.GetUserRolesAsync(existenceVerificationResult.UserId)).Roles;
+            tokenVerificationResult.User.Roles = (await _identityService.GetUserRolesAsync(existenceVerificationResult.User.Id)).Roles;
 
             // generate application token
             var token = _jwtService.GenerateToken(
-                existenceVerificationResult.UserId,
-                tokenVerificationResult.User);
+                existenceVerificationResult.User.Id,
+                new UserLookup() {
+                    ChannelPhoto = existenceVerificationResult.User.ChannelPhotoFileId.ToString(),
+                    Email = existenceVerificationResult.User.Email,
+                    FirstName = existenceVerificationResult.User.FirstName,
+                    LastName = existenceVerificationResult.User.LastName,
+                    UserId = existenceVerificationResult.User.Id,
+                    Roles = tokenVerificationResult.User.Roles
+                });
 
             return new SignInWithProviderCommandResult() {
                 Result = Result.Success(),
