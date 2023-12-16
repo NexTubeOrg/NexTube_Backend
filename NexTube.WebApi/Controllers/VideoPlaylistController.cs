@@ -41,9 +41,9 @@ namespace NexTube.WebApi.Controllers {
 
             var command = mapper.Map<CreatePlaylistCommand>(dto);
             command.User = CurrentUser;
-            await mediator.Send(command);
+            var result = await mediator.Send(command);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost]
