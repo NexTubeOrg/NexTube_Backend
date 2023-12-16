@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
@@ -26,7 +27,12 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
         {
             var videoUploadResult = await _videoService.UploadVideoAsync(request.Source);
             var photoUploadResult = await _photoService.UploadPhoto(request.PreviewPhotoSource);
-            var publicAccessModificator = await _dbContext.VideoAccessModificators.Where(v => v.Modificator == VideoAccessModificators.Public).FirstOrDefaultAsync();
+            var accessModificator = await _dbContext.VideoAccessModificators.Where(v => v.Modificator == request.AccessModificator).FirstOrDefaultAsync();
+
+            if (accessModificator == null)
+            {
+                throw new NotFoundException(request.AccessModificator, nameof(VideoAccessModificatorEntity));
+            }
 
             var video = new VideoEntity()
             {
@@ -35,7 +41,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
                 VideoFileId = Guid.Parse(videoUploadResult.VideoFileId),
                 PreviewPhotoFileId = Guid.Parse(photoUploadResult.PhotoId),
                 Creator = request.Creator,
-                AccessModificator =  publicAccessModificator,
+                AccessModificator =  accessModificator,
                 DateCreated = _dateTimeService.Now,
             };
 
