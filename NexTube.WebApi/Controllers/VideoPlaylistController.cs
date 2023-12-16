@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ChangeVideoPlaylist;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.CreatePlaylist;
+using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistVideos;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlaylists;
 using NexTube.WebApi.DTO.Playlists;
 using WebShop.Domain.Constants;
@@ -22,6 +23,13 @@ namespace NexTube.WebApi.Controllers {
         [HttpGet]
         public async Task<ActionResult> GetUserPlaylists([FromQuery] GetUserPlaylistsDto dto) {
             var query = mapper.Map<GetUserPlaylistsQuery>(dto);
+            var result = await mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPlaylistVideos([FromQuery] GetPlaylistVideosDto dto) {
+            var query = mapper.Map<GetPlaylistVideosQuery>(dto);
             var result = await mediator.Send(query);
             return Ok(result);
         }

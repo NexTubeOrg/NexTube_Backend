@@ -14,5 +14,6 @@ namespace NexTube.Domain.Entities {
         ///  May be null, so video could be not in a playlist
         /// </summary>
         public VideoPlaylistEntity? Playlist { get; set; } = null;
+        public int? PlaylistId { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
 namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlaylists {
-    public class GetUserPlaylistsQueryValidation : AbstractValidator<GetUserPlaylistsQuery> {
-        public GetUserPlaylistsQueryValidation() {
+    public class GetUserPlaylistsQueryValidator : AbstractValidator<GetUserPlaylistsQuery> {
+        public GetUserPlaylistsQueryValidator() {
             RuleFor(c => c.Page)
                 .NotEmpty()
                 .GreaterThan(0);
