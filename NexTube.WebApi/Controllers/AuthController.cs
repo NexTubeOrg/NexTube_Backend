@@ -9,6 +9,7 @@ using NexTube.Application.CQRS.Identity.Users.Commands.CreateUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.Recover;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider;
+using NexTube.Application.CQRS.Identity.Users.Commands.VerifyMail;
 using NexTube.WebApi.DTO.Auth.ChangePassword;
 using NexTube.WebApi.DTO.Auth.User;
 using WebShop.Domain.Constants;
@@ -37,6 +38,17 @@ namespace NexTube.WebApi.Controllers {
         public async Task<ActionResult> SignIn([FromBody] SignInUserDto dto) {
             // map received from request dto to cqrs command
             var command = mapper.Map<SignInUserCommand>(dto);
+            var result = await Mediator.Send(command);
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> VerifyUser([FromBody] VerifyUserDto dto)
+        {
+            // map received from request dto to cqrs command
+            var command = mapper.Map<VerifyMailCommand>(dto);
+            command.UserId = UserId;
             var result = await Mediator.Send(command);
 
             return Ok(result);

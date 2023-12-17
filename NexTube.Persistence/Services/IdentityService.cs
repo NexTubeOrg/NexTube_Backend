@@ -54,7 +54,7 @@ namespace NexTube.Persistence.Services {
 
             var result = await CreateUserAsync(email, firstName, lastName, channelPhotoFileId);
             await _userManager.AddPasswordAsync(result.User, password);
-
+            
             return (result.Result, new UserLookup() {
                 Email = email,
                 FirstName = firstName,
@@ -79,7 +79,7 @@ namespace NexTube.Persistence.Services {
 
             var result = await _userManager.CreateAsync(user);
 
-            await AddToRoleAsync(user, Roles.User);
+            await AddToRoleAsync(user, Roles.Unverified);
 
             return (result.ToApplicationResult(), user);
         }
@@ -92,6 +92,21 @@ namespace NexTube.Persistence.Services {
 
             return (Result.Success(), roles);
         }
-       
+        public async Task<(Result Result, UserLookup userLookup)> GetUserLookupAsync(int userId)
+        {
+            ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+                throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
+            var res = new UserLookup()
+            {
+                Email = user.Email,
+                FirstName = user.Email,
+                LastName = user.LastName,
+                UserId = userId,
+                Roles = (await GetUserRolesAsync(userId)).Roles,
+                ChannelPhoto = user.ChannelPhotoFileId.ToString()
+            };
+            return (Result.Success(), res);
+           }
     }
 }
