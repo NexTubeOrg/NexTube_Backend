@@ -1,4 +1,5 @@
 ﻿using NexTube.Domain.Entities.Abstract;
+using NexTube.Domain.Entities.ManyToMany;
 
 namespace NexTube.Domain.Entities {
     public class VideoEntity : OwnedEntity {
@@ -10,10 +11,6 @@ namespace NexTube.Domain.Entities {
 
         public VideoAccessModificatorEntity? AccessModificator { get; set; } = null!;
 
-        /// <summary>
-        ///  May be null, so video could be not in a playlist
-        /// </summary>
-        public VideoPlaylistEntity? Playlist { get; set; } = null;
-        public int? PlaylistId { get; set; }
+        public virtual ICollection<PlaylistsVideosManyToMany> PlaylistsVideos { get; set; } = null!;
     }
 }

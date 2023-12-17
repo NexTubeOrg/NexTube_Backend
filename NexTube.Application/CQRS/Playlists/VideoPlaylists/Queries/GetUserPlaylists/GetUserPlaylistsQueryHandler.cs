@@ -20,14 +20,11 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlayl
                 .Select(p => new VideoPlaylistLookup() {
                     Id = p.Id,
                     Title = p.Title,
-                    TotalCountVideos = _dbContext.Videos
-                        .Where(v => v.Playlist.Id == p.Id)
-                        .Count(),
+                    TotalCountVideos = p.PlaylistsVideos.Count(),
                     Preview = p.PreviewImage.ToString()
                 });
 
             var result = await query.ToListAsync();
-
             return new GetUserPlaylistsQueryResult() {
                 Playlists = result
             };

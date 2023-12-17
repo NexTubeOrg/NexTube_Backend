@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Constants;
+using System.Linq;
 
 namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistVideos {
     public class GetPlaylistVideosQueryHandler : IRequestHandler<GetPlaylistVideosQuery, GetPlaylistVideosQueryResult> {
@@ -13,24 +14,26 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistV
         }
 
         public async Task<GetPlaylistVideosQueryResult> Handle(GetPlaylistVideosQuery request, CancellationToken cancellationToken) {
-            var videos = await _dbContext.Videos
-               .Where(v =>
-                    v.AccessModificator.Modificator == VideoAccessModificators.Public &&
-                    v.PlaylistId == request.PlaylistId)
-               .OrderByDescending(c => c.DateCreated)
-               .Include(e => e.Creator)
-               .Skip((request.Page - 1) * request.PageSize)
-               .Take(request.PageSize)
-               .Select(v => new VideoLookup() {
-                   Id = v.Id,
-                   Name = v.Name,
-                   PreviewPhotoFile = v.PreviewPhotoFileId,
-                   Creator = new UserLookup() {
-                       UserId = v.CreatorId,
-                       FirstName = v.Creator.FirstName,
-                       LastName = v.Creator.LastName,
-                   }
-               })
+            var playlist = await _dbContext.VideoPlaylists.FindAsync(request.PlaylistId);
+
+            var videos = await _dbContext.PlaylistsVideos
+                .Where(pv => pv.PlaylistId == request.PlaylistId)
+                .Include(pv => pv.Video)
+                .ThenInclude(v => v.Creator)
+                //.Where(pv => pv.Video!.AccessModificator!.Modificator == VideoAccessModificators.Public)
+                .OrderByDescending(pv => pv.Video.DateCreated)
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(v => new VideoLookup() {
+                    Id = v.Video.Id,
+                    Name = v.Video.Name,
+                    PreviewPhotoFile = v.Video.PreviewPhotoFileId,
+                    Creator = new UserLookup() {
+                        UserId = v.Video.CreatorId,
+                        FirstName = v.Video.Creator!.FirstName,
+                        LastName = v.Video.Creator.LastName,
+                    }
+                })
                .ToListAsync();
 
             var result = new GetPlaylistVideosQueryResult() {

@@ -10,6 +10,5 @@
         public DateTime? DateCreated { get; set; } = null;
         public DateTime? DateModified { get; set; } = null;
         public int? Views { get; set; } = null;
-        public int? PlaylistId { get; set; } = null;
     }
 }

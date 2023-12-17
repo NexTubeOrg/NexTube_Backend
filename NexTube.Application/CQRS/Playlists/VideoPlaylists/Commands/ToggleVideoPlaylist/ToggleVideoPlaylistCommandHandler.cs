@@ -3,18 +3,19 @@ using MediatR;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Domain.Entities;
+using NexTube.Domain.Entities.ManyToMany;
 using WebShop.Application.Common.Exceptions;
 
-namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ChangeVideoPlaylist {
-    public class ChangeVideoPlaylistCommandHandler : IRequestHandler<ChangeVideoPlaylistCommand, Unit> {
+namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ToggleVideoPlaylist {
+    public class ToggleVideoPlaylistCommandHandler : IRequestHandler<ToggleVideoPlaylistCommand, Unit> {
         private readonly IApplicationDbContext dbContext;
         private readonly IDateTimeService dateTimeService;
 
-        public ChangeVideoPlaylistCommandHandler(IApplicationDbContext dbContext, IDateTimeService dateTimeService) {
+        public ToggleVideoPlaylistCommandHandler(IApplicationDbContext dbContext, IDateTimeService dateTimeService) {
             this.dbContext = dbContext;
             this.dateTimeService = dateTimeService;
         }
-        public async Task<Unit> Handle(ChangeVideoPlaylistCommand request, CancellationToken cancellationToken) {
+        public async Task<Unit> Handle(ToggleVideoPlaylistCommand request, CancellationToken cancellationToken) {
             var playlist = await dbContext.VideoPlaylists.FindAsync(request.PlaylistId);
 
             if (playlist is null)
@@ -28,12 +29,19 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ChangeVideo
             if (video is null)
                 throw new NotFoundException(request.VideoId.ToString(), nameof(VideoEntity));
 
-            // prevent user to change foreign video
-            if (request.UserId != video.CreatorId)
-                throw new ForbiddenAccessException();
+            // if video is already in playlist - remove it
+            // otherwise - add
+            var relation = await dbContext.PlaylistsVideos.FindAsync(video.Id, playlist.Id);
+            if (relation is null)
+                dbContext.PlaylistsVideos.Add(new PlaylistsVideosManyToMany() {
+                    Playlist = playlist,
+                    Video = video,
+                });
+            else
+                dbContext.PlaylistsVideos.Remove(relation);
 
-            video.Playlist = playlist;
             video.DateModified = dateTimeService.Now;
+            playlist.DateModified = dateTimeService.Now;
 
             await dbContext.SaveChangesAsync(cancellationToken);
 

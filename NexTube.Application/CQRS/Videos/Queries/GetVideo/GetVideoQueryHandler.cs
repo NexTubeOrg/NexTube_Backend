@@ -34,7 +34,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideo {
                         LastName = v.Creator.LastName,
                         ChannelPhoto = v.Creator.ChannelPhotoFileId.ToString(),
                     },
-                    PlaylistId = v.PlaylistId
+                    //PlaylistId = v.PlaylistId
                 }).FirstOrDefaultAsync();
 
             if (videoLookup == null) {

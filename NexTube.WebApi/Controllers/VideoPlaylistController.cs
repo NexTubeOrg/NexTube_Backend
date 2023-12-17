@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ChangeVideoPlaylist;
+using NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ToggleVideoPlaylist;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.CreatePlaylist;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistVideos;
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlaylists;
@@ -49,7 +49,7 @@ namespace NexTube.WebApi.Controllers {
         [HttpPost]
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> ChangeVideoPlaylist([FromBody] ChangeVideoPlaylistDto dto) {
-            var command = mapper.Map<ChangeVideoPlaylistCommand>(dto);
+            var command = mapper.Map<ToggleVideoPlaylistCommand>(dto);
             command.UserId = UserId;
             await mediator.Send(command);
 
