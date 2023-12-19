@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
-using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Constants;
 
@@ -10,18 +9,16 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
     public class GetVideoListQueryHandler : IRequestHandler<GetVideoListQuery, GetVideoListQueryResult>
     {
         private readonly IApplicationDbContext _dbContext;
-        private readonly IVideoAccessModificatorService _videoAccessModificatorService;
 
-        public GetVideoListQueryHandler(IApplicationDbContext dbContext, IVideoAccessModificatorService videoAccessModificatorService)
+        public GetVideoListQueryHandler(IApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _videoAccessModificatorService = videoAccessModificatorService;
         }
 
         public async Task<GetVideoListQueryResult> Handle(GetVideoListQuery request, CancellationToken cancellationToken)
         {
             var videoLookups = await _dbContext.Videos
-               .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public || v.Creator.Id == request.RequesterId)
+               .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public)
                .OrderByDescending(c => c.DateCreated)
                .Include(e => e.Creator)
                .Skip((request.Page - 1) * request.PageSize)
@@ -36,6 +33,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
                    PreviewPhotoFile = v.PreviewPhotoFileId,
                    DateCreated = v.DateCreated,
                    Views = v.Views,
+                   DateModified = v.DateModified,
                    Creator = new UserLookup()
                    {
                        UserId = v.Creator.Id,
