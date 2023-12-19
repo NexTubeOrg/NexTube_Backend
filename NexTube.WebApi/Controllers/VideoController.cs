@@ -72,9 +72,9 @@ namespace NexTube.WebApi.Controllers
 
             var command = mapper.Map<UploadVideoCommand>(dto);
             command.Creator = CurrentUser;
-            var videoId = await Mediator.Send(command);
+            var videoLookup = await Mediator.Send(command);
 
-            return Ok(videoId);
+            return Ok(videoLookup);
         }
 
         [HttpDelete]
