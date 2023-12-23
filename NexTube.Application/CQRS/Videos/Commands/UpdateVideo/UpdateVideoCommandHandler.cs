@@ -65,7 +65,15 @@ namespace NexTube.Application.CQRS.Videos.Commands.UpdateVideo
                 AccessModificator = video.AccessModificator.Modificator,
                 PreviewPhotoFile = video.PreviewPhotoFileId,
                 DateCreated = video.DateCreated,
-                DateModified = video.DateModified
+                DateModified = video.DateModified,
+                Views = video.Views,
+                Creator = new UserLookup()
+                {
+                    UserId = video.Creator.Id,
+                    FirstName = video.Creator.FirstName,
+                    LastName = video.Creator.LastName,
+                    ChannelPhoto = video.Creator.ChannelPhotoFileId.ToString(),
+                }
             };
 
             return videoLookup;
