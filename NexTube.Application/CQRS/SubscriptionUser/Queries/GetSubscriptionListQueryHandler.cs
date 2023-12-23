@@ -22,15 +22,11 @@ public class GetSubscriptionListQueryHandler : IRequestHandler<GetSubscriptionLi
             .Where(s => s.Creator.Id == request.SubscriptionUserTo)
             .Select(c => new SubscriptionLookup()
             {
-
-                DateCreated = c.DateCreated,
-                Subscription = new UserLookup()
-                {
-                    UserId = c.Subscriber.Id,
-                    FirstName = c.Subscriber.FirstName,
-                    LastName = c.Subscriber.LastName,
-                    ChannelPhoto = c.Subscriber.ChannelPhotoFileId.ToString()
-                }
+                UserId = c.Subscriber.Id,
+                FirstName = c.Subscriber.FirstName,
+                LastName = c.Subscriber.LastName,
+                ChannelPhotoFileId = c.Subscriber.ChannelPhotoFileId.ToString(),
+            
             })
             .ToListAsync();
 
