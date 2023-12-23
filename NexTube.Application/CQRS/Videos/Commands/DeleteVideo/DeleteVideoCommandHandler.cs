@@ -38,6 +38,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.DeleteVideo
                 throw new ForbiddenAccessException();
             }
 
+            _dbContext.Reports.RemoveRange(_dbContext.Reports.Where(c => c.Video.Id == videoEntity.Id));
             _dbContext.Videos.Remove(videoEntity);
             await _videoService.DeleteVideoAsync(videoEntity.VideoFileId.ToString());
             await _photoService.DeletePhotoAsync(videoEntity.PreviewPhotoFileId.ToString());

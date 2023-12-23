@@ -10,5 +10,6 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public ApplicationUser? Creator { get; set; }
+        public string? AccessModificator { get; set; } = null;
     }
 }
