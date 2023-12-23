@@ -1,16 +1,18 @@
 ﻿// SubscriptionUserCommandHandler.cs
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
+using NexTube.Application.CQRS.Identity.Users.Commands.AddSubscriptionUser;
 using NexTube.Application.CQRS.Identity.Users.Commands.CreateUser;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.SubscriptionUser.AddSubscriptionUser
 {
-    public class AddSubscriptionUserCommandHandler : IRequestHandler<AddSubscriptionUserCommand, bool>
+    public class AddSubscriptionUserCommandHandler : IRequestHandler<AddSubscriptionUserCommand, AddSubscriptionUserCommandResult>
     {
         private readonly IApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -21,17 +23,22 @@ namespace NexTube.Application.CQRS.SubscriptionUser.AddSubscriptionUser
 
         }
 
-        public async Task<bool> Handle(AddSubscriptionUserCommand request, CancellationToken cancellationToken)
+        public async Task<AddSubscriptionUserCommandResult> Handle(AddSubscriptionUserCommand request, CancellationToken cancellationToken)
         {
+            if (request.User == request.Subscriber)
+            {
+                throw new NotFoundException(request.Subscriber.ToString(), nameof(SubscriptionEntity));
+            }
             var existingSubscription = await _context.Subscriptions
                 .FirstOrDefaultAsync(s =>
-                    s.Creator.Id == request.User && s.Subscriber.Id == request.Subscriber,
+                    s.Creator.Id == request.User && s.Subscriber.Id == request.Subscriber ,
                     cancellationToken);
 
             if (existingSubscription != null)
             {
-                // Користувач вже підписаний
-                return false;
+                
+                throw new NotFoundException(request.Subscriber.ToString(), nameof(SubscriptionEntity));
+
             }
 
             var subscriptionEntity = new SubscriptionEntity
@@ -45,7 +52,11 @@ namespace NexTube.Application.CQRS.SubscriptionUser.AddSubscriptionUser
             await _context.SaveChangesAsync(cancellationToken);
 
             // Повернути true, якщо підписка вдалася
-            return true;
+            return new AddSubscriptionUserCommandResult() { 
+                UserId = subscriptionEntity.Subscriber.Id, 
+                FirstName = subscriptionEntity.Subscriber.FirstName, 
+                LastName = subscriptionEntity.Subscriber.LastName,
+                ChannelPhotoFileId = subscriptionEntity.Subscriber.ChannelPhotoFileId.ToString() };
         }
     }
 }
