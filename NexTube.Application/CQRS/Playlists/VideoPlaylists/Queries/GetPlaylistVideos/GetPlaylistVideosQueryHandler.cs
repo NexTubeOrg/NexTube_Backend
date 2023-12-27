@@ -32,11 +32,13 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistV
                         UserId = v.Video.CreatorId,
                         FirstName = v.Video.Creator!.FirstName,
                         LastName = v.Video.Creator.LastName,
+                        ChannelPhoto = v.Video.Creator.ChannelPhotoFileId.ToString()
                     }
                 })
                .ToListAsync();
 
             var result = new GetPlaylistVideosQueryResult() {
+                Title = playlist.Title,
                 Videos = videos,
             };
 
