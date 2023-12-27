@@ -3,12 +3,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
+using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Constants;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
 {
-    public class UploadVideoCommandHandler : IRequestHandler<UploadVideoCommand, int>
+    public class UploadVideoCommandHandler : IRequestHandler<UploadVideoCommand, VideoLookup>
     {
         private readonly IVideoService _videoService;
         private readonly IPhotoService _photoService;
@@ -23,7 +24,7 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
             _dbContext = dbContext;
         }
 
-        public async Task<int> Handle(UploadVideoCommand request, CancellationToken cancellationToken)
+        public async Task<VideoLookup> Handle(UploadVideoCommand request, CancellationToken cancellationToken)
         {
             var videoUploadResult = await _videoService.UploadVideoAsync(request.Source);
             var photoUploadResult = await _photoService.UploadPhoto(request.PreviewPhotoSource);
@@ -48,7 +49,27 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
             await _dbContext.Videos.AddAsync(video);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return video.Id;
+            var videoLookup = new VideoLookup()
+            {
+                Id = video.Id,
+                Name = video.Name,
+                Description = video.Description,
+                VideoFile = video.VideoFileId,
+                AccessModificator = video.AccessModificator.Modificator,
+                PreviewPhotoFile = video.PreviewPhotoFileId,
+                DateCreated = video.DateCreated,
+                DateModified = video.DateModified,
+                Views = video.Views,
+                Creator = new UserLookup()
+                {
+                    UserId = video.Creator!.Id,
+                    FirstName = video.Creator.FirstName,
+                    LastName = video.Creator.LastName,
+                    ChannelPhoto = video.Creator.ChannelPhotoFileId.ToString(),
+                }
+            };
+
+            return videoLookup;
         }
     }
 }
