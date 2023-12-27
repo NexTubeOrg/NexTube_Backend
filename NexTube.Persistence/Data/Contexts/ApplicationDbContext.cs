@@ -16,7 +16,7 @@ namespace NexTube.Persistence.Data.Contexts {
         public DbSet<VideoReactionEntity> VideoReactions { get; set; } = null!;
         public DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; } = null!;
         public DbSet<VideoPlaylistEntity> VideoPlaylists { get; set; } = null!;
-        public DbSet<PlaylistsVideosManyToMany> PlaylistsVideos { get; set; } = null!;
+        public DbSet<PlaylistsVideosManyToMany> PlaylistsVideosManyToMany { get; set; } = null!;
         public DbSet<SubscriptionEntity> Subscriptions { get; set; } = null!;
         public DbSet<Report> Reports { get; set; } = null!;
 

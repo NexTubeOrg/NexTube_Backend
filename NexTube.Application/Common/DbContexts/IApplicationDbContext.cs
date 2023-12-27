@@ -10,7 +10,7 @@ namespace NexTube.Application.Common.DbContexts {
         DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; }
         DbSet<VideoReactionEntity> VideoReactions { get; set; }
         DbSet<VideoPlaylistEntity> VideoPlaylists { get; set; }
-        DbSet<PlaylistsVideosManyToMany> PlaylistsVideos { get; set; }
+        DbSet<PlaylistsVideosManyToMany> PlaylistsVideosManyToMany { get; set; }
         DbSet<SubscriptionEntity> Subscriptions { get; set; }
 
 

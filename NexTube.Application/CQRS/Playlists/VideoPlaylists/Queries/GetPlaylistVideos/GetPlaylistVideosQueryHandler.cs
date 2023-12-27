@@ -16,11 +16,10 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistV
         public async Task<GetPlaylistVideosQueryResult> Handle(GetPlaylistVideosQuery request, CancellationToken cancellationToken) {
             var playlist = await _dbContext.VideoPlaylists.FindAsync(request.PlaylistId);
 
-            var videos = await _dbContext.PlaylistsVideos
+            var videos = await _dbContext.PlaylistsVideosManyToMany
                 .Where(pv => pv.PlaylistId == request.PlaylistId)
                 .Include(pv => pv.Video)
                 .ThenInclude(v => v.Creator)
-                //.Where(pv => pv.Video!.AccessModificator!.Modificator == VideoAccessModificators.Public)
                 .OrderByDescending(pv => pv.Video.DateCreated)
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)

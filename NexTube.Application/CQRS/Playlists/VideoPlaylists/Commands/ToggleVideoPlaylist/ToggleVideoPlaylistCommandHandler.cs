@@ -31,14 +31,14 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Commands.ToggleVideo
 
             // if video is already in playlist - remove it
             // otherwise - add
-            var relation = await dbContext.PlaylistsVideos.FindAsync(video.Id, playlist.Id);
+            var relation = await dbContext.PlaylistsVideosManyToMany.FindAsync(video.Id, playlist.Id);
             if (relation is null)
-                dbContext.PlaylistsVideos.Add(new PlaylistsVideosManyToMany() {
+                dbContext.PlaylistsVideosManyToMany.Add(new PlaylistsVideosManyToMany() {
                     Playlist = playlist,
                     Video = video,
                 });
             else
-                dbContext.PlaylistsVideos.Remove(relation);
+                dbContext.PlaylistsVideosManyToMany.Remove(relation);
 
             video.DateModified = dateTimeService.Now;
             playlist.DateModified = dateTimeService.Now;
