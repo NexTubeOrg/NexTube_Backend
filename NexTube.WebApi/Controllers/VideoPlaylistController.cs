@@ -8,6 +8,7 @@ using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistVideo
 using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetUserPlaylists;
 using NexTube.WebApi.DTO.Playlists;
 using WebShop.Domain.Constants;
+using NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetVideoPlaylistsUserStatus;
 
 namespace NexTube.WebApi.Controllers {
     [Route("api/Video/Playlist/[action]")]
@@ -30,6 +31,15 @@ namespace NexTube.WebApi.Controllers {
         [HttpGet]
         public async Task<ActionResult> GetPlaylistVideos([FromQuery] GetPlaylistVideosDto dto) {
             var query = mapper.Map<GetPlaylistVideosQuery>(dto);
+            var result = await mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = Roles.User)]
+        public async Task<ActionResult> GetVideoPlaylistsUserStatus([FromQuery] GetVideoPlaylistsUserStatusDto dto) {
+            var query = mapper.Map<GetVideoPlaylistsUserStatusQuery>(dto);
+            query.UserId = UserId;
             var result = await mediator.Send(query);
             return Ok(result);
         }
