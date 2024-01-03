@@ -270,7 +270,7 @@ namespace NexTube.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NotificationData")
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<int?>("NotificationIssuerId")
                         .HasColumnType("integer");

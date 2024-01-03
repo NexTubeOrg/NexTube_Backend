@@ -20,6 +20,7 @@
 	  <PackageReference Include="Microsoft.EntityFrameworkCore">
 		  <Version>7.0.9</Version>
 	  </PackageReference>
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 	<ItemGroup>

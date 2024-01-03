@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNotificationEntity : Migration
+    public partial class AddNotifications : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace NexTube.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     NotificationIssuerId = table.Column<int>(type: "integer", nullable: true),
-                    NotificationData = table.Column<string>(type: "text", nullable: true),
+                    NotificationData = table.Column<string>(type: "jsonb", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

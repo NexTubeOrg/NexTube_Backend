@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240103151728_AddNotificationEntity")]
-    partial class AddNotificationEntity
+    [Migration("20240103193236_AddNotifications")]
+    partial class AddNotifications
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,7 +273,7 @@ namespace NexTube.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NotificationData")
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.Property<int?>("NotificationIssuerId")
                         .HasColumnType("integer");
