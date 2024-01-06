@@ -15,10 +15,12 @@ namespace NexTube.WebApi.Controllers
     public class UserController : BaseController
     {
         private readonly IMapper mapper;
+
         public UserController(IMapper mapper)
         {
             this.mapper = mapper;
         }
+
         [Authorize(Roles = Roles.User)]
         [HttpPut]  
         public async Task<ActionResult> UpdateUser([FromBody] UpdateUserDto dto)  
@@ -31,6 +33,7 @@ namespace NexTube.WebApi.Controllers
 
             return NoContent();  
         }
+
         [HttpGet]
         public async Task<ActionResult> GetUser([FromQuery] GetChannelInfoDto dto)
         {
@@ -39,12 +42,11 @@ namespace NexTube.WebApi.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
         [Authorize(Roles = Roles.User)]
         [HttpPut]
         public async Task<ActionResult> UpdateChannelImage([FromForm] UpdateChannelImageDto dto)
         {
-
-
             var command = mapper.Map<UpdateChannelImageCommand>(dto);
             command.UserId = (int)UserId;
             await Mediator.Send(command);

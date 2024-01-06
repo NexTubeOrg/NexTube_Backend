@@ -9,6 +9,7 @@ using NexTube.WebApi.DTO.Videos;
 using NexTube.Application.CQRS.Videos.Queries.GetVideoList;
 using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Queries.GetVideo;
+using NexTube.Application.CQRS.Videos.Queries.GetVideoListChannel;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -50,6 +51,17 @@ namespace NexTube.WebApi.Controllers
             return Ok(getVideosDto);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetVideoListChannel([FromQuery] GetVideoListChannelDto dto)
+        {
+            var query = mapper.Map<GetVideoListChannelQuery>(dto);
+            query.RequesterId = this.UserId;
+
+            var getVideosDto = await Mediator.Send(query);
+
+            return Ok(getVideosDto);
+        }
+
         [HttpPost]
         [Authorize(Roles = Roles.User)]
         public async Task<ActionResult> UploadVideo([FromForm] UploadVideoDto dto)
@@ -58,9 +70,9 @@ namespace NexTube.WebApi.Controllers
 
             var command = mapper.Map<UploadVideoCommand>(dto);
             command.Creator = CurrentUser;
-            var videoId = await Mediator.Send(command);
+            var videoLookup = await Mediator.Send(command);
 
-            return Ok(videoId);
+            return Ok(videoLookup);
         }
 
         [HttpDelete]

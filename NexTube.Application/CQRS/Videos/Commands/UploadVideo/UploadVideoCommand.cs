@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
 {
-    public class UploadVideoCommand : IRequest<int>
+    public class UploadVideoCommand : IRequest<VideoLookup>
     {
         public Stream Source { get; set; } = null!;
         public Stream PreviewPhotoSource { get; set; } = null!;
