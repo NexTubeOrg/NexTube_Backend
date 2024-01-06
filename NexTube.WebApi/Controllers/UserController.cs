@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Identity.Users.Commands.ChangeBanner;
 using NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo;
+using NexTube.Application.CQRS.Identity.Users.Commands.UpdateChannelImage;
 using NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser;
 using NexTube.WebApi.DTO.Auth.Subscription;
 using NexTube.WebApi.DTO.Auth.User;
@@ -53,6 +54,17 @@ namespace NexTube.WebApi.Controllers
             var command = mapper.Map<GetChannelInfoCommand>(dto);
             var result = await Mediator.Send(command);
             return Ok(result);
+        }
+
+        [Authorize(Roles = Roles.User)]
+        [HttpPut]
+        public async Task<ActionResult> UpdateChannelImage([FromForm] UpdateChannelImageDto dto)
+        {
+            var command = mapper.Map<UpdateChannelImageCommand>(dto);
+            command.UserId = (int)UserId;
+            await Mediator.Send(command);
+
+            return NoContent();
         }
 
     }

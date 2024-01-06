@@ -1,7 +1,5 @@
-﻿namespace NexTube.Application.Models.Lookups
-{
-    public record VideoLookup
-    {
+﻿namespace NexTube.Application.Models.Lookups {
+    public record VideoLookup {
         public int? Id { get; set; } = null;
         public string? Name { get; set; } = null;
         public string? Description { get; set; } = null;

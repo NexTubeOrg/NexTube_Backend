@@ -243,6 +243,21 @@ namespace NexTube.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("NexTube.Domain.Entities.ManyToMany.PlaylistsVideosManyToMany", b =>
+                {
+                    b.Property<int>("VideoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PlaylistId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("VideoId", "PlaylistId");
+
+                    b.HasIndex("PlaylistId");
+
+                    b.ToTable("PlaylistsVideosManyToMany", (string)null);
+                });
+
             modelBuilder.Entity("NexTube.Domain.Entities.Report", b =>
                 {
                     b.Property<int>("Id")
@@ -417,6 +432,37 @@ namespace NexTube.Persistence.Migrations
                     b.ToTable("Videos");
                 });
 
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("PreviewImage")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("VideoPlaylists");
+                });
+
             modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b =>
                 {
                     b.Property<int?>("CreatorId")
@@ -490,6 +536,25 @@ namespace NexTube.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.ManyToMany.PlaylistsVideosManyToMany", b =>
+                {
+                    b.HasOne("NexTube.Domain.Entities.VideoPlaylistEntity", "Playlist")
+                        .WithMany("PlaylistsVideos")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "Video")
+                        .WithMany("PlaylistsVideos")
+                        .HasForeignKey("VideoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Playlist");
+
+                    b.Navigation("Video");
                 });
 
             modelBuilder.Entity("NexTube.Domain.Entities.Report", b =>
@@ -574,6 +639,15 @@ namespace NexTube.Persistence.Migrations
                     b.Navigation("Creator");
                 });
 
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
+                {
+                    b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.Navigation("Creator");
+                });
+
             modelBuilder.Entity("NexTube.Domain.Entities.VideoReactionEntity", b =>
                 {
                     b.HasOne("NexTube.Domain.Entities.ApplicationUser", "Creator")
@@ -591,6 +665,16 @@ namespace NexTube.Persistence.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("ReactedVideo");
+                });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoEntity", b =>
+                {
+                    b.Navigation("PlaylistsVideos");
+                });
+
+            modelBuilder.Entity("NexTube.Domain.Entities.VideoPlaylistEntity", b =>
+                {
+                    b.Navigation("PlaylistsVideos");
                 });
 #pragma warning restore 612, 618
         }

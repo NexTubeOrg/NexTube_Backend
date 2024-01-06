@@ -12,6 +12,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser
         public UpdateUserCommandHandler(UserManager<ApplicationUser> userManager)
         {
         _userManager = userManager;
+
         }
 
         public async Task<int> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
