@@ -19,6 +19,7 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideoList
         {
             var videoLookups = await _dbContext.Videos
                .Where(v => v.AccessModificator.Modificator == VideoAccessModificators.Public)
+               .Where(v => request.Name != null ? v.Name.Contains(request.Name) : true)
                .OrderByDescending(c => c.DateCreated)
                .Include(e => e.Creator)
                .Skip((request.Page - 1) * request.PageSize)
