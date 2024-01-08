@@ -25,6 +25,8 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.ChangeBanner
 
             var uploadResult = await _photoService.UploadPhoto(request.BannerStream);
 
+            await _photoService.DeletePhotoAsync(request.Requester.BannerFileId.ToString());
+
             request.Requester.BannerFileId = Guid.Parse(uploadResult.PhotoId);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
