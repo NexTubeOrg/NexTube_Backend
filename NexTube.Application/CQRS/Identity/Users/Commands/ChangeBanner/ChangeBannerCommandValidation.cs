@@ -1,23 +1,14 @@
 ﻿using FluentValidation;
 using NexTube.Application.Common.Interfaces;
 
-namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo
+namespace NexTube.Application.CQRS.Identity.Users.Commands.ChangeBanner
 {
-    public class UploadVideoCommandValidation : AbstractValidator<UploadVideoCommand>
+    public class ChangeBannerCommandValidation : AbstractValidator<ChangeBannerCommand>
     {
-        public UploadVideoCommandValidation(IPhotoService photoService)
+        public ChangeBannerCommandValidation(IPhotoService photoService)
         {
-            RuleFor(c => c.Name)
-                .MinimumLength(2)
-                .MaximumLength(100);
-
-            RuleFor(c => c.Description)
-                .MinimumLength(2)
-                .MaximumLength(1000);
-
-
             int width = -1, height = -1;
-            RuleFor(c => c.PreviewPhotoSource)
+            RuleFor(c => c.BannerStream)
                 .NotNull()
                 .MustAsync(async (s, cancellation) => {
                     if (!await photoService.IsFileImageAsync(s))

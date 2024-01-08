@@ -46,6 +46,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo
     .Where(s => s.Creator.Id == request.UserId)
     .CountAsync(),
                 ChannelPhotoFileId = Guid.Parse(user.ChannelPhotoFileId.ToString()),
+                BannerFileId = user.BannerFileId,
                 // Додайте інші поля, які вам потрібні
             };
 

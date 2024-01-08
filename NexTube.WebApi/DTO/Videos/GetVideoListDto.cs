@@ -8,6 +8,7 @@ namespace NexTube.WebApi.DTO.Videos
 {
     public class GetVideoListDto : IMapWith<GetVideoListQuery>
     {
+        public string? Name { get; set; } = null;
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 5;
 
@@ -15,7 +16,8 @@ namespace NexTube.WebApi.DTO.Videos
         {
             profile.CreateMap<GetVideoListDto, GetVideoListQuery>()
                 .ForMember(query => query.Page, opt => opt.MapFrom(dto => dto.Page))
-                .ForMember(query => query.PageSize, opt => opt.MapFrom(dto => dto.PageSize));
+                .ForMember(query => query.PageSize, opt => opt.MapFrom(dto => dto.PageSize))
+                .ForMember(query => query.Name, opt => opt.MapFrom(dto => dto.Name));
         }
     }
 }
