@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Identity.Users.Commands.ChangeBanner;
 using NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo;
