@@ -18,17 +18,23 @@ namespace NexTube.Application.CQRS.Notifications.Queries.GetUserNotifications {
                     s => s.SubscriberId,
                     n => n.NotificationIssuerId,
                     (s, n) => n)
-                //.OrderByDescending(n => n.DateCreated)
-                //.Skip((request.Page - 1) * request.PageSize)
-                //.Take(request.PageSize)
+                .Include(n => n.NotificationData)
+                .OrderByDescending(n => n.DateCreated)
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .Select(n => new NotificationLookup() {
                     Type = n.Type,
-                    NotificationData = n.NotificationData,
+                    NotificationData = new VideoLookup() {
+                        Name = n.NotificationData!.Name,
+                        Id = n.NotificationData!.Id,
+                        PreviewPhotoFile = n.NotificationData!.PreviewPhotoFileId
+                    },
                     NotificationIssuer = new UserLookup() {
                         FirstName = n.NotificationIssuer!.FirstName,
                         LastName = n.NotificationIssuer!.LastName,
                         ChannelPhoto = n.NotificationIssuer.ChannelPhotoFileId.ToString()
-                    }
+                    },
+                    DateCreated = n.DateCreated
                 })
                 .ToListAsync();
             return result;

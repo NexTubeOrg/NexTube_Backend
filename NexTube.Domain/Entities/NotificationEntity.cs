@@ -8,6 +8,6 @@ namespace NexTube.Domain.Entities {
         public NotificationType Type { get; set; }
         public ApplicationUser? NotificationIssuer { get; set; }
         public int? NotificationIssuerId { get; set; }
-        public string? NotificationData { get; set; } = null;
+        public VideoEntity? NotificationData { get; set; } = null;
     }
 }

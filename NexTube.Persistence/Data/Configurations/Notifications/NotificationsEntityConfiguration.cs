@@ -12,9 +12,6 @@ namespace NexTube.Persistence.Data.Configurations.Notifications {
                 .WithMany()
                 .HasForeignKey(p => p.NotificationIssuerId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-            builder.Property(n => n.NotificationData)
-                .HasColumnType("jsonb");
         }
     }
 }

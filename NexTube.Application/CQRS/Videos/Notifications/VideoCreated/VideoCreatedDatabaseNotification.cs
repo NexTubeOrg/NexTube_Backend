@@ -32,7 +32,7 @@ namespace NexTube.Application.CQRS.Videos.Notifications.VideoCreated {
                 NotificationIssuer = notification.Video.Creator,
                 NotificationIssuerId = notification.Video.CreatorId,
                 Type = NotificationEntity.NotificationType.NewVideo,
-                NotificationData = videoLookup.ToJson()
+                NotificationData = notification.Video
             };
 
             _context.Notifications.Add(notificationEntity);
