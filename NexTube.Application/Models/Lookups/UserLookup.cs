@@ -10,6 +10,8 @@ namespace NexTube.Application.Models.Lookups
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? ChannelPhoto { get; set; }
+        public string? Banner { get; set; }
+
         public IList<string>? Roles { get; set; }
 
         
