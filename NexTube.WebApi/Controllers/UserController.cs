@@ -5,38 +5,35 @@ using Microsoft.AspNetCore.Mvc;
 using NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo;
 using NexTube.Application.CQRS.Identity.Users.Commands.UpdateChannelImage;
 using NexTube.Application.CQRS.Identity.Users.Commands.UpdateUser;
+using NexTube.Application.CQRS.Notifications.Queries.GetUserNotifications;
 using NexTube.WebApi.DTO.Auth.Subscription;
 using NexTube.WebApi.DTO.Auth.User;
+using NexTube.WebApi.DTO.Notifications;
 using WebShop.Domain.Constants;
 
-namespace NexTube.WebApi.Controllers
-{
+namespace NexTube.WebApi.Controllers {
 
-    public class UserController : BaseController
-    {
+    public class UserController : BaseController {
         private readonly IMapper mapper;
 
-        public UserController(IMapper mapper)
-        {
+        public UserController(IMapper mapper) {
             this.mapper = mapper;
         }
 
         [Authorize(Roles = Roles.User)]
-        [HttpPut]  
-        public async Task<ActionResult> UpdateUser([FromBody] UpdateUserDto dto)  
-        {
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser([FromBody] UpdateUserDto dto) {
 
-       
+
             var command = mapper.Map<UpdateUserCommand>(dto);
-            command.UserId = (int)UserId; 
+            command.UserId = (int)UserId;
             await Mediator.Send(command);
 
-            return NoContent();  
+            return NoContent();
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetUser([FromQuery] GetChannelInfoDto dto)
-        {
+        public async Task<ActionResult> GetUser([FromQuery] GetChannelInfoDto dto) {
 
             var command = mapper.Map<GetChannelInfoCommand>(dto);
             var result = await Mediator.Send(command);
@@ -45,8 +42,7 @@ namespace NexTube.WebApi.Controllers
 
         [Authorize(Roles = Roles.User)]
         [HttpPut]
-        public async Task<ActionResult> UpdateChannelImage([FromForm] UpdateChannelImageDto dto)
-        {
+        public async Task<ActionResult> UpdateChannelImage([FromForm] UpdateChannelImageDto dto) {
             var command = mapper.Map<UpdateChannelImageCommand>(dto);
             command.UserId = (int)UserId;
             await Mediator.Send(command);
@@ -54,5 +50,13 @@ namespace NexTube.WebApi.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = Roles.User)]
+        [HttpGet]
+        public async Task<ActionResult> GetUserNotifications([FromQuery] GetUserNotificationsDto dto) {
+            var request = mapper.Map<GetUserNotificationsQuery>(dto);
+            request.UserId = (int)UserId;
+            var result = await Mediator.Send(request);
+            return Ok(result);
+        }
     }
 }
