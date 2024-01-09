@@ -11,6 +11,9 @@ using NexTube.Infrastructure.Services;
 using NexTube.Persistence.Settings.Configurations;
 using NexTube.Application.Common.DbContexts;
 using IHttpClientFactory = NexTube.Application.Common.Interfaces.IHttpClientFactory;
+using NexTube.Persistence.Services.EventPublishers;
+using Microsoft.AspNetCore.SignalR;
+using NexTube.Persistence.Data.Providers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -68,6 +71,9 @@ public static class ConfigureServices {
         services.TryAddScoped<IHttpClientFactory, HttpClientFactory>();
         services.TryAddScoped<IAdminService, AdminService>();
         services.TryAddScoped<IVideoAccessModificatorService, VideoAccessModificatorService>();
+        services.TryAddScoped<IEventPublisher, NotificationEventPublisher>();
+
+        services.TryAddSingleton<IUserIdProvider, ApplicationUserIdProvider>();
 
         // setup SignalR
         services.AddSignalR();

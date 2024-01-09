@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NexTube.Application.Common.Mappings;
+using NexTube.Infrastructure.Hubs;
 using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Data.Seeders;
-using NexTube.WebApi.Hubs;
 using NexTube.WebApi.Swagger;
 using System.Reflection;
 

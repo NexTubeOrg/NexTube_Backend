@@ -1,16 +1,15 @@
 ﻿using MediatR;
 using NexTube.Application.Common.DbContexts;
-using NexTube.Application.Common.Extensions;
 using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Entities;
 
 namespace NexTube.Application.CQRS.Videos.Notifications.VideoCreated {
-    public class VideoCreatedDatabaseNotification : INotificationHandler<VideoCreatedNotification> {
+    public class VideoCreatedDatabaseNotificationHandler : INotificationHandler<VideoCreatedNotification> {
         private readonly IApplicationDbContext _context;
         private readonly IDateTimeService _dateTimeService;
 
-        public VideoCreatedDatabaseNotification(IApplicationDbContext context, IDateTimeService dateTimeService) {
+        public VideoCreatedDatabaseNotificationHandler(IApplicationDbContext context, IDateTimeService dateTimeService) {
             _context = context;
             _dateTimeService = dateTimeService;
         }
