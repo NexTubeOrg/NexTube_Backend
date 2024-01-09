@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
 using NexTube.Application.Common.Interfaces;
-using NexTube.Application.CQRS.Videos.Notifications.VideoCreated;
 using NexTube.Application.Models.Lookups;
 using NexTube.Infrastructure.Hubs;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace NexTube.Persistence.Services.EventPublishers {
     public class NotificationEventPublisher : IEventPublisher {
