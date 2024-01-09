@@ -69,6 +69,9 @@ public static class ConfigureServices {
         services.TryAddScoped<IAdminService, AdminService>();
         services.TryAddScoped<IVideoAccessModificatorService, VideoAccessModificatorService>();
 
+        // setup SignalR
+        services.AddSignalR();
+
         return services;
     }
 }

@@ -1,9 +1,12 @@
 using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Connections.Features;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NexTube.Application.Common.Mappings;
 using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Data.Seeders;
+using NexTube.WebApi.Hubs;
 using NexTube.WebApi.Swagger;
 using System.Reflection;
 
@@ -35,7 +38,7 @@ builder.Services.AddSwaggerGen(o => {
             Scheme = "Bearer",
         });
 
-  o.OperationFilter<AuthorizeCheckOperationFilter>();
+    o.OperationFilter<AuthorizeCheckOperationFilter>();
 
     o.SwaggerDoc("v1", new OpenApiInfo() {
         Title = "NexTube API - v1",
@@ -79,12 +82,15 @@ if (app.Environment.IsProduction()) {
     configuration.EnsureExistence("appsettings.json");
 }
 
+app.UseWebSockets();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationsHub>("/signalr/notifications");
 
 app.SeedData();
 
