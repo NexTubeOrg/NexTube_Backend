@@ -12,5 +12,6 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.GetChannelInfo
         public int Subsciptions { get; set; }
         public int Video { get; set; }
         public Guid? ChannelPhotoFileId { get; set; }
+        public Guid? BannerFileId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NexTube.Domain.Entities;
+using NexTube.Domain.Entities.ManyToMany;
 
 namespace NexTube.Application.Common.DbContexts {
     public interface IApplicationDbContext {
@@ -8,7 +9,9 @@ namespace NexTube.Application.Common.DbContexts {
         DbSet<VideoCommentEntity> VideoComments { get; set; }
         DbSet<VideoAccessModificatorEntity> VideoAccessModificators { get; set; }
         DbSet<VideoReactionEntity> VideoReactions { get; set; }
-          DbSet<SubscriptionEntity> Subscriptions { get; set; }
+        DbSet<VideoPlaylistEntity> VideoPlaylists { get; set; }
+        DbSet<PlaylistsVideosManyToMany> PlaylistsVideosManyToMany { get; set; }
+        DbSet<SubscriptionEntity> Subscriptions { get; set; }
 
 
         DbSet<Report> Reports { get; set; }
