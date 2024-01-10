@@ -10,5 +10,6 @@
         public DateTime? DateCreated { get; set; } = null;
         public DateTime? DateModified { get; set; } = null;
         public int? Views { get; set; } = null;
+        public int? CommentsCount { get; set; } = null;
     }
 }
