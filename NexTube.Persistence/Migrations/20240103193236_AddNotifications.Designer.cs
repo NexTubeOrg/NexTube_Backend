@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NexTube.Persistence.Data.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240103193236_AddNotifications")]
+    partial class AddNotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,9 +168,6 @@ namespace NexTube.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("BannerFileId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("ChannelPhotoFileId")
                         .HasColumnType("uuid");
 
@@ -272,8 +272,8 @@ namespace NexTube.Persistence.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("NotificationDataId")
-                        .HasColumnType("integer");
+                    b.Property<string>("NotificationData")
+                        .HasColumnType("jsonb");
 
                     b.Property<int?>("NotificationIssuerId")
                         .HasColumnType("integer");
@@ -285,8 +285,6 @@ namespace NexTube.Persistence.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("NotificationDataId");
 
                     b.HasIndex("NotificationIssuerId");
 
@@ -594,16 +592,10 @@ namespace NexTube.Persistence.Migrations
 
             modelBuilder.Entity("NexTube.Domain.Entities.NotificationEntity", b =>
                 {
-                    b.HasOne("NexTube.Domain.Entities.VideoEntity", "NotificationData")
-                        .WithMany()
-                        .HasForeignKey("NotificationDataId");
-
                     b.HasOne("NexTube.Domain.Entities.ApplicationUser", "NotificationIssuer")
                         .WithMany()
                         .HasForeignKey("NotificationIssuerId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("NotificationData");
 
                     b.Navigation("NotificationIssuer");
                 });
