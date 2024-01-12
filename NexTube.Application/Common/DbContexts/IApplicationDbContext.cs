@@ -12,9 +12,9 @@ namespace NexTube.Application.Common.DbContexts {
         DbSet<VideoPlaylistEntity> VideoPlaylists { get; set; }
         DbSet<PlaylistsVideosManyToMany> PlaylistsVideosManyToMany { get; set; }
         DbSet<SubscriptionEntity> Subscriptions { get; set; }
-
-
         DbSet<Report> Reports { get; set; }
+        DbSet<NotificationEntity> Notifications { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     }
