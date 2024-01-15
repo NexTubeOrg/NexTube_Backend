@@ -6,7 +6,7 @@ namespace NexTube.WebApi.DTO.Auth.User
 {
     public class UpdateChannelImageDto : IMapWith<UpdateChannelImageCommand>
     {
-        public IFormFile? ChannelPhotoFile { get; set; } = null!;
+        public IFormFile ChannelPhotoFile { get; set; } = null!;
       
 
         public void Mapping(Profile profile)
