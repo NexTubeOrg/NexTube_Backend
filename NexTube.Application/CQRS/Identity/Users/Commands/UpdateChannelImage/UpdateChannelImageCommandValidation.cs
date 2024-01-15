@@ -26,7 +26,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.UpdateChannelImage
                 if (!await photoService.IsFileImageAsync(s))
                     return false;
                 else return true;
-            }).WithMessage("Channel Photo File  cannot be image");
+            }).WithMessage("Channel Photo File  mast be image");
  
 
 
