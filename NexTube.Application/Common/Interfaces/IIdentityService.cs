@@ -9,6 +9,8 @@ namespace NexTube.Application.Common.Interfaces {
         Task<Result> CreateRoleAsync(string roleName);
         Task<Result> AddToRoleAsync(int userId, string roleName);
         Task<(Result Result, IList<string> Roles)> GetUserRolesAsync(int userId);
-      
+      Task<(Result Result, UserLookup userLookup)> GetUserLookupAsync(int userId);
+
+
     }
 }
