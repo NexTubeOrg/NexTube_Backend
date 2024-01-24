@@ -75,12 +75,6 @@ app.UseSwaggerUI(c => {
     c.OAuthAppName(googleAppId);
 });
 app.UseCors("AllowAll");
-// ensure all required settings exist
-configuration.EnsureExistence("appsettings.Development.json");
-
-if (app.Environment.IsProduction()) {
-    configuration.EnsureExistence("appsettings.json");
-}
 
 app.UseWebSockets();
 
