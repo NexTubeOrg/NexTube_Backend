@@ -43,7 +43,7 @@ namespace NexTube.WebApi.Controllers {
             return Ok(result);
         }
 
-        [Authorize(Roles = Roles.Unverified)]
+       
         [HttpPost]
         public async Task<ActionResult> VerifyUser([FromBody] VerifyUserDto dto)
         {

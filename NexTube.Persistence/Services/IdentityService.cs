@@ -100,7 +100,7 @@ namespace NexTube.Persistence.Services {
             var res = new UserLookup()
             {
                 Email = user.Email,
-                FirstName = user.Email,
+                FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserId = userId,
                 Roles = (await GetUserRolesAsync(userId)).Roles,
