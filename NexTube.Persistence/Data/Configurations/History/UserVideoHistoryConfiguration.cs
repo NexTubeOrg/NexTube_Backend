@@ -8,11 +8,7 @@ namespace NexTube.Persistence.Data.Configurations.History
     {
         public void Configure(EntityTypeBuilder<UserVideoHistoryEntity> builder)
         {
-            builder.HasKey(x => new
-            {
-                x.UserId,
-                x.VideoId
-            });
+            builder.HasKey(h => h.Id);
 
             builder
                 .HasOne(h => h.User)

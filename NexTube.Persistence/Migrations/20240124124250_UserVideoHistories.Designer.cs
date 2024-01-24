@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240120140556_UserVideoHistories")]
+    [Migration("20240124124250_UserVideoHistories")]
     partial class UserVideoHistories
     {
         /// <inheritdoc />
@@ -368,16 +368,24 @@ namespace NexTube.Persistence.Migrations
 
             modelBuilder.Entity("NexTube.Domain.Entities.UserVideoHistoryEntity", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateWatched")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.Property<int>("VideoId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("DateWatched")
-                        .HasColumnType("timestamp with time zone");
+                    b.HasKey("Id");
 
-                    b.HasKey("UserId", "VideoId");
+                    b.HasIndex("UserId");
 
                     b.HasIndex("VideoId");
 

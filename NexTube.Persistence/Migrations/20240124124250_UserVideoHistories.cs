@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,13 +16,15 @@ namespace NexTube.Persistence.Migrations
                 name: "UserVideoHistories",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     VideoId = table.Column<int>(type: "integer", nullable: false),
                     DateWatched = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserVideoHistories", x => new { x.UserId, x.VideoId });
+                    table.PrimaryKey("PK_UserVideoHistories", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserVideoHistories_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -35,6 +38,11 @@ namespace NexTube.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserVideoHistories_UserId",
+                table: "UserVideoHistories",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserVideoHistories_VideoId",
