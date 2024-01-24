@@ -4,6 +4,7 @@ using NexTube.Application.Common.DbContexts;
 using NexTube.Domain.Entities;
 using NexTube.Domain.Entities.ManyToMany;
 using NexTube.Persistence.Data.Configurations.Comments.VideoComments;
+using NexTube.Persistence.Data.Configurations.History;
 using NexTube.Persistence.Data.Configurations.Identity;
 using NexTube.Persistence.Data.Configurations.Notifications;
 using NexTube.Persistence.Data.Configurations.Playlists;
@@ -21,6 +22,7 @@ namespace NexTube.Persistence.Data.Contexts {
         public DbSet<SubscriptionEntity> Subscriptions { get; set; } = null!;
         public DbSet<Report> Reports { get; set; } = null!;
         public DbSet<NotificationEntity> Notifications { get; set; } = null!;
+        public DbSet<UserVideoHistoryEntity> UserVideoHistories { get; set; } = null!;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder) {
@@ -35,6 +37,7 @@ namespace NexTube.Persistence.Data.Contexts {
             builder.ApplyConfiguration(new VideoPlaylistEntityConfiguration());
             builder.ApplyConfiguration(new PlaylistsVideosManyToManyConfiguration());
             builder.ApplyConfiguration(new NotificationEntityConfiguration());
+            builder.ApplyConfiguration(new UserVideoHistoryConfiguration());
 
             base.OnModelCreating(builder);
         }
