@@ -50,7 +50,7 @@ namespace NexTube.Application.CQRS.Identity.Users.Commands.SignInWithProvider {
                 Guid.TryParse((await _photoService.UploadPhoto(photoStream)).PhotoId, out photoFileId);
             }
 
-            var result = await _identityService.CreateUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", photoFileId);
+            var result = await _identityService.CreateVerifiedUserAsync(userInfo.Email ?? "", userInfo.FirstName ?? "", userInfo.LastName ?? "", photoFileId);
             userInfo.ChannelPhoto = photoFileId.ToString();
 
             return (result.Result, result.User);
