@@ -14,6 +14,8 @@ namespace NexTube.Application.Common.DbContexts {
         DbSet<SubscriptionEntity> Subscriptions { get; set; }
         DbSet<Report> Reports { get; set; }
         DbSet<NotificationEntity> Notifications { get; set; }
+        DbSet<UserVideoHistoryEntity> UserVideoHistories { get; set; }
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
