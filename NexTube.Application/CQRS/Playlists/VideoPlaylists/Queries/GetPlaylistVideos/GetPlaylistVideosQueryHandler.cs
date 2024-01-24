@@ -39,6 +39,9 @@ namespace NexTube.Application.CQRS.Playlists.VideoPlaylists.Queries.GetPlaylistV
             var result = new GetPlaylistVideosQueryResult() {
                 Title = playlist.Title,
                 Videos = videos,
+                TotalCount = await _dbContext.PlaylistsVideosManyToMany
+                    .Where(pv => pv.PlaylistId == request.PlaylistId)
+                    .CountAsync()
             };
 
             return result;

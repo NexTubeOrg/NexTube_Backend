@@ -12,6 +12,10 @@ namespace NexTube.Persistence.Data.Configurations.Notifications {
                 .WithMany()
                 .HasForeignKey(p => p.NotificationIssuerId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(n => n.NotificationData)
+                .WithMany()
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
