@@ -64,12 +64,15 @@ namespace NexTube.Persistence.Services {
                 ChannelPhoto = result.User.ChannelPhotoFileId.ToString()
             });
         }
-        public async Task<(Result Result, ApplicationUser User)> CreateUserAsync(string email, string firstName, string lastName, Guid photoFileId) {
-            if (await _userManager.FindByEmailAsync(email) != null) {
+        public async Task<(Result Result, ApplicationUser User)> CreateUserAsync(string email, string firstName, string lastName, Guid photoFileId)
+        {
+            if (await _userManager.FindByEmailAsync(email) != null)
+            {
                 throw new AlreadyExistsException(email, "User is already exist");
             }
 
-            var user = new ApplicationUser {
+            var user = new ApplicationUser
+            {
                 UserName = email,
                 Email = email,
                 FirstName = firstName,
@@ -80,6 +83,28 @@ namespace NexTube.Persistence.Services {
             var result = await _userManager.CreateAsync(user);
 
             await AddToRoleAsync(user, Roles.Unverified);
+
+            return (result.ToApplicationResult(), user);
+        }
+        public async Task<(Result Result, ApplicationUser User)> CreateVerifiedUserAsync(string email, string firstName, string lastName, Guid photoFileId)
+        {
+            if (await _userManager.FindByEmailAsync(email) != null)
+            {
+                throw new AlreadyExistsException(email, "User is already exist");
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                ChannelPhotoFileId = photoFileId
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            await AddToRoleAsync(user, Roles.User);
 
             return (result.ToApplicationResult(), user);
         }
