@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NexTube.Application.Common.DbContexts;
+using NexTube.Application.Common.Interfaces;
 using NexTube.Application.Models.Lookups;
 using NexTube.Domain.Constants;
 using NexTube.Domain.Entities;
@@ -10,9 +11,12 @@ using WebShop.Application.Common.Exceptions;
 namespace NexTube.Application.CQRS.Videos.Queries.GetVideo {
     public class GetVideoQueryHandler : IRequestHandler<GetVideoQuery, GetVideoQueryResult> {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IDateTimeService _dateTimeService;
 
-        public GetVideoQueryHandler(IApplicationDbContext dbContext) {
+        public GetVideoQueryHandler(IApplicationDbContext dbContext, IDateTimeService dateTimeService)
+        {
             _dbContext = dbContext;
+            _dateTimeService = dateTimeService;
         }
 
         public async Task<GetVideoQueryResult> Handle(GetVideoQuery request, CancellationToken cancellationToken) {
@@ -42,6 +46,18 @@ namespace NexTube.Application.CQRS.Videos.Queries.GetVideo {
 
             if (videoLookup.AccessModificator == VideoAccessModificators.Private && videoLookup.Creator?.UserId != request.RequesterId) {
                 throw new ForbiddenAccessException();
+            }
+
+            if (request.RequesterId is not null && request.RequesterId != -1)
+            {
+                _dbContext.UserVideoHistories.Add(new UserVideoHistoryEntity()
+                {
+                    UserId = request.RequesterId.Value,
+                    VideoId = videoLookup.Id!.Value,
+                    DateWatched = _dateTimeService.Now,
+                });
+
+                await _dbContext.SaveChangesAsync(cancellationToken);
             }
 
             var GetVideoEntityQueryResult = new GetVideoQueryResult() {

@@ -10,6 +10,7 @@ using NexTube.Application.CQRS.Videos.Queries.GetVideoList;
 using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Queries.GetVideo;
 using NexTube.Application.CQRS.Videos.Queries.GetVideoListChannel;
+using NexTube.Application.CQRS.UserVideoHistories.Queries.GetUserVideoHistoryList;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -55,6 +56,17 @@ namespace NexTube.WebApi.Controllers
         public async Task<ActionResult> GetVideoListChannel([FromQuery] GetVideoListChannelDto dto)
         {
             var query = mapper.Map<GetVideoListChannelQuery>(dto);
+            query.RequesterId = this.UserId;
+
+            var getVideosDto = await Mediator.Send(query);
+
+            return Ok(getVideosDto);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetVideoListHistory([FromQuery] GetVideoListHistoryDto dto)
+        {
+            var query = mapper.Map<GetVideoListHistoryQuery>(dto);
             query.RequesterId = this.UserId;
 
             var getVideosDto = await Mediator.Send(query);

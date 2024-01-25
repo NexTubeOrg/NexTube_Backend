@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NexTube.Persistence.Data.Contexts;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NexTube.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240124124250_UserVideoHistories")]
+    partial class UserVideoHistories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -622,8 +625,7 @@ namespace NexTube.Persistence.Migrations
                 {
                     b.HasOne("NexTube.Domain.Entities.VideoEntity", "NotificationData")
                         .WithMany()
-                        .HasForeignKey("NotificationDataId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("NotificationDataId");
 
                     b.HasOne("NexTube.Domain.Entities.ApplicationUser", "NotificationIssuer")
                         .WithMany()

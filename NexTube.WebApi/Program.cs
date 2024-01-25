@@ -1,18 +1,13 @@
 using Ardalis.GuardClauses;
-using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using NexTube.Application.Common.Mappings;
 using NexTube.Infrastructure.Hubs;
-using NexTube.Persistence.Common.Extensions;
 using NexTube.Persistence.Data.Contexts;
 using NexTube.Persistence.Data.Seeders;
 using NexTube.WebApi.Swagger;
 using System.Reflection;
-using System.Threading.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,13 +94,6 @@ app.UseSwaggerUI(c =>
     c.OAuthAppName(googleAppId);
 });
 app.UseCors("AllowAll");
-// ensure all required settings exist
-configuration.EnsureExistence("appsettings.Development.json");
-
-if (app.Environment.IsProduction())
-{
-    configuration.EnsureExistence("appsettings.json");
-}
 
 app.UseWebSockets();
 
