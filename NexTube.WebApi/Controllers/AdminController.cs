@@ -104,7 +104,7 @@ namespace NexTube.WebApi.Controllers
         }
 
         [HttpDelete("{videoEntityId}")]
-        [Authorize(Roles = Roles.Moderator + "," + Roles.Moderator)]
+        [Authorize(Roles = Roles.Administrator + "," + Roles.Moderator)]
         public async Task<ActionResult> DeleteVideoAsModerator(int videoEntityId)
         {
             var command =  new DeleteVideoAsModeratorCommand() { VideoId= videoEntityId };
