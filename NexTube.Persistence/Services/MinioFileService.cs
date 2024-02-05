@@ -12,15 +12,14 @@ namespace NexTube.Persistence.Services {
             this.minioClient = minioClient;
         }
 
-        public async Task<(Result Result, string Url)> GetFileUrlAsync(string bucket, string fileId, string contentType)
-        {
+        public async Task<(Result Result, string Url)> GetFileUrlAsync(string bucket, string fileId, string contentType) {
             var argsGetUrl = new PresignedGetObjectArgs()
                 .WithBucket(bucket)
                 .WithObject(fileId)
                 .WithHeaders(new Dictionary<string, string> {
                     { "response-content-type", contentType },
-                } )
-                .WithExpiry(60 * 60);
+                })
+                .WithExpiry(7 * 24 * 3600);
             var url = await minioClient.PresignedGetObjectAsync(argsGetUrl);
             return (Result.Success(), url);
         }
@@ -42,8 +41,7 @@ namespace NexTube.Persistence.Services {
         }
 
 
-        public async Task DeleteFileAsync(string bucket, string filename)
-        {
+        public async Task DeleteFileAsync(string bucket, string filename) {
             var removeObjArgs = new RemoveObjectArgs()
                 .WithBucket(bucket)
                 .WithObject(filename);
@@ -51,18 +49,15 @@ namespace NexTube.Persistence.Services {
             await minioClient.RemoveObjectAsync(removeObjArgs);
         }
 
-        public async Task<bool> IsFileExistsAsync(string bucket, string filename)
-        {
-            try
-            {
+        public async Task<bool> IsFileExistsAsync(string bucket, string filename) {
+            try {
                 var statObjArgs = new StatObjectArgs()
                     .WithBucket(bucket)
                     .WithObject(filename);
 
                 await minioClient.StatObjectAsync(statObjArgs);
             }
-            catch (ObjectNotFoundException)
-            {
+            catch (ObjectNotFoundException) {
                 return false;
             }
 
