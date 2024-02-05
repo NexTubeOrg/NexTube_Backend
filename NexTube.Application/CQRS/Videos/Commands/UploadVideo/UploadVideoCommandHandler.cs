@@ -45,9 +45,11 @@ namespace NexTube.Application.CQRS.Videos.Commands.UploadVideo {
             _dbContext.Videos.Add(video);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            await _mediator.Publish(new VideoCreatedNotification() {
-                Video = video,
-            });
+            if (video.AccessModificator.Modificator.ToLower() != "private") {
+                await _mediator.Publish(new VideoCreatedNotification() {
+                    Video = video,
+                });
+            }
 
             var videoLookup = new VideoLookup() {
                 Id = video.Id,
