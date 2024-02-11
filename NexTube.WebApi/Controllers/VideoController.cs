@@ -11,6 +11,7 @@ using NexTube.Application.CQRS.Files.Videos.GetVideoFileUrl;
 using NexTube.Application.CQRS.Videos.Queries.GetVideo;
 using NexTube.Application.CQRS.Videos.Queries.GetVideoListChannel;
 using NexTube.Application.CQRS.UserVideoHistories.Queries.GetUserVideoHistoryList;
+using NexTube.Application.CQRS.Videos.Queries.GetRandomVideo;
 
 namespace NexTube.WebApi.Controllers
 {
@@ -41,6 +42,15 @@ namespace NexTube.WebApi.Controllers
             var getVideoByIdResult = await Mediator.Send(query);
 
             return Ok(getVideoByIdResult);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetRandomVideo()
+        {
+            var command = new GetRandomVideoQuery() { };
+            var getRandomVideoResult = await Mediator.Send(command);
+
+            return Ok(getRandomVideoResult);
         }
 
         [HttpGet]
